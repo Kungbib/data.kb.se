@@ -4,6 +4,11 @@
   }
 }
 
+a {
+  color: rgb(0, 143, 137);
+  text-decoration:underline;
+}
+
 a:focus,
 a:active,
 a:hover {
