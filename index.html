@@ -2,16 +2,31 @@
 <html lang="sv">
   <head>
     <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Information tillgänglig för vidareutnyttjande - data.kb.se</title>
     <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="css/kb.css" />
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
   </head>
   <body vocab="http://schema.org/" resource="#catalog" typeof="DataCatalog">
-    <article class="container-fluid">
-      <header>
-        <h1 href="http://www.kb.se/" property="publisher" resource="http://libris.kb.se/resource/auth/121848">
-          Kungliga Biblioteket</h1>
-      </header>
-      <h1 property="name">Information tillgänglig för vidareutnyttjande</h1>
+    <div class="kb-masthead">
+      <div class="container">
+        <div class="logo">
+          <a href="/" class="kb-nav-item"><img src="img/kb_logo.png" alt="Till startsida" /></a>
+        </div>
+        <nav class="kb-nav">
+          <a class="kb-nav-item active" href="/">Startsida</a>
+          <a class="kb-nav-item" href="http://www.kb.se/">www.kb.se</a>
+        </nav>
+      </div>
+    </div>
+    <div class="container" role="main">
+      <h1 property="name">Information tillgänglig för vidareutnyttjande (beta)</h1>
+      <p>Här hittar du information om Kungliga Bibliotekets datakällor. Detta är en betaversion och förteckningen kommer att uppdateras löpande.</p>
       <table class="table">
         <tr>
           <th>Namn</th>
@@ -23,8 +38,25 @@
           <th>Särskild kontaktperson</th>
         </tr>
         <tr property="dataset" resource="http://data.libris.kb.se/" typeof="Dataset void:Dataset">
-          <td property="name"><a property="url" href="http://libris.kb.se/">LIBRIS</a></td>
-          <td property="description">LIBRIS är en nationell söktjänst med information om titlar på svenska universitets-, högskole- och forskningsbibliotek samt ett tjugotal folkbibliotek. Här finns böcker, tidskrifter, artiklar, kartor, affischer, noter, elektroniskt publicerat material m.m.</td>
+          <td property="name"><a property="url" href="http://librisbloggen.kb.se/2011/09/21/swedish-national-bibliography-and-authority-data-released-with-open-license/">Nationalbibliogeafin</a></td>
+          <td property="description">Katalogdata från LIBRIS med information om titlar på svenska universitets-, högskole- och forskningsbibliotek samt ett tjugotal folkbibliotek. Här finns metadata om författare, böcker, tidskrifter, artiklar, kartor, affischer, noter, elektroniskt publicerat material m.m.</td>
+          <td>
+          </td>
+          <td>
+            <a property="publishingPrinciples dc:license" rel="license" href="http://creativecommons.org/publicdomain/zero/1.0/">CC0</a>
+          </td>
+          <td>
+            MARC-21 (XML),
+            (<a property="void:feature" href="http://www.w3.org/ns/formats/data/RDF_XML">RDF/XML</a>,
+            <a property="void:feature" href="http://www.w3.org/ns/formats/data/Turtle">Turtle</a>)
+          </td>
+          <td property="provider" typeof="Person">
+            <span property="name">Maria Kadesjö</span>
+          </td>
+        </tr>
+        <tr property="dataset" resource="http://data.libris.kb.se/" typeof="Dataset void:Dataset">
+          <td property="name"><a property="url" href="http://librisbloggen.kb.se/2011/09/21/swedish-national-bibliography-and-authority-data-released-with-open-license/">Auktoritetsdata</a></td>
+          <td property="description">Auktoritetsdata från LIBRIS</td>
           <td>
           </td>
           <td>
@@ -41,12 +73,14 @@
         </tr>
       </table>
 
-      <footer property="provider" typeof="Person">
+      <footer class="kb-footer" property="provider" typeof="Person">
         Kontakt:
         <span property="name">Peter Krantz</span>,
         <span property="jobTitle">CIO</span>
-        (<a property="email" href="mailto:peter.krantz@kb.se">peter.krantz@kb.se</a>)
+        (<a property="email" href="mailto:peter.krantz@kb.se">peter.krantz@kb.se</a>),
+        <span href="http://www.kb.se/" property="publisher" resource="http://libris.kb.se/resource/auth/121848">
+          Kungliga Biblioteket</span>.
       </footer>
-    </article>
+    </div>
   </body>
 </html>

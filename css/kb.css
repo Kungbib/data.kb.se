@@ -4,10 +4,17 @@
   }
 }
 
+a:focus,
+a:active,
+a:hover {
+	background-color: #ff6 !important;
+	color: #000 !important;
+	text-decoration: none;
+}
 
-/*
- * Masthead for nav
- */
+h1 {
+  font-size: 170%;
+}
 
 .kb-masthead {
   background-color:#CE9D00;
