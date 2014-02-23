@@ -1,6 +1,6 @@
 @media (min-width: 1200px) {
   .container {
-    width: 970px;
+    width: 920px;
   }
 }
 
@@ -14,6 +14,7 @@ a:hover {
 
 h1 {
   font-size: 170%;
+  margin-top: 2em;
 }
 
 .kb-masthead {
@@ -126,7 +127,8 @@ h1 {
 
 
 .kb-footer {
-  padding: 40px 0;
+  margin: 4em 0 10px 0;
+  padding: 20px 0;
   color: #999;
   text-align: center;
   background-color: #f9f9f9;
