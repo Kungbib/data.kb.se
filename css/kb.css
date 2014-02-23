@@ -42,11 +42,12 @@ h1 {
   padding: 10px;
   font-weight: 500;
   color: #cdddeb;
+  text-decoration:none;
 }
 .kb-nav-item:hover,
 .kb-nav-item:focus {
   color: #fff;
-  text-decoration: none;
+  text-decoration: underline;
 }
 
 /* Active state gets a caret at the bottom */
