@@ -10,7 +10,6 @@ import jinja2
 # help + args
 parser = argparse.ArgumentParser(description='Script to generate the catalog index html file.')
 parser.add_argument('datafolder', help='The root folder where data files are stored')
-parser.add_argument('templatefolder', help='Path where template is stored.')
 parser.add_argument('destination', help='Path to output folder where index.html will be written.')
 args = parser.parse_args()
 
@@ -35,7 +34,8 @@ datasets = sorted(datasets, key=lambda k: k['dateModified'], reverse=True)
 
 
 # set up template
-tenv = jinja2.Environment(loader=jinja2.FileSystemLoader(args.templatefolder))
+templatefolder = os.path.join(os.path.dirname(__file__), "templates")
+tenv = jinja2.Environment(loader=jinja2.FileSystemLoader(templatefolder))
 template = tenv.get_template('index.html')
 
 
