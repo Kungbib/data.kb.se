@@ -46,3 +46,11 @@ with open(os.path.join(args.destination, "index.html"), "wb") as fh:
     fh.write(html.encode('utf-8'))
 
 
+# serialize all data as index.jsonld
+catalog = {
+    "@context": "/context.jsonld",
+    "type": "DataCatalog",
+    "dataset": datasets
+}
+with open(os.path.join(args.destination, "index.jsonld"), "w") as fp:
+    json.dump(catalog, fp, indent=2)
