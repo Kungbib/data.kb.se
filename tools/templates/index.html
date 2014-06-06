@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="sv">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Information tillgänglig för vidareutnyttjande - data.kb.se</title>
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="css/kb.css" />
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  </head>
+  <body vocab="http://schema.org/" resource="#catalog" typeof="DataCatalog">
+    <div class="kb-masthead">
+      <div class="container">
+        <div class="logo">
+          <a href="/" class="kb-nav-item"><img src="img/kb_logo.png" alt="Till startsida" /></a>
+        </div>
+        <nav class="kb-nav">
+          <a class="kb-nav-item active" href="/">Startsida</a>
+          <a class="kb-nav-item" href="http://www.kb.se/">www.kb.se</a>
+        </nav>
+      </div>
+    </div>
+    <div class="container" role="main">
+      <h1 property="name">Information tillgänglig för vidareutnyttjande (beta)</h1>
+      <p>Här hittar du information från <a href="http://www.kb.se/">Kungliga Bibliotekets</a> datakällor. Detta är en betaversion och förteckningen kommer att uppdateras löpande. Materialet här är i första hand till för den som vill göra egna bearbetningar/tjänster. Vi försöker publicera material som rådata i öppna standarder, men det kan förekomma material där vi ännu inte hunnit konvertera till en öppen standard. För mer information kontakta <a href="mailto:peter.krantz@kb.se">Peter Krantz (e-post)</a>.</p>
+      <table class="table">
+        <tr>
+          <th>Namn</th>
+          <th>Beskrivning</th>
+          <th>Villkor</th>
+          <th>Format</th>
+          <th>Särskild kontaktperson</th>
+        </tr>
+        {% for dataset in datasets %}
+	      <tr property="dataset" typeof="Dataset">
+          <td property="name"><a property="url" href="https://data.kb.se/{{dataset.path}}">{{dataset.name}}</a></td>
+          <td property="description">{{dataset.description}}</td>
+          <td>
+            <a property="publishingPrinciples dc:license" rel="license" href="http://creativecommons.org/publicdomain/zero/1.0/"><abbr lang="en" title="Creative Commons Zero">{{dataset.license}}</abbr></a>
+          </td>
+          <td>
+            {{ dataset.distribution.encodingFormat|join(', ') }}
+          </td>
+          {% if dataset.provider %}
+          <td property="provider" typeof="Person">
+            {{dataset.provider.name}}
+          </td>
+          {% else %}
+          <td></td>
+          {% endif %}
+        </tr>
+        {% endfor %}
+
+      </table>
+
+      <footer class="kb-footer" property="provider" typeof="Person">
+        Kontakt:
+        <span property="name">Peter Krantz</span>,
+        (<a property="email" href="mailto:peter.krantz@kb.se">peter.krantz@kb.se</a>),
+        <span href="http://www.kb.se/" property="publisher" resource="http://libris.kb.se/resource/auth/121848">
+          Kungliga Biblioteket</span>.
+      </footer>
+    </div>
+  </body>
+</html>
