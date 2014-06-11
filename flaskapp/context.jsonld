@@ -1,0 +1,14 @@
+{
+  "@context": {
+    "@vocab": "http://schema.org/",
+    "dc": "http://purl.org/dc/terms/",
+    "id": "@id",
+    "type": "@type",
+    "url": {"@type": "@id"},
+    "sameAs": {"@type": "@id"},
+    "identifier": {"@id": "dc:identifier"},
+    "license": {"@id": "dc:license", "@type": "@vocab"},
+    "CC0": "http://creativecommons.org/publicdomain/zero/1.0/",
+    "librisid": "http://libris.kb.se/resource/bib/"
+  }
+}

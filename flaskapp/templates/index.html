@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% block content %}
+      <h1 property="name">Information tillgänglig för vidareutnyttjande (beta)</h1>
+      <p>Här hittar du information från <a href="http://www.kb.se/">Kungliga Bibliotekets</a> datakällor. Detta är en betaversion och förteckningen kommer att uppdateras löpande. Materialet här är i första hand till för den som vill göra egna bearbetningar/tjänster. Vi försöker publicera material som rådata i öppna standarder, men det kan förekomma material där vi ännu inte hunnit konvertera till en öppen standard. För mer information kontakta <a href="mailto:peter.krantz@kb.se">Peter Krantz (e-post)</a>.</p>
+      <table class="table">
+        <tr>
+          <th>Namn</th>
+          <th>Beskrivning</th>
+          <th>Villkor</th>
+          <th>Format</th>
+          <th>Särskild kontaktperson</th>
+        </tr>
+        {% for dataset in datasets %}
+	      <tr property="dataset" typeof="Dataset">
+              <td property="name"><a property="url" href="{{datasetRoot}}/{{dataset.path}}">{{dataset.name}}</a></td>
+          <td property="description">{{dataset.description}}</td>
+          <td>
+            <a property="publishingPrinciples dc:license" rel="license" href="http://creativecommons.org/publicdomain/zero/1.0/"><abbr lang="en" title="Creative Commons Zero">{{dataset.license}}</abbr></a>
+          </td>
+          <td>
+            {{ dataset.distribution.encodingFormat|join(', ') }}
+          </td>
+          {% if dataset.provider %}
+          <td property="provider" typeof="Person">
+            {{dataset.provider.name}}
+          </td>
+          {% else %}
+          <td></td>
+          {% endif %}
+        </tr>
+        {% endfor %}
+
+      </table>
+{% endblock %}

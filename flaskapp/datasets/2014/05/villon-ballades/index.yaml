@@ -1,0 +1,19 @@
+type: Dataset
+name: Villon, Ballades et poèmes diverses
+
+description: >
+  Digitaliserad version av Ballades et poèmes diverses av François Villon.
+
+license: CC0
+
+identifier: Vu 22
+
+sameAs:
+  - librisid:13688022
+ 
+distribution:
+  encodingFormat:
+    - TIFF
+
+provider:
+  name: Katinka Ahlbom
