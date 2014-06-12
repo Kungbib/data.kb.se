@@ -68,11 +68,6 @@ def _create_db():
     lconn.commit()
     cur.close()
 
-try:
-    _create_db()
-except Exception as e:
-    print("Could not create database: %s" % e)
-
 
 def create_dataset(formdata):
 #    try:
@@ -82,8 +77,8 @@ def create_dataset(formdata):
         cur = conn.cursor()
         cur.execute('''
             INSERT INTO datasets
-            VALUES (?, ?, ?, ?, ?, ?)''', (
-            None,
+            (type, name, description, license, path)
+            VALUES (?, ?, ?, ?, ?)''', (
             formdata['type'],
             formdata['title'],
             formdata['description'],
@@ -95,24 +90,28 @@ def create_dataset(formdata):
         datasetID = cur.lastrowid
         for librisID in librisIDs:
             cur.execute('''
-                INSERT INTO sameAs VALUES
-                (?, ?, ?)''', (
-                None, datasetID, librisID
+                INSERT INTO sameAs
+                (datasetID, librisID)
+                VALUES
+                (?, ?)''', (
+                datasetID, librisID
                 )
             )
             conn.commit()
         for format in encodingFormats:
             cur.execute('''
                 INSERT INTO distribution
-                VALUES (?, ?, ?)''', (
-                None, datasetID, format
+                (datasetID, encodingFormat)
+                VALUES (?, ?)''', (
+                datasetID, format
                 )
             )
             conn.commit()
         cur.execute('''
             INSERT INTO providor
-            VALUES (?, ?, ?, ?)''', (
-            None, datasetID, formdata['name'], formdata['email']
+            (datasetID, name, email)
+            VALUES (?, ?, ?)''', (
+            datasetID, formdata['name'], formdata['email']
             )
         )
         conn.commit()
@@ -147,7 +146,6 @@ def loadDatasetsDB():
     cur.execute('''SELECT * from datasets''')
     datasets = cur.fetchall()
     for dataset in datasets:
-        print dataset
         cur.execute(
             '''
             SELECT librisID from sameAs WHERE
@@ -181,12 +179,14 @@ def loadDatasetsDB():
         datasetList.append(dataset)
     return datasetList
 
-print loadDatasetsDB()
+for dataset in loadDatasetsDB():
+        datasets.append(dataset)
+
+print datasets
 
 
 @app.route('/')
 def index():
-    print datasets
     return(
         render_template(
             'index.html',

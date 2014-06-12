@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% block content %}
+<form role="form" method="POST">
+    <div class="form-group">
+        <label for="title">Title</label>
+        <input type="text" name="title">
+    </div>
+    <div class="form-group">
+        <label for="type">Type</label>
+        <input type="text" name="type">
+    </div>
+    <div class="form-group">
+        <label for="license">License</label>
+        <input type="license" name="license">
+    </div>
+    <div class="form-group">
+        <label for="description">Description</label>
+        <textarea name="description" class="form-control" rows="3"></textarea>
+    </div>
+    <div class="form-group">
+        <label for="librisIDs">Related Libris IDs(comma seperated)</label>
+        <input type="text" name="librisIDs">
+    </div>
+    <div class="form-group">
+        <label for="encodingFormats">Encoding Formats</label>
+        <input type="text" name="encodingFormats">
+    </div>
+    <div class="form-group">
+        <label for="path">Local Path</label>
+        <input type="text" name="path">
+    </div>
+    <div class="form-group">
+    </div>
+    <div class="form-group">
+        <h2>Providor</h2>
+        <label for="name">Name</label>
+        <input name="name" type="text">
+    </div>
+    <div class="form-group">
+        <label for="email">Email</label>
+        <input name="email" type="text">
+    </div>
+    <button type="submit" class="btn btn-default">Submit</button>
+</form>
+{% endblock %}
