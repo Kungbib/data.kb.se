@@ -6,16 +6,20 @@ if __name__ != '__main__':
     syspath.append(path.dirname(__file__))
     chdir(path.dirname(__file__))
 
-from flask import Flask, request, render_template
+from flask import Flask, request, render_template, g
 from sqlite3 import connect as sqconnect
 from yaml import load as yload
-from autobp import auto_bp, datasetRoot
-from os import path
+#from autobp import auto_bp, datasetRoot
+#from flask.ext.autoindex import AutoIndex
+from os import path, listdir
+from mimetypes import guess_type
 
 
 app = Flask(__name__)
-app.register_blueprint(auto_bp, url_prefix='/datasets')
-gconn = sqconnect('./data.db')
+#AutoIndex(app, browse_root=path.curdir)
+datasetRoot = './datasets'
+#app.register_blueprint(auto_bp, url_prefix='/datasets')
+dbFile = ('./data.db')
 
 
 def dict_factory(cursor, row):
@@ -24,69 +28,41 @@ def dict_factory(cursor, row):
         d[col[0]] = row[idx]
     return d
 
-gconn.row_factory = dict_factory
+
+def get_db():
+    db = getattr(g, '_database', None)
+    if db is None:
+        db = g._database = sqconnect(dbFile)
+    db.row_factory = dict_factory
+    return db
 
 
-def _create_db():
-    lconn = sqconnect('./data.db')
-    cur = lconn.cursor()
-    cur.execute('''
-        CREATE TABLE
-        datasets(
-        datasetID INT PRIMARY KEY,
-        type TEXT,
-        name TEXT,
-        description TEXT,
-        license TEXT,
-        PATH text)
-    ''')
-    lconn.commit()
-    cur.execute('''
-        CREATE TABLE
-        sameAs(
-        sameAsID INT PRIMARY KEY,
-        datasetID INT,
-        librisid TEXT)
-    ''')
-    lconn.commit()
-    cur.execute('''
-        CREATE TABLE
-        distribution(
-        distID INT PRIMARY KEY,
-        datasetID INT,
-        encodingFormatID INT)
-    ''')
-    lconn.commit()
-    cur.execute('''
-        CREATE TABLE
-        providor(
-        prodvidorID, INT PRIMARY KEY
-        datasetID INT,
-        name TEXT,
-        email TEXT)
-    ''')
-    lconn.commit()
-    cur.close()
+def sizeof_fmt(num):
+    for x in ['bytes', 'KB', 'MB', 'GB', 'TB']:
+        if num < 1024.0:
+            return "%3.1f %s" % (num, x)
+        num /= 1024.0
 
 
 def create_dataset(formdata):
 #    try:
-        conn = sqconnect('./data.db')
         librisIDs = formdata['librisIDs'].split(',')
         encodingFormats = formdata['encodingFormats'].split(',')
-        cur = conn.cursor()
+        cur = get_db().cursor()
+        print formdata.get('url', None)
+        print formdata.get('path', None)
         cur.execute('''
             INSERT INTO datasets
-            (type, name, description, license, path)
-            VALUES (?, ?, ?, ?, ?)''', (
+            (type, name, description, license, path, url)
+            VALUES (?, ?, ?, ?, ?, ?)''', (
             formdata['type'],
             formdata['title'],
             formdata['description'],
             formdata['license'],
-            formdata['path']
+            formdata.get('path', None),
+            formdata.get('url', None)
             )
         )
-        conn.commit()
         datasetID = cur.lastrowid
         for librisID in librisIDs:
             cur.execute('''
@@ -97,7 +73,6 @@ def create_dataset(formdata):
                 datasetID, librisID
                 )
             )
-            conn.commit()
         for format in encodingFormats:
             cur.execute('''
                 INSERT INTO distribution
@@ -106,7 +81,6 @@ def create_dataset(formdata):
                 datasetID, format
                 )
             )
-            conn.commit()
         cur.execute('''
             INSERT INTO providor
             (datasetID, name, email)
@@ -114,9 +88,9 @@ def create_dataset(formdata):
             datasetID, formdata['name'], formdata['email']
             )
         )
-        conn.commit()
+        get_db().commit()
 #    except Exception as e:
-#        print("Couldn't create dataset: %s" % e)
+#        return("Couldn't create dataset: %s" % e)
 
 
 def loadDatasets():
@@ -137,14 +111,19 @@ def loadDatasets():
             pass
     return(datasets, datasetFile)
 
-datasets, datasetPaths = loadDatasets()
 
-
-def loadDatasetsDB():
+def loadDatasetsDB(datasetID=None):
     datasetList = []
-    cur = gconn.cursor()
-    cur.execute('''SELECT * from datasets''')
-    datasets = cur.fetchall()
+    cur = get_db().cursor()
+    if datasetID is None:
+        cur.execute('''SELECT * from datasets''')
+        datasets = cur.fetchall()
+    elif datasetID is not None:
+        cur.execute(
+            '''SELECT * from datasets WHERE
+                ROWID = ?''', (datasetID, )
+        )
+        datasets = cur.fetchall()
     for dataset in datasets:
         cur.execute(
             '''
@@ -177,21 +156,96 @@ def loadDatasetsDB():
             'email': providor['email']
         }
         datasetList.append(dataset)
+    print datasetList
     return datasetList
 
-for dataset in loadDatasetsDB():
-        datasets.append(dataset)
+#for dataset in loadDatasetsDB():
+#        datasets.append(dataset)
 
-print datasets
+
+def _index_dir(directory, dataset):
+    dTemp = directory
+    pathDict = {}
+    if directory is None and dataset['path'] != '':
+        directory = dataset['path']
+    if directory != dataset['path']:
+        directory = path.join(dataset['path'], directory)
+    if directory is not None:
+        if directory != dataset['path'] and dTemp is not None:
+            dirUp = path.split(dTemp)[0]
+        if directory == dataset['path']:
+            dirUp = None
+        print path.join(datasetRoot, directory)
+        for f in listdir(path.join(datasetRoot, directory)):
+            fullPath = path.join(datasetRoot, directory, f)
+            if path.isfile(fullPath):
+                pathDict[f] = {}
+                pathDict[f]['mimetype'] = guess_type(fullPath)[0]
+                pathDict[f]['name'] = f
+                pathDict[f]['realPath'] = fullPath
+                pathDict[f]['type'] = 'file'
+                pathDict[f]['size'] = sizeof_fmt(path.getsize(fullPath))
+            if path.isdir(fullPath):
+                pathDict[f] = {}
+                pathDict[f]['name'] = f
+                pathDict[f]['mimetype'] = '-'
+                pathDict[f]['type'] = 'folder-open'
+                pathDict[f]['size'] = '-'
+    return(pathDict, dirUp)
 
 
 @app.route('/')
 def index():
+#    datasets = []
+    datasets, datasetPaths = loadDatasets()
+    for dataset in loadDatasetsDB():
+        datasets.append(dataset)
     return(
         render_template(
             'index.html',
             datasets=datasets,
             datasetRoot=datasetRoot
+        )
+    )
+
+
+@app.route('/dset/<int:datasetID>/<path:directory>/')
+@app.route('/dset/<int:datasetID>/')
+def viewDataset(datasetID, directory=None):
+    dTemp = directory
+    print dTemp
+    dataset = loadDatasetsDB(datasetID)
+    print len(dataset)
+    if len(dataset) > 0:
+        dataset = dataset[0]
+    else:
+        return(
+            render_template(
+                "error.html",
+                message="Could not find dataset"
+            )
+        )
+    pathDict = {}
+    if dataset['url'] == '':
+        try:
+            pathDict, dirUp = _index_dir(directory, dataset)
+        except:
+            return(
+                render_template(
+                    "error.html",
+                    message="Could not generate index",
+                )
+            )
+    if dataset['url'] != '':
+        pathDict = None
+        dirUp = None
+    return(
+        render_template(
+            'dataset.html',
+            dataset=dataset,
+            pathDict=pathDict,
+            dirUp=dirUp,
+            datasetID=datasetID
         )
     )
 
@@ -204,5 +258,12 @@ def addDataset():
         create_dataset(request.form)
         return('Created!')
 
+
+@app.teardown_appcontext
+def close_connection(exception):
+    db = getattr(g, '_database', None)
+    if db is not None:
+        db.close()
+
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(host='0.0.0.0', port=9443, debug=True)
