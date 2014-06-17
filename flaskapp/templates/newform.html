@@ -3,15 +3,15 @@
 <form role="form" method="POST">
     <div class="form-group">
         <label for="title">Title</label>
-        <input type="text" name="title">
+        <input class="form-control" type="text" name="title">
     </div>
     <div class="form-group">
         <label for="type">Type</label>
-        <input type="text" name="type">
+        <input class="form-control" type="text" name="type">
     </div>
     <div class="form-group">
         <label for="license">License</label>
-        <input type="license" name="license">
+        <input class="form-control" type="license" name="license">
     </div>
     <div class="form-group">
         <label for="description">Description</label>
@@ -19,26 +19,30 @@
     </div>
     <div class="form-group">
         <label for="librisIDs">Related Libris IDs(comma seperated)</label>
-        <input type="text" name="librisIDs">
+        <input type="text" name="librisIDs" class="form-control" >
     </div>
     <div class="form-group">
         <label for="encodingFormats">Encoding Formats</label>
-        <input type="text" name="encodingFormats">
+        <input type="text" name="encodingFormats"class="form-control" >
     </div>
     <div class="form-group">
         <label for="path">Local Path</label>
-        <input type="text" name="path">
+        <input type="text" name="path"class="form-control" >
+    </div>
+    <div class="form-group">
+        <label for="url">URL</label>
+        <input type="text" name="url"class="form-control" >
     </div>
     <div class="form-group">
     </div>
     <div class="form-group">
         <h2>Providor</h2>
         <label for="name">Name</label>
-        <input name="name" type="text">
+        <input name="name" type="text" class="form-control" >
     </div>
     <div class="form-group">
         <label for="email">Email</label>
-        <input name="email" type="text">
+        <input name="email" type="text" class="form-control" >
     </div>
     <button type="submit" class="btn btn-default">Submit</button>
 </form>
