@@ -156,7 +156,6 @@ def loadDatasetsDB(datasetID=None):
             'email': providor['email']
         }
         datasetList.append(dataset)
-    print datasetList
     return datasetList
 
 #for dataset in loadDatasetsDB():
@@ -175,7 +174,6 @@ def _index_dir(directory, dataset):
             dirUp = path.split(dTemp)[0]
         if directory == dataset['path']:
             dirUp = None
-        print path.join(datasetRoot, directory)
         for f in listdir(path.join(datasetRoot, directory)):
             fullPath = path.join(datasetRoot, directory, f)
             if path.isfile(fullPath):
@@ -212,10 +210,7 @@ def index():
 @app.route('/dset/<int:datasetID>/<path:directory>/')
 @app.route('/dset/<int:datasetID>/')
 def viewDataset(datasetID, directory=None):
-    dTemp = directory
-    print dTemp
     dataset = loadDatasetsDB(datasetID)
-    print len(dataset)
     if len(dataset) > 0:
         dataset = dataset[0]
     else:
