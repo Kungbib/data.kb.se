@@ -1,0 +1,87 @@
+{% extends "base.html" %}
+{% block content %}
+    <div vocab="http://schema.org/" resource="{{datasetRoot}}/{{dataset.path}}" typeof="Dataset">
+      <h2 property="name">{{ dataset.name }}</h2>
+      <dl>
+        <dt>Description</dt>
+        <dd property="description">{{ dataset.description }}</dd>
+        <dt>License</dt>
+        <dd><a property="publishingPrinciples dc:license" rel="license" href="http://creativecommons.org/publicdomain/zero/1.0/"><abbr lang="en" title="Creative Commons Zero">{{ dataset.license }}</abbr></a></dd>
+        <dt>Samma Som</dt>
+        <dd>{{ dataset.sameas|join(', ') }}</dd>
+        {% if dataset.url != '' %}
+        <dt>URL</dt>
+        <dd><a href="{{ dataset.url }}">{{ dataset.url }}</a></dd>
+        {% endif %}
+        <dt>Encoding Formats</dt>
+        <dd>{{ dataset.distribution.encodingFormat|join(', ') }}</dd>
+        <dt>Prodvidor</dt>
+        <dd property="provider" typeof="Person">
+          <ul>
+            <li>Name: {{ dataset.providor.name }}</li>
+            <li>email: {{ dataset.providor.email }}</li>
+          </ul>
+        </dd>
+      </dl>
+      {% if pathDict != None %}
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title">Contents</h3>
+        </div>
+        <div class="panel-body">
+          <div class="span3">
+          <table class="table table-hover">
+            <thead>
+              <tr>
+                <th class="col-sm-1"></th>
+                <th class="col-sm-4">Name</th>
+                <th class="col-sm-4">mimeType</th>
+                <th class="col-sm-3">Size</th>
+              </tr>
+            </thead>
+            <tbody>
+              {%- if dirUp != None %}
+              <tr>
+                <td>
+                  <span class="glyphicon glyphicon-chevron-up"></span>
+                </td>
+                <td>
+                {%- if dirUp == '' %}
+                  <a href="/dset/{{datasetID}}/">..</a>
+                {%- endif %}
+                {%- if dirUp != '' %}
+                  <a href="/dset/{{datasetID}}/{{ dirUp }}/">..</a>
+                {%- endif -%}
+                </td>
+                <td></td>
+                <td></td>
+              </tr>
+              {% endif %}
+              {% for p, v in pathDict.iteritems() %}
+              <tr>
+                <td>
+                  <span class="glyphicon glyphicon-{{ v.type }}"></span>
+                </td>
+                <td>
+                {%- if v.type == 'file' -%}
+                  <a href="/{{ v.realPath }}">{{ p }}</a>
+                {%- else -%}
+                  <a href="./{{ p }}/">{{ p }}</a>
+                {%- endif -%}
+                </td>
+                <td>
+                  {{ v.mimetype }}
+                </td>
+                <td>
+                  {{ v.size }}
+                </td>
+             </tr>
+             {%- endfor -%}
+           </tbody>
+         </table>
+       </div>
+     </div>
+   </div>
+ </div>
+{% endif %}
+{% endblock %}
