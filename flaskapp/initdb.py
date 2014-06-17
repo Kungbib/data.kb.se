@@ -13,7 +13,8 @@ def _create_db():
         name TEXT,
         description TEXT,
         license TEXT,
-        path text)
+        path text,
+        url text)
     ''')
     lconn.commit()
     cur.execute('''
