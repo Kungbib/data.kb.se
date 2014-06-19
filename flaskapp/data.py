@@ -6,13 +6,21 @@ if __name__ != '__main__':
     syspath.append(path.dirname(__file__))
     chdir(path.dirname(__file__))
 
-from flask import Flask, request, render_template, g
+from flask import (
+    Flask, request,
+    render_template, session,
+    redirect, g, url_for,
+    flash
+)
 from sqlite3 import connect as sqconnect
 from yaml import load as yload
 #from autobp import auto_bp, datasetRoot
 #from flask.ext.autoindex import AutoIndex
 from os import path, listdir
 from mimetypes import guess_type
+from hashlib import sha512
+from uuid import uuid4
+from datetime import datetime
 
 
 app = Flask(__name__)
@@ -20,6 +28,16 @@ app = Flask(__name__)
 datasetRoot = './datasets'
 #app.register_blueprint(auto_bp, url_prefix='/datasets')
 dbFile = ('./data.db')
+app.secret_key = uuid4().hex
+
+with open('./secrets', 'r') as sfile:
+    salt = sfile.read()
+
+
+def redirect_url(default='index'):
+    return request.args.get('next') or \
+        request.referrer or \
+        url_for(default)
 
 
 def dict_factory(cursor, row):
@@ -91,6 +109,60 @@ def create_dataset(formdata):
         get_db().commit()
 #    except Exception as e:
 #        return("Couldn't create dataset: %s" % e)
+
+
+def del_dataset(datasetid):
+    cur = get_db().cursor()
+    cur.execute('''
+        DELETE from datasets WHERE
+        datasetID = ?''', (
+        datasetid,
+        )
+    )
+    cur.execute('''
+        DELETE from sameAs WHERE
+        datasetID = ?''', (
+        datasetid,
+        )
+    )
+    cur.execute('''
+        DELETE from distribution WHERE
+        datasetID = ?''', (
+        datasetid,
+        )
+    )
+    cur.execute('''
+        DELETE from providor WHERE
+        datasetID = ?''', (
+        datasetid,
+        )
+    )
+    get_db().commit()
+
+
+def update_dataset(updateDict):
+    cur = get_db().cursor()
+    datasetID = updateDict['datasetid']
+    datasetDict = updateDict['dataset']
+#    sameAsDict = updateDict['sameAs']
+#    formatDict = updateDict['formats']
+    cur.execute('''
+        UPDATE dataset SET
+        description=?, name=?, license=?,
+        type=?, path=?, url=?, updated=?
+        WHERE
+        datasetID=?
+        ''', (
+        datasetDict.get('description'),
+        datasetDict.get('name'),
+        datasetDict.get('license'),
+        datasetDict.get('type'),
+        datasetDict.get('path', None),
+        datasetDict.get('url', None),
+        datetime.now(),
+        datasetID
+        )
+    )
 
 
 def loadDatasets():
@@ -195,6 +267,7 @@ def _index_dir(directory, dataset):
 @app.route('/')
 def index():
 #    datasets = []
+    print request.accept_languages
     datasets, datasetPaths = loadDatasets()
     for dataset in loadDatasetsDB():
         datasets.append(dataset)
@@ -214,23 +287,15 @@ def viewDataset(datasetID, directory=None):
     if len(dataset) > 0:
         dataset = dataset[0]
     else:
-        return(
-            render_template(
-                "error.html",
-                message="Could not find dataset"
-            )
-        )
+        return(render_template("error.html",
+               message="Could not find dataset"))
     pathDict = {}
     if dataset['url'] == '':
         try:
             pathDict, dirUp = _index_dir(directory, dataset)
         except:
-            return(
-                render_template(
-                    "error.html",
-                    message="Could not generate index",
-                )
-            )
+            return(render_template("error.html",
+                   message="Could not generate index"))
     if dataset['url'] != '':
         pathDict = None
         dirUp = None
@@ -245,13 +310,80 @@ def viewDataset(datasetID, directory=None):
     )
 
 
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    error = None
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+        pwHashed = sha512(password + salt).hexdigest()
+        cur = get_db().cursor()
+        cur.execute('SELECT * from users where username = ?', (username, ))
+        res = cur.fetchone()
+        if res['password'] == pwHashed:
+            session['logged_in'] = True
+            session['username'] = username
+            return redirect(url_for('index'))
+        else:
+            error = 'Invalid password!'
+    return(render_template('login.html', error=error))
+
+
+@app.route('/logout')
+def logout():
+    session.pop('logged_in', None)
+    session.pop('username', None)
+    return redirect(url_for('index'))
+
+
 @app.route('/new', methods=['GET', 'POST'])
 def addDataset():
     if request.method == 'GET':
-        return(render_template('newform.html'))
+        if not session.get('logged_in'):
+            return(render_template("error.html",
+                   message="You must be logged in!"))
+        if session.get('logged_in'):
+            return(render_template('newform.html', dataset=None))
     if request.method == 'POST':
-        create_dataset(request.form)
-        return('Created!')
+        if session.get('logged_in'):
+            create_dataset(request.form)
+            flash('Created!')
+            return redirect(url_for('index'))
+        else:
+            return(render_template("error.html",
+                   message="You must be logged in!"))
+
+
+@app.route('/del/confirm/<int:datasetID>')
+def confirmDel(datasetID):
+    if session.get('logged_in'):
+        cur = get_db().cursor()
+        cur.execute('SELECT * FROM datasets where datasetid=?', (datasetID, ))
+        dataset = cur.fetchone()
+        return(render_template(
+               'confirm.html', dataset=dataset)
+               )
+
+
+@app.route('/del/<int:datasetID>')
+def delDataset(datasetID):
+    if session.get('logged_in'):
+        try:
+            del_dataset(datasetID)
+            flash('Deleted!')
+            return redirect(url_for('index'))
+        except Exception as e:
+            return(render_template(
+                   'error.html', message=e)
+                   )
+
+
+@app.route('/edit/<int:datasetID>')
+def editDataset(datasetID):
+    dataset = loadDatasetsDB(datasetID)
+    dataset = dataset[0]
+    print type(dataset)
+    return render_template('newform.html', dataset=dataset)
 
 
 @app.teardown_appcontext
