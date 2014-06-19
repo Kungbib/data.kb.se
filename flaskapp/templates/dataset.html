@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 {% block content %}
-    <div vocab="http://schema.org/" resource="{{datasetRoot}}/{{dataset.path}}" typeof="Dataset">
+    <div vocab="http://schema.org/" resource="{{dataset.path}}" typeof="Dataset">
       <h2 property="name">{{ dataset.name }}</h2>
        {% if session.get('logged_in') %}
         <a type="button" class="btn btn-danger btn-sm" href="/del/confirm/{{ datasetID }}">Radera</a>
@@ -51,10 +51,10 @@
                 </td>
                 <td>
                 {%- if dirUp == '' %}
-                  <a href="/dset/{{datasetID}}/">..</a>
+                <a href="/{{ datasetRoot }}/{{dataset.path}}/">..</a>
                 {%- endif %}
                 {%- if dirUp != '' %}
-                  <a href="/dset/{{datasetID}}/{{ dirUp }}/">..</a>
+                <a href="/{{ datasetRoot }}/{{ dataset.path }}/{{ dirUp }}/">..</a>
                 {%- endif -%}
                 </td>
                 <td></td>

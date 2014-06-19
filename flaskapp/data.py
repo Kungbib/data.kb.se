@@ -25,7 +25,7 @@ from datetime import datetime
 
 app = Flask(__name__)
 #AutoIndex(app, browse_root=path.curdir)
-datasetRoot = './datasets'
+datasetRoot = 'datasets'
 #app.register_blueprint(auto_bp, url_prefix='/datasets')
 dbFile = ('./data.db')
 app.secret_key = uuid4().hex
@@ -184,18 +184,20 @@ def loadDatasets():
     return(datasets, datasetFile)
 
 
-def loadDatasetsDB(datasetID=None):
+def loadDatasetsDB(datasetID=None, **kw):
+    print kw
     datasetList = []
     cur = get_db().cursor()
     if datasetID is None:
         cur.execute('''SELECT * from datasets''')
         datasets = cur.fetchall()
-    elif datasetID is not None:
+    elif kw.get('datasetPath') is not None:
         cur.execute(
             '''SELECT * from datasets WHERE
-                ROWID = ?''', (datasetID, )
+                path = ?''', (kw.get('datasetPath'), )
         )
         datasets = cur.fetchall()
+        print datasets
     for dataset in datasets:
         cur.execute(
             '''
@@ -280,10 +282,18 @@ def index():
     )
 
 
-@app.route('/dset/<int:datasetID>/<path:directory>/')
-@app.route('/dset/<int:datasetID>/')
-def viewDataset(datasetID, directory=None):
-    dataset = loadDatasetsDB(datasetID)
+#@app.route('/dset/<int:datasetID>/<path:directory>/')
+#@app.route('/dset/<int:datasetID>/')
+@app.route('/<datasets>/<int:year>/<int:month>/<dataset>/<path:directory>/')
+@app.route('/<datasets>/<int:year>/<int:month>/<dataset>/')
+#def viewDataset(datasetID, directory=None):
+def viewDataset(datasets, year, month, dataset, directory=None):
+    if datasets != datasetRoot:
+        return(render_template('error.html', message='Not found'))
+    datasetPath = path.join(str(year), str(month), dataset)
+    print directory
+    print datasetPath
+    dataset = loadDatasetsDB(datasetPath=datasetPath, singleLookup=True)
     if len(dataset) > 0:
         dataset = dataset[0]
     else:
@@ -293,19 +303,22 @@ def viewDataset(datasetID, directory=None):
     if dataset['url'] == '':
         try:
             pathDict, dirUp = _index_dir(directory, dataset)
+            print dirUp
         except:
             return(render_template("error.html",
                    message="Could not generate index"))
     if dataset['url'] != '':
         pathDict = None
         dirUp = None
+    print datasetRoot
     return(
         render_template(
             'dataset.html',
+            datasetRoot=datasetRoot,
             dataset=dataset,
             pathDict=pathDict,
             dirUp=dirUp,
-            datasetID=datasetID
+            datasetID=dataset['datasetID']
         )
     )
 
