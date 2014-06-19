@@ -21,6 +21,12 @@
         <nav class="kb-nav">
           <a class="kb-nav-item active" href="/">Startsida</a>
           <a class="kb-nav-item" href="http://www.kb.se/">www.kb.se</a>
+          {% if session.logged_in %}
+          <a class="kb-nav-item" href="/new">Lägga till</a>
+          <a class="kb-nav-item" href="/logout">Logga ut</a>
+          {% elif not session.logged_in %}
+          <a class="kb-nav-item" href="/login">Login</a>
+          {% endif %}
         </nav>
       </div>
     </div>
