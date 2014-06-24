@@ -48,7 +48,9 @@ def _create_db():
             name TEXT,
             description TEXT,
             license TEXT,
-            path text,
+            path text unique,
+            created_at INTEGER,
+            updated_at INTEGER,
             url text)
         ''')
         lconn.commit()
@@ -79,8 +81,8 @@ def _create_db():
     try:
         cur.execute('''
             CREATE TABLE
-            providor(
-            prodvidorID INTEGER PRIMARY KEY not null,
+            provider(
+            prodviderID INTEGER PRIMARY KEY not null,
             datasetID INT,
             name TEXT,
             email TEXT)

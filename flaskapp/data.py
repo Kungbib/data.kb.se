@@ -19,16 +19,15 @@ from uuid import uuid4
 from lib.dataDB import (
     del_dataset,
     loadDatasetsDB, create_dataset,
-    index_dir
+    index_dir, update_dataset, cleanDate
 )
 
 
 app = Flask(__name__)
-#AutoIndex(app, browse_root=path.curdir)
 datasetRoot = 'datasets'
-#app.register_blueprint(auto_bp, url_prefix='/datasets')
 dbFile = ('./data.db')
-app.secret_key = uuid4().hex
+with open('./secrets', 'r') as sfile:
+    app.secret_key = sfile.read()
 
 with open('./secrets', 'r') as sfile:
     salt = sfile.read()
@@ -58,7 +57,6 @@ def get_db():
 @app.route('/')
 def index():
     datasets = []
-    print request.accept_languages
     for dataset in loadDatasetsDB():
         datasets.append(dataset)
     return(
@@ -70,32 +68,32 @@ def index():
     )
 
 
-@app.route('/<datasets>/<int:year>/<int:month>/<dataset>/<path:directory>/')
-@app.route('/<datasets>/<int:year>/<int:month>/<dataset>/')
+@app.route('/<datasets>/<int:year>/<month>/<dataset>/<path:directory>/')
+@app.route('/<datasets>/<int:year>/<month>/<dataset>/')
 def viewDataset(datasets, year, month, dataset, directory=None):
     if datasets != datasetRoot:
         return(render_template('error.html', message='Not found'))
     datasetPath = path.join(str(year), str(month), dataset)
-    print directory
-    print datasetPath
     dataset = loadDatasetsDB(datasetPath=datasetPath, singleLookup=True)
     if len(dataset) > 0:
         dataset = dataset[0]
     else:
         return(render_template("error.html",
                message="Could not find dataset"))
+    if dataset.get('created_at'):
+        dataset['cleanCreated'] = cleanDate(dataset['created_at'])
+    if dataset.get('updated_at'):
+        dataset['cleanUpdated'] = cleanDate(dataset['updated_at'])
     pathDict = {}
     if dataset['url'] == '':
         try:
             pathDict, dirUp = index_dir(directory, dataset, datasetRoot)
-            print dirUp
         except:
             return(render_template("error.html",
                    message="Could not generate index"))
     if dataset['url'] != '':
         pathDict = None
         dirUp = None
-    print datasetRoot
     return(
         render_template(
             'dataset.html',
@@ -107,6 +105,19 @@ def viewDataset(datasets, year, month, dataset, directory=None):
         )
     )
 
+
+@app.route('/<datasets>/<datasetName>')
+def vieDatasetURL(datasets, datasetName):
+    if datasets != datasetRoot:
+        return(render_template('error.html', message='Not found'))
+    dataset = loadDatasetsDB(datasetName=datasetName, singleLookup=True)
+    if len(dataset) > 0:
+        dataset = dataset[0]
+    if dataset.get('created_at'):
+        dataset['cleanCreated'] = cleanDate(dataset['created_at'])
+    if dataset.get('updated_at'):
+        dataset['cleanUpdated'] = cleanDate(dataset['updated_at'])
+    return(render_template('dataset.html', dataset=dataset, dirUp=None, pathDict=None))
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -141,7 +152,7 @@ def addDataset():
             return(render_template("error.html",
                    message="You must be logged in!"))
         if session.get('logged_in'):
-            return(render_template('newform.html', dataset=None))
+            return(render_template('newform.html'))
     if request.method == 'POST':
         if session.get('logged_in'):
             create_dataset(request.form)
@@ -176,12 +187,24 @@ def delDataset(datasetID):
                    )
 
 
-@app.route('/edit/<int:datasetID>')
+@app.route('/edit/<int:datasetID>', methods=['GET', 'POST'])
 def editDataset(datasetID):
-    dataset = loadDatasetsDB(datasetID)
-    dataset = dataset[0]
-    print type(dataset)
-    return render_template('newform.html', dataset=dataset)
+    if request.method == 'GET':
+        if not session.get('logged_in'):
+            return(render_template("error.html",
+                   message="You must be logged in!"))
+        if session.get('logged_in'):
+            dataset = loadDatasetsDB(datasetID, singleLookup=True, useID=True)
+            dataset = dataset[0]
+            return render_template('editform.html', dataset=dataset)
+    if request.method == 'POST':
+        if session.get('logged_in'):
+            update_dataset(request.form, datasetID)
+            flash('Created!')
+            return redirect(url_for('index'))
+        else:
+            return(render_template("error.html",
+                   message="You must be logged in!"))
 
 
 @app.teardown_appcontext

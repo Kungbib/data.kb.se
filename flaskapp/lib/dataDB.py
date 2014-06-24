@@ -3,12 +3,19 @@ from datetime import datetime
 from flask import g
 from os import path, listdir
 from mimetypes import guess_type
+from time import time
 
 
 with open('./secrets', 'r') as sfile:
     salt = sfile.read()
 
 dbFile = ('./data.db')
+
+
+def cleanDate(timestamp):
+    timeTup = datetime.fromtimestamp(timestamp)
+    dateFormat = '%Y-%m-%d %H:%M'
+    return(timeTup.strftime(dateFormat))
 
 
 def sizeof_fmt(num):
@@ -34,22 +41,21 @@ def get_db():
 
 
 def create_dataset(formdata):
-#    try:
+    #try:
         librisIDs = formdata['librisIDs'].split(',')
         encodingFormats = formdata['encodingFormats'].split(',')
         cur = get_db().cursor()
-        print formdata.get('url', None)
-        print formdata.get('path', None)
         cur.execute('''
             INSERT INTO datasets
-            (type, name, description, license, path, url)
-            VALUES (?, ?, ?, ?, ?, ?)''', (
+            (type, name, description, license, path, url, created_at)
+            VALUES (?, ?, ?, ?, ?, ?, ?)''', (
             formdata['type'],
             formdata['title'],
             formdata['description'],
             formdata['license'],
             formdata.get('path', None),
-            formdata.get('url', None)
+            formdata.get('url', None),
+            time()
             )
         )
         datasetID = cur.lastrowid
@@ -71,15 +77,71 @@ def create_dataset(formdata):
                 )
             )
         cur.execute('''
-            INSERT INTO providor
+            INSERT INTO provider
             (datasetID, name, email)
             VALUES (?, ?, ?)''', (
             datasetID, formdata['name'], formdata['email']
             )
         )
         get_db().commit()
-#    except Exception as e:
-#        return("Couldn't create dataset: %s" % e)
+    #except Exception as e:
+        #return("Couldn't create dataset: %s" % e)
+
+
+def update_dataset(formdata, datasetID):
+    #try:
+        librisIDs = formdata['librisIDs'].split(',')
+        encodingFormats = formdata['encodingFormats'].split(',')
+        cur = get_db().cursor()
+        cur.execute('''
+            UPDATE datasets
+            SET type = ?, name = ?, description = ?, license = ?, path = ?, url = ?,
+            updated_at = ?
+            WHERE datasetID=?''', (
+            formdata['type'],
+            formdata['title'],
+            formdata['description'],
+            formdata['license'],
+            formdata.get('path', None),
+            formdata.get('url', None),
+            time(),
+            datasetID
+            )
+        )
+        cur.execute('''
+            DELETE from sameAs WHERE
+            datasetID = ?''', (datasetID, )
+        )
+        for librisID in librisIDs:
+            cur.execute('''
+                INSERT INTO sameAs
+                (datasetID, librisID)
+                VALUES
+                (?, ?)''', (
+                datasetID, librisID
+                )
+            )
+        cur.execute('''
+            DELETE from distribution
+            WHERE datasetID = ?''', (datasetID, )
+        )
+        for format in encodingFormats:
+            cur.execute('''
+                INSERT INTO distribution
+                (datasetID, encodingFormat)
+                VALUES (?, ?)''', (
+                datasetID, format
+                )
+            )
+        cur.execute('''
+            UPDATE provider
+            SET name = ?, email = ?
+            WHERE datasetID = ?''', (
+            formdata['name'], formdata['email'], datasetID
+            )
+        )
+        get_db().commit()
+    #except Exception as e:
 
 
 def del_dataset(datasetid):
@@ -103,7 +165,7 @@ def del_dataset(datasetid):
         )
     )
     cur.execute('''
-        DELETE from providor WHERE
+        DELETE from provider WHERE
         datasetID = ?''', (
         datasetid,
         )
@@ -111,45 +173,29 @@ def del_dataset(datasetid):
     get_db().commit()
 
 
-def update_dataset(updateDict):
-    cur = get_db().cursor()
-    datasetID = updateDict['datasetid']
-    datasetDict = updateDict['dataset']
-#    sameAsDict = updateDict['sameAs']
-#    formatDict = updateDict['formats']
-    cur.execute('''
-        UPDATE dataset SET
-        description=?, name=?, license=?,
-        type=?, path=?, url=?, updated=?
-        WHERE
-        datasetID=?
-        ''', (
-        datasetDict.get('description'),
-        datasetDict.get('name'),
-        datasetDict.get('license'),
-        datasetDict.get('type'),
-        datasetDict.get('path', None),
-        datasetDict.get('url', None),
-        datetime.now(),
-        datasetID
-        )
-    )
-
-
 def loadDatasetsDB(datasetID=None, **kw):
-    print kw
     datasetList = []
     cur = get_db().cursor()
-    if datasetID is None:
+    if datasetID is None and kw.get('singleLookup', False) is False:
         cur.execute('''SELECT * from datasets''')
         datasets = cur.fetchall()
-    elif kw.get('datasetPath') is not None:
-        cur.execute(
-            '''SELECT * from datasets WHERE
-                path = ?''', (kw.get('datasetPath'), )
-        )
+    elif kw.get('singleLookup'):
+        if kw.get('datasetPath'):
+            cur.execute(
+                '''SELECT * from datasets WHERE
+                    path = ?''', (kw.get('datasetPath'), )
+            )
+        elif kw.get('datasetName'):
+            cur.execute(
+                '''SELECT * from datasets WHERE
+                   name = ?''', (kw.get('datasetName'), )
+            )
+        elif kw.get('useID', False):
+            cur.execute(
+               '''SELECT * from datasets WHERE
+                  datasetID = ?''', (datasetID, )
+            )
         datasets = cur.fetchall()
-        print datasets
     for dataset in datasets:
         cur.execute(
             '''
@@ -159,27 +205,26 @@ def loadDatasetsDB(datasetID=None, **kw):
         dataset['sameAs'] = []
         librisIDs = cur.fetchall()
         for librisID in librisIDs:
-            dataset['sameAs'].append(librisID)
-        #cur.execute(
-        #    '''
-        #    SELECT format from distribution WHERE
-        #    datasetID = ?''', (dataset['datasetID'], )
-        #)
-        #formats = cur.fetchall()
-        formats = []
+            dataset['sameAs'].append(librisID['librisid'])
+        cur.execute(
+            '''
+            SELECT encodingFormat from distribution WHERE
+            datasetID = ?''', (dataset['datasetID'], )
+        )
+        formats = cur.fetchall()
         dataset['distribution'] = {}
         dataset['distribution']['encodingFormat'] = []
         for format in formats:
-            dataset['distribution']['encodingFormat'].append(format)
+            dataset['distribution']['encodingFormat'].append(format['encodingFormat'])
         cur.execute(
             '''
-            SELECT name, email FROM providor WHERE
+            SELECT name, email FROM provider WHERE
             datasetID = ?''', (dataset['datasetID'], )
         )
-        providor = cur.fetchone()
-        dataset['providor'] = {
-            'name': providor['name'],
-            'email': providor['email']
+        provider = cur.fetchone()
+        dataset['provider'] = {
+            'name': provider['name'],
+            'email': provider['email']
         }
         datasetList.append(dataset)
     return datasetList
