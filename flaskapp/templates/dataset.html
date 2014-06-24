@@ -3,8 +3,8 @@
     <div vocab="http://schema.org/" resource="{{dataset.path}}" typeof="Dataset">
       <h2 property="name">{{ dataset.name }}</h2>
        {% if session.get('logged_in') %}
-        <a type="button" class="btn btn-danger btn-sm" href="/del/confirm/{{ datasetID }}">Radera</a>
-        <a type="button" class="btn btn-sm btn-info" href="/edit/{{ datasetID }}">Redigera</a>
+        <a type="button" class="btn btn-danger btn-sm" href="/del/confirm/{{ dataset.datasetID }}">Radera</a>
+        <a type="button" class="btn btn-sm btn-info" href="/edit/{{ dataset.datasetID }}">Redigera</a>
         {% endif %}
       <dl>
         <dt>Description</dt>
@@ -12,7 +12,7 @@
         <dt>License</dt>
         <dd><a property="publishingPrinciples dc:license" rel="license" href="http://creativecommons.org/publicdomain/zero/1.0/"><abbr lang="en" title="Creative Commons Zero">{{ dataset.license }}</abbr></a></dd>
         <dt>Samma Som</dt>
-        <dd>{{ dataset.sameas|join(', ') }}</dd>
+        <dd>{{ dataset.sameAs|join(', ') }}</dd>
         {% if dataset.url != '' %}
         <dt>URL</dt>
         <dd><a href="{{ dataset.url }}">{{ dataset.url }}</a></dd>
@@ -22,9 +22,17 @@
         <dt>Prodvidor</dt>
         <dd property="provider" typeof="Person">
           <ul>
-            <li>Name: {{ dataset.providor.name }}</li>
-            <li>email: {{ dataset.providor.email }}</li>
+            <li>Name: {{ dataset.provider.name }}</li>
+            <li>email: {{ dataset.provider.email }}</li>
           </ul>
+        </dd>
+        <dt> Skapat </dt>
+        <dd property="dateCreated" typeof="Date">
+        {{ dataset.cleanCreated }}
+        </dd>
+        <dt>Modiferat</dt>
+        <dd property="dateModified" typeof="Date">
+        {{ dataset.cleanUpdated }}
         </dd>
       </dl>
       {% if pathDict != None %}
