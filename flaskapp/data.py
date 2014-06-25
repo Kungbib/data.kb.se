@@ -213,5 +213,11 @@ def close_connection(exception):
     if db is not None:
         db.close()
 
+
+@app.after_request
+def add_ua_compat(response):
+    response.headers['X-UA-Compatible'] = 'IE=Edge'
+    return response
+
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=9443, debug=True)
