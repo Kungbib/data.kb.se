@@ -4,6 +4,11 @@
   }
 }
 
+
+body {
+  font-family: Arial, sans-serif;
+}
+
 a {
   color: rgb(0, 143, 137);
   text-decoration:underline;
@@ -20,10 +25,11 @@ a:hover {
 h1 {
   font-size: 170%;
   margin-top: 2em;
+  font-family: Georgia, serif;
 }
 
 .kb-masthead {
-  background-color:#CE9D00;
+  background-color:#009EE0;
   box-shadow: inset 0 -2px 5px rgba(0,0,0,.1);
 }
 
