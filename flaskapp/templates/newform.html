@@ -1,49 +1,59 @@
 {% extends "base.html" %}
 {% block content %}
-<form role="form" method="POST">
-    <div class="form-group">
-        <label for="title">Title</label>
-        <input class="form-control" type="text" name="title" >
-    </div>
-    <div class="form-group">
-        <label for="type">Type</label>
-        <input class="form-control" type="text" name="type" >
-    </div>
-    <div class="form-group">
-        <label for="license">License</label>
-        <input class="form-control" type="license" name="license" >
-    </div>
-    <div class="form-group">
-        <label for="description">Description</label>
-        <textarea name="description" class="form-control" rows="3"></textarea>
-    </div>
-    <div class="form-group">
-        <label for="librisIDs">Related Libris IDs(comma seperated)</label>
-        <input type="text" name="librisIDs" class="form-control" >
-    </div>
-    <div class="form-group">
-        <label for="encodingFormats">Encoding Formats</label>
-        <input type="text" name="encodingFormats"class="form-control" >
-    </div>
-    <div class="form-group">
-        <label for="path">Local Path</label>
-        <input type="text" name="path"class="form-control" >
-    </div>
-    <div class="form-group">
-        <label for="url">URL</label>
-        <input type="text" name="url"class="form-control" >
-    </div>
-    <div class="form-group">
-    </div>
-    <div class="form-group">
-        <h2>Providor</h2>
-        <label for="name">Name</label>
-        <input name="name" type="text" class="form-control" >
-    </div>
-    <div class="form-group">
-        <label for="email">Email</label>
-        <input name="email" type="text" class="form-control" >
-    </div>
-    <button type="submit" class="btn btn-default">Submit</button>
-</form>
+<div class="row">
+      <div class="col-md-8">
+        <h1>Skapa nytt dataset</h1>
+  <form role="form" method="POST" class="form">
+      <div class="form-group">
+          <label for="title">Namn</label>
+          <input class="form-control" type="text" name="title" id="title" >
+          <span class="help-block">Ett kort namn på datasetet, t.ex. <i>Digitaliserade dagstidningar</i></span>
+      </div>
+      <div class="form-group">
+          <label for="type">Typ</label>
+          <input class="form-control" type="text" name="type" id="type" >
+      </div>
+      <div class="form-group">
+          <label for="license">Licens</label>
+          <input class="form-control" type="license" name="license" id="license">
+          <span class="help-block">Licens för datasetet som kod, t.ex. <i>CC0</i></span>
+      </div>
+      <div class="form-group">
+          <label for="description">Beskrivning</label>
+          <textarea id="description" name="description" class="form-control" rows="3"></textarea>
+          <span class="help-block">Kort text om innehållet och hur filerna är namngivna.</span>
+      </div>
+      <div class="form-group">
+          <label for="librisIDs">Relaterade Libris-IDn (kommaseparerade)</label>
+          <input type="text" name="librisIDs" id="librisIDs" class="form-control" >
+      </div>
+      <div class="form-group">
+          <label for="encodingFormats">Format (kommaseparerade) t.ex. "TIFF,XML"</label>
+          <input type="text" id="encodingFormats" name="encodingFormats"class="form-control" >
+      </div>
+      <div class="form-group">
+          <label for="path">Del av identifierare (t.ex. "2014/06/tidningar")</label>
+          <input type="text" name="path"class="form-control" >
+          <span class="help-block">Ska bestå av årtalet och månaden när detta dataset skapas + en kort text.</span>
+      </div>
+      <div class="form-group">
+          <label for="url">URL</label>
+          <input type="text" id="url" name="url" class="form-control" >
+      </div>
+      <div class="form-group">
+      </div>
+      <div class="form-group">
+          <h2>Kontaktperson</h2>
+          <label for="name">Namn</label>
+          <input name="name" id="name" type="text" class="form-control" >
+      </div>
+      <div class="form-group">
+          <label for="email">E-post</label>
+          <input name="email" type="text" id="email" class="form-control" >
+      </div>
+      <button type="submit" class="btn btn-default btn-primary pull-right">Spara</button>
+  </form>
+</div>
+<div class="col-md-4" style="margin-top: 6em;"></p>Ett dataset beskriver en samling information i form av t.ex. bildfiler eller strukturerad information. Det är viktigt att det finns en koppling mellan datasetet och Libris för att göra det möjligt för andra att leta sig vidare till mer information. Kontakta NN för hjälp med att överföra filer till servern.</p></div>
+</div>
 {% endblock %}
