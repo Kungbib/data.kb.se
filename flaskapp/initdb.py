@@ -48,7 +48,7 @@ def _create_db():
             name TEXT,
             description TEXT,
             license TEXT,
-            path text unique,
+            path text,
             created_at INTEGER,
             updated_at INTEGER,
             url text)
