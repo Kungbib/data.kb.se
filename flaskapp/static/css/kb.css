@@ -28,6 +28,11 @@ h1 {
   font-family: Georgia, serif;
 }
 
+h2 {
+  font-size: 140%;
+  font-family: Georgia, serif;
+}
+
 .kb-masthead {
   background-color:#009EE0;
   box-shadow: inset 0 -2px 5px rgba(0,0,0,.1);
