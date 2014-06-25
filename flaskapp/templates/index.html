@@ -13,7 +13,11 @@
         </tr>
         {% for dataset in datasets %}
 	      <tr property="dataset" typeof="Dataset">
-              <td property="name"><a property="url" href="{{datasetRoot}}/{{dataset.path}}">{{dataset.name}}</a></td>
+              {% if dataset.path == '' %}
+              <td property="name"><a property="url" href="/{{ datasetRoot }}/{{ dataset.name }}">{{dataset.name}}</a></td>
+              {% else %}
+              <td property="name"><a property="url" href="/{{ datasetRoot }}/{{dataset.path}}/">{{dataset.name}}</a></td>
+              {% endif %}
           <td property="description">{{dataset.description}}</td>
           <td>
             <a property="publishingPrinciples dc:license" rel="license" href="http://creativecommons.org/publicdomain/zero/1.0/"><abbr lang="en" title="Creative Commons Zero">{{dataset.license}}</abbr></a>

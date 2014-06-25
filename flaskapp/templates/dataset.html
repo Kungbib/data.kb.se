@@ -1,41 +1,99 @@
 {% extends "base.html" %}
 {% block content %}
-    <div vocab="http://schema.org/" resource="{{datasetRoot}}/{{dataset.path}}" typeof="Dataset">
-      <h1 property="name">{{dataset.name}}</h1>
-      <p property="description">{{dataset.description}}</p>
-      <dl>
-        <dt>Användningsvillkor:</dt>
-        <dd><a property="publishingPrinciples dc:license" rel="license" href="http://creativecommons.org/publicdomain/zero/1.0/"><abbr lang="en" title="Creative Commons Zero">{{dataset.license}}</abbr></a></dd>
-
-        {% if dataset.provider %}
-        <dt>Kontaktperson</dt>
-        <dd property="provider" typeof="Person">
-          {{dataset.provider.name}}</dd>
+    <div vocab="http://schema.org/" resource="{{dataset.path}}" typeof="Dataset">
+      <h2 property="name">{{ dataset.name }}</h2>
+       {% if session.get('logged_in') %}
+        <a type="button" class="btn btn-danger btn-sm" href="/del/confirm/{{ dataset.datasetID }}">Radera</a>
+        <a type="button" class="btn btn-sm btn-info" href="/edit/{{ dataset.datasetID }}">Redigera</a>
         {% endif %}
+      <dl>
+        <dt>Description</dt>
+        <dd property="description">{{ dataset.description }}</dd>
+        <dt>License</dt>
+        <dd><a property="publishingPrinciples dc:license" rel="license" href="http://creativecommons.org/publicdomain/zero/1.0/"><abbr lang="en" title="Creative Commons Zero">{{ dataset.license }}</abbr></a></dd>
+        <dt>Samma Som</dt>
+        <dd>{{ dataset.sameAs|join(', ') }}</dd>
+        {% if dataset.url != '' %}
+        <dt>URL</dt>
+        <dd><a href="{{ dataset.url }}">{{ dataset.url }}</a></dd>
+        {% endif %}
+        <dt>Encoding Formats</dt>
+        <dd>{{ dataset.distribution.encodingFormat|join(', ') }}</dd>
+        <dt>Prodvidor</dt>
+        <dd property="provider" typeof="Person">
+          <ul>
+            <li>Name: {{ dataset.provider.name }}</li>
+            <li>email: {{ dataset.provider.email }}</li>
+          </ul>
+        </dd>
+        <dt> Skapat </dt>
+        <dd property="dateCreated" typeof="Date">
+        {{ dataset.cleanCreated }}
+        </dd>
+        <dt>Modiferat</dt>
+        <dd property="dateModified" typeof="Date">
+        {{ dataset.cleanUpdated }}
+        </dd>
       </dl>
-
-      <table class="table">
-        <caption>Filer i detta dataset</caption>
-        <tr>
-          <th>Filnamn</th>
-          <th>Ändrad</th>
-          <th>Storlek</th>
-        </tr>
-        {% for item in files %}
-        <tr>
-          <td>{{item.filename}}</td>
-          <td>{{item.updated}}</td>
-          <td>{{item.size}}</td>
-        </tr>
-        {% endfor %}
-      </table>
-
-      <footer class="kb-footer">
-        Kontakt:
-        <span>Peter Krantz</span>,
-        (<a href="mailto:peter.krantz@kb.se">peter.krantz@kb.se</a>),
-        <span href="http://www.kb.se/" property="publisher" resource="http://libris.kb.se/resource/auth/121848">
-          Kungliga Biblioteket</span>.
-      </footer>
-    </div>
+      {% if pathDict != None %}
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title">Contents</h3>
+        </div>
+        <div class="panel-body">
+          <div class="span3">
+          <table class="table table-hover">
+            <thead>
+              <tr>
+                <th class="col-sm-1"></th>
+                <th class="col-sm-4">Name</th>
+                <th class="col-sm-4">mimeType</th>
+                <th class="col-sm-3">Size</th>
+              </tr>
+            </thead>
+            <tbody>
+              {%- if dirUp != None %}
+              <tr>
+                <td>
+                  <span class="glyphicon glyphicon-chevron-up"></span>
+                </td>
+                <td>
+                {%- if dirUp == '' %}
+                <a href="/{{ datasetRoot }}/{{dataset.path}}/">..</a>
+                {%- endif %}
+                {%- if dirUp != '' %}
+                <a href="/{{ datasetRoot }}/{{ dataset.path }}/{{ dirUp }}/">..</a>
+                {%- endif -%}
+                </td>
+                <td></td>
+                <td></td>
+              </tr>
+              {% endif %}
+              {% for p, v in pathDict.iteritems() %}
+              <tr>
+                <td>
+                  <span class="glyphicon glyphicon-{{ v.type }}"></span>
+                </td>
+                <td>
+                {%- if v.type == 'file' -%}
+                  <a href="/{{ v.realPath }}">{{ p }}</a>
+                {%- else -%}
+                  <a href="./{{ p }}/">{{ p }}</a>
+                {%- endif -%}
+                </td>
+                <td>
+                  {{ v.mimetype }}
+                </td>
+                <td>
+                  {{ v.size }}
+                </td>
+             </tr>
+             {%- endfor -%}
+           </tbody>
+         </table>
+       </div>
+     </div>
+   </div>
+ </div>
+{% endif %}
 {% endblock %}
