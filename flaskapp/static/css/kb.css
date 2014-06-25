@@ -17,9 +17,14 @@ a {
 a:focus,
 a:active,
 a:hover {
-	background-color: #ff6 !important;
+	background-color: #ff6;
 	color: #000 !important;
 	text-decoration: none;
+}
+
+.logo a:hover
+{
+  background-color: transparent;
 }
 
 h1 {
