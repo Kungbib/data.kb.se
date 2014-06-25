@@ -65,7 +65,7 @@ def create_dataset(formdata):
                 (datasetID, librisID)
                 VALUES
                 (?, ?)''', (
-                datasetID, librisID
+                datasetID, librisID.strip()
                 )
             )
         for format in encodingFormats:
@@ -118,7 +118,7 @@ def update_dataset(formdata, datasetID):
                 (datasetID, librisID)
                 VALUES
                 (?, ?)''', (
-                datasetID, librisID
+                datasetID, librisID.strip()
                 )
             )
         cur.execute('''
