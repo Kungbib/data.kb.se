@@ -22,9 +22,10 @@ a:hover {
 	text-decoration: none;
 }
 
-.logo a:hover
+.logo a:hover,
+.logo a:focus
 {
-  background-color: transparent;
+  background-color: transparent !important;
 }
 
 h1 {
