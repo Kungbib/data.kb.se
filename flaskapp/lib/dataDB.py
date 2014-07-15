@@ -249,7 +249,11 @@ def index_dir(directory, dataset, datasetRoot):
                 pathDict[f] = {}
                 pathDict[f]['mimetype'] = guess_type(fullPath)[0]
                 pathDict[f]['name'] = f
-                pathDict[f]['realPath'] = path.join(datasetRoot, directory, quote(f))
+                pathDict[f]['realPath'] = path.join(
+                    datasetRoot,
+                    directory,
+                    quote(f)
+                )
                 pathDict[f]['type'] = 'file'
                 pathDict[f]['size'] = sizeof_fmt(path.getsize(fullPath))
             if path.isdir(fullPath):
