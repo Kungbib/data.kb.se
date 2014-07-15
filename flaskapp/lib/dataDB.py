@@ -4,6 +4,7 @@ from flask import g
 from os import path, listdir
 from mimetypes import guess_type
 from time import time
+from urllib2 import quote
 
 
 with open('./secrets', 'r') as sfile:
@@ -248,7 +249,7 @@ def index_dir(directory, dataset, datasetRoot):
                 pathDict[f] = {}
                 pathDict[f]['mimetype'] = guess_type(fullPath)[0]
                 pathDict[f]['name'] = f
-                pathDict[f]['realPath'] = fullPath
+                pathDict[f]['realPath'] = path.join(datasetRoot, directory, quote(f))
                 pathDict[f]['type'] = 'file'
                 pathDict[f]['size'] = sizeof_fmt(path.getsize(fullPath))
             if path.isdir(fullPath):
