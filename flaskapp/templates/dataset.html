@@ -89,7 +89,7 @@
             </td>
             <td>
               {%- if v.type == 'file' -%}
-              <a href="/{{ v.realPath }}">{{ p }}</a>
+              <a href="/{{ v.realPath|urlencode }}">{{ p }}</a>
               {%- else -%}
               <a href="./{{ p }}/">{{ p }}</a>
               {%- endif -%}
