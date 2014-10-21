@@ -21,6 +21,7 @@ from lib.dataDB import (
     loadDatasetsDB, create_dataset,
     index_dir, update_dataset, cleanDate
 )
+from urllib2 import quote,unquote
 
 
 app = Flask(__name__)
@@ -68,6 +69,12 @@ def index():
     )
 
 
+@app.before_request
+def log_request():
+    if app.config.get('LOG_REQUESTS'):
+        app.logger.debug('whatever')
+
+
 @app.route('/<datasets>/<int:year>/<month>/<dataset>/<path:directory>/')
 @app.route('/<datasets>/<int:year>/<month>/<dataset>/')
 def viewDataset(datasets, year, month, dataset, directory=None):
@@ -101,6 +108,8 @@ def viewDataset(datasets, year, month, dataset, directory=None):
             dataset=dataset,
             pathDict=pathDict,
             dirUp=dirUp,
+            quote=quote,
+            unquote=unquote,
             datasetID=dataset['datasetID']
         )
     )
@@ -122,6 +131,8 @@ def vieDatasetURL(datasets, datasetName):
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     error = None
+    print request.headers
+    print request.remote_user
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
@@ -220,4 +231,4 @@ def add_ua_compat(response):
     return response
 
 if __name__ == "__main__":
-    app.run(host='0.0.0.0', port=9443, debug=True)
+    app.run(host='0.0.0.0', port=8000, debug=True)

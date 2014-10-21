@@ -251,7 +251,7 @@ def index_dir(directory, dataset, datasetRoot):
                 pathDict[f]['name'] = f
                 pathDict[f]['realPath'] = path.join(
                     datasetRoot,
-                    directory,
+                    quote(directory),
                     quote(f)
                 )
                 pathDict[f]['type'] = 'file'

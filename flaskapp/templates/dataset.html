@@ -82,16 +82,16 @@
             <td></td>
           </tr>
           {% endif %}
-          {% for p, v in pathDict.iteritems() %}
+          {% for p, v in pathDict.iteritems()|sort %}
           <tr>
             <td>
               <span class="glyphicon glyphicon-{{ v.type }}"></span>
             </td>
             <td>
               {%- if v.type == 'file' -%}
-              <a href="/{{ v.realPath|urlencode }}">{{ p }}</a>
+              <a href="/{{ v.realPath }}">{{ unquote(p) }}</a>
               {%- else -%}
-              <a href="./{{ p }}/">{{ p }}</a>
+              <a href="./{{ p|urlencode }}/">{{ unquote(p) }}</a>
               {%- endif -%}
             </td>
             <td>
