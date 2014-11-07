@@ -47,6 +47,20 @@
       </ul>
     </div>
   </div>
+  {% if metadata %}
+  <div class="row">
+  <div class="col-md-12">
+  <h2>Metadata Utplock</h2>
+  <div class="well">
+  <dl class="dl-horizontal dl-left">
+  {% for k,v in metadata.iteritems() %}
+  <dt class="text-left">{{ k }}</dt><dd>{{ v }}</dd>
+  {% endfor %}
+  </dl>
+  </div>
+  </div>
+  </div>
+  {% endif %}
   {% if pathDict != None %}
   <div class="panel panel-default">
     <div class="panel-heading clearfix">
