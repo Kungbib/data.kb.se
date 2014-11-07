@@ -5,6 +5,7 @@ from os import path, listdir
 from mimetypes import guess_type
 from time import time
 from urllib2 import quote
+from lxml import etree
 
 
 with open('./secrets', 'r') as sfile:
@@ -230,6 +231,22 @@ def loadDatasetsDB(datasetID=None, **kw):
         datasetList.append(dataset)
     return datasetList
 
+def summarizeMets(rawMeta):
+    mets = etree.XML(rawMeta)
+    mods = mets.xpath('/mets:mets/mets:dmdSec[@ID="dmdSec001"]//mods:mods', namespaces=mets.nsmap)[0]
+    related = mods.xpath('mods:relatedItem[@type="host"]', namespaces=mods.nsmap)[0]
+    title = related.xpath('mods:titleInfo/mods:title', namespaces=mods.nsmap)[0].text
+    issued = related.xpath('mods:part/mods:date', namespaces=mods.nsmap)[0].text
+    urn = mods.xpath('mods:identifier[@type="urn"]', namespaces=mods.nsmap)[0].text
+    languageBase = mods.xpath('mods:language', namespaces=mods.nsmap)
+    langList = []
+    for lang in languageBase:
+        langList.append(lang.xpath('mods:languageTerm', namespaces=mods.nsmap)[0].text)
+    langs = ','.join(langList)
+    uri = related.xpath('mods:identifier[@type="uri"]', namespaces=mods.nsmap)[0].text
+    issn = related.xpath('mods:identifier[@type="issn"]', namespaces=mods.nsmap)[0].text
+    return({'issn': issn, 'uri': uri, 'issued': issued, 'title': title, 'language': langs, 'urn': urn})
+
 
 def index_dir(directory, dataset, datasetRoot):
     dTemp = directory
@@ -243,6 +260,12 @@ def index_dir(directory, dataset, datasetRoot):
             dirUp = path.split(dTemp)[0]
         if directory == dataset['path']:
             dirUp = None
+        if 'aip.mets.metadata' in listdir(path.join(datasetRoot, directory)):
+            print("Mets found")
+            with open(path.join(datasetRoot, directory, 'aip.mets.metadata')) as m:
+                metadata = summarizeMets(m.read())
+        else:
+            metadata = None
         for f in listdir(path.join(datasetRoot, directory)):
             fullPath = path.join(datasetRoot, directory, f)
             if path.isfile(fullPath):
@@ -262,4 +285,4 @@ def index_dir(directory, dataset, datasetRoot):
                 pathDict[f]['mimetype'] = '-'
                 pathDict[f]['type'] = 'folder-open'
                 pathDict[f]['size'] = '-'
-    return(pathDict, dirUp)
+    return(pathDict, dirUp, metadata)

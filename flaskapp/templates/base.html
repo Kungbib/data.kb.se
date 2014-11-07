@@ -10,6 +10,17 @@
       <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
       <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
+  <style>
+  .dl-left dt{
+    text-align: left;
+    width: auto;
+    padding-right: 1em;
+}
+
+.dl-left dd{
+    margin-left: 0;
+}
+</style>
   </head>
   <body>
     <div class="kb-masthead">
@@ -24,6 +35,7 @@
             {% if session.logged_in %}
             <a class="kb-nav-item" href="/new"><i class="glyphicon glyphicon-plus-sign"></i> Nytt dataset</a>
             <a class="kb-nav-item" href="/logout">Logga ut</a>
+            <span>{{ session.real_name }}</span>
             {% endif %}
           </nav>
         </div>

@@ -94,8 +94,9 @@ def viewDataset(datasets, year, month, dataset, directory=None):
     pathDict = {}
     if dataset['url'] == '':
         try:
-            pathDict, dirUp = index_dir(directory, dataset, datasetRoot)
-        except:
+            pathDict, dirUp, metadata = index_dir(directory, dataset, datasetRoot)
+        except Exception as e:
+            print e
             return(render_template("error.html",
                    message="Could not generate index"))
     if dataset['url'] != '':
@@ -108,6 +109,7 @@ def viewDataset(datasets, year, month, dataset, directory=None):
             dataset=dataset,
             pathDict=pathDict,
             dirUp=dirUp,
+            metadata=metadata,
             quote=quote,
             unquote=unquote,
             datasetID=dataset['datasetID']
@@ -147,6 +149,18 @@ def login():
         else:
             error = 'Invalid password!'
     return(render_template('login.html', error=error))
+
+
+@app.route('/login2')
+def login2():
+    redirectTo = request.args.get('next', '/')
+    if request.headers['schacHomeOrganization'] == 'kb.se':
+        session['username'] = request.headers['eppn']
+        session['logged_in'] = True
+        session['real_name'] = request.headers['displayName']
+        return redirect(redirectTo)
+    else:
+        return('Can not authenticate')
 
 
 @app.route('/logout')
