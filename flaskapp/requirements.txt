@@ -1,3 +1,4 @@
 Flask
 pyyaml
 Flask-AutoIndex
+lxml

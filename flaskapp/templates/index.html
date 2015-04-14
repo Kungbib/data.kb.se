@@ -1,23 +1,23 @@
 {% extends "base.html" %}
 {% block content %}
   <div vocab="http://schema.org/" resource="#catalog" typeof="DataCatalog">
-      <h1 property="name">Öppna data från Kungl. Biblioteket (beta)</h1>
-      <p>Här hittar du information från <a href="http://www.kb.se/">Kungl. Bibliotekets</a> datakällor. Detta är en betaversion och förteckningen kommer att uppdateras löpande. Materialet här är i första hand till för den som vill göra egna bearbetningar/tjänster. Vi försöker publicera material som rådata i öppna standarder, men det kan förekomma material där vi ännu inte hunnit konvertera till en öppen standard. För mer information kontakta <a href="mailto:peter.krantz@kb.se">Peter Krantz (e-post)</a>. Letar du efter data från andra myndigheter <a href="http://www.oppnadata.se/">besök öppnadata.se</a>.</p>
-      <table class="table">
-        <tr>
-          <th>Namn</th>
-          <th>Beskrivning</th>
-          <th>Villkor</th>
-          <th>Format</th>
-          <th>Särskild kontaktperson</th>
-        </tr>
-        {% for dataset in datasets %}
-	      <tr property="dataset" typeof="Dataset">
-              {% if dataset.path == '' %}
-              <td property="name"><a property="url" href="/{{ datasetRoot }}/{{ dataset.name }}">{{dataset.name}}</a></td>
-              {% else %}
-              <td property="name"><a property="url" href="/{{ datasetRoot }}/{{dataset.path}}/">{{dataset.name}}</a></td>
-              {% endif %}
+    <h1 property="name">Öppna data från Kungl. Biblioteket (beta)</h1>
+    <p>Här hittar du information från <a href="http://www.kb.se/">Kungl. Bibliotekets</a> datakällor. Detta är en betaversion och förteckningen kommer att uppdateras löpande. Materialet här är i första hand till för den som vill göra egna bearbetningar/tjänster. Vi försöker publicera material som rådata i öppna standarder, men det kan förekomma material där vi ännu inte hunnit konvertera till en öppen standard. För mer information kontakta <a href="mailto:peter.krantz@kb.se">Peter Krantz (e-post)</a>. Letar du efter data från andra myndigheter <a href="http://www.oppnadata.se/">besök öppnadata.se</a>.</p>
+    <table class="table">
+      <tr>
+        <th>Namn</th>
+        <th>Beskrivning</th>
+        <th>Villkor</th>
+        <th>Format</th>
+        <th>Särskild kontaktperson</th>
+      </tr>
+      {% for dataset in datasets %}
+          <tr property="dataset" typeof="Dataset">
+          {% if dataset.path == '' %}
+            <td property="name"><a property="url" href="/{{datasetRoot}}/{{dataset.name | urlencode}}">{{dataset.name}}</a></td>
+          {% else %}
+            <td property="name"><a property="url" href="/{{datasetRoot}}/{{dataset.path}}/">{{dataset.name}}</a></td>
+          {% endif %}
           <td property="description">{{dataset.description}}</td>
           <td>
             <a property="publishingPrinciples dc:license" rel="license" href="http://creativecommons.org/publicdomain/zero/1.0/"><abbr lang="en" title="Creative Commons Zero">{{dataset.license}}</abbr></a>
@@ -26,15 +26,14 @@
             {{ dataset.distribution.encodingFormat|join(', ') }}
           </td>
           {% if dataset.provider %}
-          <td property="provider" typeof="Person">
-            {{dataset.provider.name}}
-          </td>
+            <td property="provider" typeof="Person">
+              {{dataset.provider.name}}
+            </td>
           {% else %}
-          <td></td>
+            <td></td>
           {% endif %}
         </tr>
-        {% endfor %}
-
-      </table>
-    </div>
+      {% endfor %}
+    </table>
+  </div>
 {% endblock %}
