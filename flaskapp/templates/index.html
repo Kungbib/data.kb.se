@@ -14,7 +14,7 @@
       {% for dataset in datasets %}
           <tr property="dataset" typeof="Dataset">
           {% if dataset.path == '' %}
-            <td property="name"><a property="url" href="/{{datasetRoot}}/{{dataset.name}}">{{dataset.name}}</a></td>
+            <td property="name"><a property="url" href="/{{datasetRoot}}/{{dataset.name | urlencode}}">{{dataset.name}}</a></td>
           {% else %}
             <td property="name"><a property="url" href="/{{datasetRoot}}/{{dataset.path}}/">{{dataset.name}}</a></td>
           {% endif %}
