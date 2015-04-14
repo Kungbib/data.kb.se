@@ -1,8 +1,8 @@
 {% extends "base.html" %}
 {% block content %}
-  <div vocab="http://schema.org/" resource="#catalog" typeof="DataCatalog">
-    <h1 property="name">Öppna data från Kungl. Biblioteket (beta)</h1>
-    <p>Här hittar du information från <a href="http://www.kb.se/">Kungl. Bibliotekets</a> datakällor. Detta är en betaversion och förteckningen kommer att uppdateras löpande. Materialet här är i första hand till för den som vill göra egna bearbetningar/tjänster. Vi försöker publicera material som rådata i öppna standarder, men det kan förekomma material där vi ännu inte hunnit konvertera till en öppen standard. För mer information kontakta <a href="mailto:peter.krantz@kb.se">Peter Krantz (e-post)</a>. Letar du efter data från andra myndigheter <a href="http://www.oppnadata.se/">besök öppnadata.se</a>.</p>
+  <div resource="" typeof="DataCatalog dcat:Catalog">
+    <h1 property="name dc:title">Öppna data från Kungl. Biblioteket (beta)</h1>
+    <p property="description dc:description">Här hittar du information från <a href="http://www.kb.se/">Kungl. Bibliotekets</a> datakällor. Detta är en betaversion och förteckningen kommer att uppdateras löpande. Materialet här är i första hand till för den som vill göra egna bearbetningar/tjänster. Vi försöker publicera material som rådata i öppna standarder, men det kan förekomma material där vi ännu inte hunnit konvertera till en öppen standard. För mer information kontakta <a href="mailto:peter.krantz@kb.se">Peter Krantz (e-post)</a>. Letar du efter data från andra myndigheter <a href="http://www.oppnadata.se/">besök öppnadata.se</a>.</p>
     <table class="table">
       <tr>
         <th>Namn</th>
@@ -11,23 +11,30 @@
         <th>Format</th>
         <th>Särskild kontaktperson</th>
       </tr>
+      {% macro dataset_uri(dataset) -%}
+        {%- if dataset.path == '' -%}
+          /{{datasetRoot}}/{{dataset.name | urlencode}}
+        {%- else -%}
+          /{{datasetRoot}}/{{dataset.path}}/
+        {%- endif -%}
+      {%- endmacro %}
       {% for dataset in datasets %}
-          <tr property="dataset" typeof="Dataset">
-          {% if dataset.path == '' %}
-            <td property="name"><a property="url" href="/{{datasetRoot}}/{{dataset.name | urlencode}}">{{dataset.name}}</a></td>
-          {% else %}
-            <td property="name"><a property="url" href="/{{datasetRoot}}/{{dataset.path}}/">{{dataset.name}}</a></td>
-          {% endif %}
-          <td property="description">{{dataset.description}}</td>
+        <tr property="dataset dcat:dataset" typeof="Dataset dcat:Dataset"
+            resource="{{dataset_uri(dataset)}}">
+          <td property="name dc:title"><a property="url" href="{{dataset_uri(dataset)}}"
+              >{{dataset.name}}</a></td>
+          <td property="description dc:description">{{dataset.description}}</td>
           <td>
-            <a property="publishingPrinciples dc:license" rel="license" href="http://creativecommons.org/publicdomain/zero/1.0/"><abbr lang="en" title="Creative Commons Zero">{{dataset.license}}</abbr></a>
+            <a property="publishingPrinciples dc:license" rel="license"
+               href="http://creativecommons.org/publicdomain/zero/1.0/">
+              <abbr lang="en" title="Creative Commons Zero">{{dataset.license}}</abbr></a>
           </td>
           <td>
             {{ dataset.distribution.encodingFormat|join(', ') }}
           </td>
-          {% if dataset.provider %}
-            <td property="provider" typeof="Person">
-              {{dataset.provider.name}}
+          {% if dataset.provider and dataset.provider.name %}
+            <td property="provider dc:publisher" typeof="Person foaf:Person foaf:Agent">
+              <span property="name foaf:name">{{dataset.provider.name}}</span>
             </td>
           {% else %}
             <td></td>
