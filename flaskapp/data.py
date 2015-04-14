@@ -245,4 +245,12 @@ def add_ua_compat(response):
     return response
 
 if __name__ == "__main__":
-    app.run(host='0.0.0.0', port=8000, debug=True)
+    import argparse
+
+    ap = argparse.ArgumentParser()
+    ap.add_argument('-p', '--port', type=int)
+    ap.add_argument('-d', '--debug', default=False, action='store_true')
+    args = ap.parse_args()
+
+    app.debug = args.debug
+    app.run(host='0.0.0.0', port=args.port, debug=True)
