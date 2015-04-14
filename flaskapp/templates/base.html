@@ -33,7 +33,7 @@
             <a class="kb-nav-item" href="/">Startsida</a>
             <a class="kb-nav-item" href="http://www.kb.se/">www.kb.se</a>
             {% if session.logged_in %}
-            <a class="kb-nav-item" href="/new"><i class="glyphicon glyphicon-plus-sign"></i> Nytt dataset</a>
+            <a class="kb-nav-item" href="/admin/datasetsview/new/?url=%2Fadmin%2Fdatasetsview%2F"><i class="glyphicon glyphicon-plus-sign"></i> Nytt dataset</a>
             <a class="kb-nav-item" href="/logout">Logga ut</a>
             <span>{{ session.real_name }}</span>
             {% endif %}

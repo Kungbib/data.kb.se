@@ -6,7 +6,7 @@
       {% if session.get('logged_in') %}
       <div class="pull-right" style="margin-top:1em">
         <a type="button" class="btn btn-danger btn-sm" href="/del/confirm/{{ dataset.datasetID }}">Radera</a>
-        <a type="button" class="btn btn-sm btn-info" href="/edit/{{ dataset.datasetID }}">Redigera</a>
+        <a type="button" class="btn btn-sm btn-info" href="/admin/datasetsview/edit/?url=%2Fadmin%2Fdatasetsview%2F&id={{ dataset.datasetID }}">Redigera</a>
       </div>
       {% endif %}
       <h1 property="name">{{ dataset.name }}</h1>
@@ -15,24 +15,26 @@
   <div class="row">
     <div class="col-md-6">
       <p property="description">{{ dataset.description }}</p>
-      {% if dataset.provider.name != '' %}
+      {% for provider in dataset.provider %}
       <p>Kontaktperson: <span property="provider" typeof="Person">
-        <a href="mailto:{{ dataset.provider.email }}">{{ dataset.provider.name }}</a></span>
+        <a href="mailto:{{ provider.email }}">{{ provider.name }}</a></span>
         </p>
-        {% endif %}
-        <p>Senast ändrat: <span property="dateModified" typeof="Date">{{ dataset.cleanUpdated }}</span></p>
+        {% endfor %}
+        <p>Senast ändrat: <span property="dateModified" typeof="Date">{{ dataset.cleanDate }}</span></p>
       </div>
       <div class="col-md-3">
         <dl>
           <dt>Användningsvillkor</dt>
-          <dd><a lang="en" property="publishingPrinciples dc:license" rel="license" href="http://creativecommons.org/publicdomain/zero/1.0/" title="Creative Commons Zero">CC0</a>
+          {% for lic in dataset.license %}
+          <dd><a property="publishingPrinciples dc:license" rel="license" href="{{lic.url}}"><abbr lang="en" title="{{ lic.name }}">{{ lic.name }}</abbr></a>
           </dd>
+          {% endfor %}
           {% if dataset.url != '' %}
           <dt>Se även</dt>
           <dd><a href="{{ dataset.url }}">{{ dataset.url }}</a></dd>
           {% endif %}
           <dt>Format</dt>
-          <dd>{{ dataset.distribution.encodingFormat|join(', ') }}</dd>
+          <dd>{{ dataset.formats|join(', ') }}</dd>
         </dl>
         <p class="hidden" property="dateCreated" typeof="Date">
         {{ dataset.cleanCreated }}
@@ -41,7 +43,7 @@
     <div class="col-md-3">
       <label>Relaterade Libris ID:n</label>
       <ul class="list-unstyled">
-        {% for item in dataset.sameAs %}
+        {% for item in dataset.sameas %}
         <li><a href="http://libris.kb.se/resource/bib/{{item}}">{{ item }}</a></li>
         {% endfor %}
       </ul>
@@ -65,7 +67,7 @@
   <div class="panel panel-default">
     <div class="panel-heading clearfix">
       <h3 class="panel-title pull-left">Filer i dataset</h3>
-      <div class=""><button type="button" class="pull-right btn btn-default btn-xs" onclick="alert('Denna funktion är inte implementerad än.')"><i class="glyphicon glyphicon-cloud-download"></i> Ladda ner torrent</button></div>
+      <div class=""><a class="pull-right btn btn-default btn-xs" href="/torrent/{{ dataset.torrent.id }}"><i class="glyphicon glyphicon-cloud-download"></i> Ladda ner torrent</a></div>
     </div>
     <div class="panel-body">
       <div class="span3">
