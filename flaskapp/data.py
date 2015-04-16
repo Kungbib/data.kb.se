@@ -6,22 +6,30 @@ if __name__ != '__main__':
     syspath.append(path.dirname(__file__))
     chdir(path.dirname(__file__))
 
-from flask import (
-    Flask, request,
-    render_template, session,
-    redirect, g, url_for,
-    flash
-)
 from os import path
-from sqlite3 import connect as sqconnect
 from hashlib import sha512
 from uuid import uuid4
+from urllib2 import quote,unquote
+
+from sqlite3 import connect as sqconnect
+from flask import (
+    Flask, request, Response,
+    render_template, session,
+    redirect, g, url_for,
+    flash)
+from werkzeug.contrib.cache import SimpleCache
+from rdflib import Graph
+
 from lib.dataDB import (
     del_dataset,
     loadDatasetsDB, create_dataset,
-    index_dir, update_dataset, cleanDate
-)
-from urllib2 import quote,unquote
+    index_dir, update_dataset, cleanDate)
+
+
+MT_RDF_XML = 'application/rdf+xml'
+
+
+cache = SimpleCache()
 
 
 app = Flask(__name__)
@@ -57,6 +65,15 @@ def get_db():
 
 @app.route('/')
 def index():
+    accepts = request.accept_mimetypes
+    best = accepts.best_match([MT_RDF_XML, 'text/html'])
+    if best == MT_RDF_XML and accepts[best] > accepts['text/html']:
+        return index_rdf()
+    else:
+        return index_html()
+
+@app.route('/index.html')
+def index_html():
     datasets = []
     for dataset in loadDatasetsDB():
         datasets.append(dataset)
@@ -68,6 +85,16 @@ def index():
         )
     )
 
+@app.route('/index.rdf')
+def index_rdf():
+    key = index_rdf.__name__
+    data = cache.get(key)
+    if data is None:
+        data = Graph().parse(data=index_html(),
+                format='rdfa', media_type='text/html'
+                ).serialize(format='pretty-xml')
+        cache.set(key, data, timeout=60 * 60)
+    return Response(data, mimetype=MT_RDF_XML)
 
 @app.before_request
 def log_request():
