@@ -20,15 +20,21 @@
           {% endif %}
           <td property="description">{{dataset.description}}</td>
           <td>
-            <a property="publishingPrinciples dc:license" rel="license" href="http://creativecommons.org/publicdomain/zero/1.0/"><abbr lang="en" title="Creative Commons Zero">{{dataset.license}}</abbr></a>
+            {% for license in dataset.license %}
+            <a property="publishingPrinciples dc:license" rel="license" href="{{ license.url }}"><abbr lang="en" title="Creative Commons Zero">{{license}}</abbr></a>
+            
+            {% endfor %}
           </td>
           <td>
-            {{ dataset.distribution.encodingFormat|join(', ') }}
+            {{ dataset.formats|join(', ') }}
           </td>
           {% if dataset.provider %}
+
+          {% for p in dataset.provider %}
             <td property="provider" typeof="Person">
-              {{dataset.provider.name}}
+              {{p.name}}
             </td>
+          {% endfor %}
           {% else %}
             <td></td>
           {% endif %}

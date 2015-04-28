@@ -28,6 +28,8 @@ from os import environ
 from datetime import datetime
 from StringIO import StringIO
 import settings
+from requests import post, get
+from json import loads
 
 
 
@@ -37,7 +39,8 @@ admin = Admin(app, base_template='admin/kbmaster.html')
 app.config.from_object('settings')
 appMode = settings.APPENV
 db = SQLAlchemy(app)
-
+datasetKey = settings.DATASETKEY
+announce = settings.ANNOUNCE
 
 class Models(ModelView):
     def is_accessible(self):
@@ -143,6 +146,7 @@ class Torrent(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     dataset = db.Column(db.Integer, db.ForeignKey('datasets.datasetID'))
     torrentData = db.Column(db.BLOB)
+    infoHash = db.Column(db.Text)
     updated_at = db.Column(db.DateTime, default=datetime.now, onupdate=datetime.now)
     def __unicode__(self):
         return self.dataset
@@ -195,15 +199,54 @@ class TorrentView(ModelView):
         super(TorrentView, self).__init__(Torrent, db.session)
     column_list = ('torrent', 'updated_at')
     form_columns = ('torrent', )
+    def on_model_delete(self, model):
+            infoHash = model.infoHash
+            headers = {
+                'Accept': 'application/json',
+                'Authorization': 'Bearer %s' % datasetKey
+            }
+            try:
+                print infoHash
+                print 'https://datasets.sunet.se/api/dataset/%s/delete' % infoHash
+                r = get(
+                    'https://datasets.sunet.se/api/dataset/%s/delete' % infoHash,
+                    headers=headers,
+                    verify=False
+                    )
+                r.raise_for_status()
+                print r.content
+            except Exception as e:
+                print("Could not delete torrent %s" % e)
     def on_model_change(self, form, model, is_created):
         datasetID = form.data['torrent'].datasetID
+
         if is_created:
             dataset = Datasets.query.filter(Datasets.datasetID == datasetID).first()
-            mk = makeTorrent(announce='http://kb.se/announce')
+            mk = makeTorrent(announce=announce)
             mk.multi_file(path.join(datasetRoot, dataset.path))
-            model.torrentData = mk.getBencoded()
+            torrentData = mk.getBencoded()
+            #model.torrentData = mk.getBencoded()
+            print("Created")
+            headers = {
+                'Accept': 'application/json',
+                'Authorization': 'Bearer %s' % datasetKey
+            }
+            tData = {'torrent': torrentData}
+            try:
+                r = post(
+                    'https://datasets.sunet.se/api/dataset',
+                    headers=headers,
+                    files=tData,
+                    verify=False
+                )
+                r.raise_for_status()
+                res = r.content
+                model.infoHash = loads(res)['info_hash']
+                model.torrentData = torrentData
+            except Exception as e:
+                print("Could not create torrent: %s" % e)
             #print mk.getDict()
-        print('testing2')
+
         return
 
 
@@ -291,6 +334,7 @@ def redirect_url(default='index'):
 @app.route('/')
 def index():
     datasets = Datasets.query.options(db.lazyload('sameas')).all()
+    print datasets[0].license[0].name
     return(
         render_template(
             'index.html',
