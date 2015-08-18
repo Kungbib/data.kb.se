@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 {% block content %}
-<div vocab="http://schema.org/" resource="http://data.kb.se/datasets/{{dataset.path}}/" typeof="Dataset">
+<div vocab="http://schema.org/" resource="" typeof="Dataset">
+  <link property="catalog" resource="/" />
   <div class="row">
     <div class="col-md-12">
       {% if session.get('logged_in') %}
@@ -15,30 +16,46 @@
   <div class="row">
     <div class="col-md-6">
       <p property="description">{{ dataset.description }}</p>
+
       {% for provider in dataset.provider %}
-      <p>Kontaktperson: <span property="provider" typeof="Person">
-        <a href="mailto:{{ provider.email }}">{{ provider.name }}</a></span>
-        </p>
+      {% if dataset.provider.name != '' %}
+      <p>
+        Kontaktperson:
+        <span property="provider" typeof="Person">
+          <a property="email" href="mailto:{{ dataset.provider.email }}">
+            <span property="name">{{ provider.name }}</span></a>
+        </span>
+      </p>
+        {% endif %}
         {% endfor %}
-        <p>Senast ändrat: <span property="dateModified" typeof="Date">{{ dataset.cleanDate }}</span></p>
+        {% if dataset.cleanUpdated %}
+          <p>Senast ändrat: <span property="dateModified" datatype="Date">{{ dataset.cleanUpdated }}</span></p>
+        {% endif %}
       </div>
       <div class="col-md-3">
         <dl>
           <dt>Användningsvillkor</dt>
           {% for lic in dataset.license %}
-          <dd><a property="publishingPrinciples dc:license" rel="license" href="{{lic.url}}"><abbr lang="en" title="{{ lic.name }}">{{ lic.name }}</abbr></a>
+          <dd>
+            <a lang="en" property="publishingPrinciples dc:license" rel="license"
+               href="{{ lic.url }}" title="{{ lic.name }}">{{ lic.name }}</a>
           </dd>
           {% endfor %}
           {% if dataset.url != '' %}
           <dt>Se även</dt>
-          <dd><a href="{{ dataset.url }}">{{ dataset.url }}</a></dd>
+          <dd><a property="url" href="{{ dataset.url }}">{{ dataset.url }}</a></dd>
           {% endif %}
           <dt>Format</dt>
-          <dd>{{ dataset.formats|join(', ') }}</dd>
+          <dd>
+            {% for format in dataset.formats -%}
+              <span property="distribution" typeof="DataDownload">
+                <span property="encodingFormat">{{ format }}</span>
+                {%- if not loop.last -%}, {%- endif -%}
+              </span>
+            {%- endfor %}
+          </dd>
         </dl>
-        <p class="hidden" property="dateCreated" typeof="Date">
-        {{ dataset.cleanCreated }}
-        </p>
+        <p class="hidden" property="dateCreated" datatype="Date">{{ dataset.cleanCreated }}</p>
     </div>
     <div class="col-md-3">
       <label>Relaterade Libris ID:n</label>

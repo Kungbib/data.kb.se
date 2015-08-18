@@ -5,7 +5,6 @@ if __name__ != '__main__':
     from os import path, chdir
     syspath.append(path.dirname(__file__))
     chdir(path.dirname(__file__))
-
 from flask import (
     Flask, request,
     render_template, session,
@@ -33,6 +32,22 @@ import settings
 from requests import post, get
 from json import loads
 from logging import getLogger, WARN
+from urllib2 import quote,unquote
+from werkzeug.contrib.cache import SimpleCache
+from rdflib import Graph
+from lib.dataDB import (
+    cleanDate,
+    index_dir,
+    uploadSunet,
+    summarizeMets,
+)
+
+
+MT_RDF_XML = 'application/rdf+xml'
+
+
+cache = SimpleCache()
+
 
 
 app = Flask(__name__)
@@ -342,7 +357,15 @@ def redirect_url(default='index'):
 @app.route('/')
 def index():
     datasets = Datasets.query.options(db.lazyload('sameas')).all()
-    print datasets[0].license[0].name
+    accepts = request.accept_mimetypes
+    best = accepts.best_match([MT_RDF_XML, 'text/html'])
+    if best == MT_RDF_XML and accepts[best] > accepts['text/html']:
+        return index_rdf()
+    else:
+        return index_html(datasets)
+
+@app.route('/index.html')
+def index_html(datasets):
     return(
         render_template(
             'index.html',
@@ -351,6 +374,16 @@ def index():
         )
     )
 
+@app.route('/index.rdf')
+def index_rdf():
+    key = index_rdf.__name__
+    data = cache.get(key)
+    if data is None:
+        data = Graph().parse(data=index_html(),
+                format='rdfa', media_type='text/html'
+                ).serialize(format='pretty-xml')
+        cache.set(key, data, timeout=60 * 60)
+    return Response(data, mimetype=MT_RDF_XML)
 
 @app.before_request
 def log_request():
