@@ -13,9 +13,9 @@
       </tr>
       {% macro dataset_uri(dataset) -%}
         {%- if dataset.path == None -%}
-          /{{datasetRoot}}/{{dataset.name | urlencode}}
+          /datasets/{{dataset.name | urlencode}}
         {%- else -%}
-          /{{datasetRoot}}/{{dataset.path}}/
+          /datasets/{{dataset.path}}/
         {%- endif -%}
       {%- endmacro %}
       {% for dataset in datasets %}
