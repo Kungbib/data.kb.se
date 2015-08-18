@@ -59,6 +59,7 @@ db = SQLAlchemy(app)
 datasetKey = settings.DATASETKEY
 announce = settings.ANNOUNCE
 torrentWatchDir = settings.TORRENT_WATCH_DIR
+datasetRoot = settings.DATASET_ROOT
 
 #sqaLog = getLogger('sqlalchemy.engine')
 #sqaLog.setLevel(WARN)
@@ -83,10 +84,8 @@ def login_required(f):
 def is_allowed(roles):
     print('Allowed: %s got %s' % (roles, session['role']))
     if session['role'] not in roles:
-        print('blarg')
         return False
     if session['role'] in roles:
-        print('no blarg')
         return True
 
 
@@ -231,7 +230,6 @@ class TorrentView(ModelView):
                     verify=False
                     )
                 r.raise_for_status()
-                print r.content
             except Exception as e:
                 print("Could not delete torrent %s" % e)
     def on_model_change(self, form, model, is_created):
@@ -340,7 +338,7 @@ admin.add_view(DatasetsView(db.session))
 admin.add_view(TorrentView(db.session))
 admin.add_view(Models(Sameas, db.session))
 
-datasetRoot = 'datasets'
+
 with open('./secrets', 'r') as sfile:
     app.secret_key = sfile.read()
 
@@ -465,8 +463,6 @@ def viewDatasetURL(datasets, datasetName):
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     error = None
-    print request.headers
-    print request.remote_user
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
