@@ -84,7 +84,12 @@
   <div class="panel panel-default">
     <div class="panel-heading clearfix">
       <h3 class="panel-title pull-left">Filer i dataset</h3>
-      <div class=""><a class="pull-right btn btn-default btn-xs" href="/torrent/{{ dataset.torrent.id }}"><i class="glyphicon glyphicon-cloud-download"></i> Ladda ner torrent</a></div>
+      <div>
+        {%- if dataset.torrent == None %}
+        <a class="pull-right btn btn-default btn-xs disabled" href="#"><i class="glyphicon glyphicon-cloud-download"></i> Ladda ner torrent</a></div>
+        {%- else %}
+        <a class="pull-right btn btn-default btn-xs" href="/torrent/{{ dataset.torrent.id }}"><i class="glyphicon glyphicon-cloud-download"></i> Ladda ner torrent</a></div>
+        {%- endif %}
     </div>
     <div class="panel-body">
       <div class="span3">
