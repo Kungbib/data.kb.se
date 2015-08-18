@@ -398,6 +398,14 @@ def viewDataset(datasets, year, month, dataset, directory=None):
         return(render_template('error.html', message='Not found'))
     datasetPath = path.join(str(year), str(month), dataset)
     dataset = Datasets.query.filter(Datasets.path == datasetPath).first()
+    if directory:
+        wholePath = path.join(datasetRoot, datasetPath, directory)
+        if path.isfile(wholePath):
+            return send_file(
+                wholePath,
+                as_attachment=True,
+                attachment_filename=path.basename(wholePath)
+            )
     if not dataset:
         return(render_template("error.html",
                message="Could not find dataset"))
@@ -405,7 +413,11 @@ def viewDataset(datasets, year, month, dataset, directory=None):
     pathDict = {}
     if not dataset.url:
         try:
-            pathDict, dirUp, metadata = index_dir(directory, dataset, datasetRoot)
+            pathDict, dirUp, metadata = index_dir(
+                directory,
+                dataset,
+                datasetRoot
+            )
         except Exception as e:
             print e
             return(render_template("error.html",
@@ -436,7 +448,7 @@ def getTorrent(torrentID):
     torrentFile.write(torrent.torrentData)
     torrentFile.seek(0)
     return send_file(torrentFile, as_attachment=True, attachment_filename=filename, mimetype='application/x-bittorrent')
-    #return Response(torrent.torrentData, mimetype='application/x-bittorrent')
+
 
 @app.route('/<datasets>/<datasetName>')
 def viewDatasetURL(datasets, datasetName):
@@ -446,7 +458,7 @@ def viewDatasetURL(datasets, datasetName):
     if not dataset:
         return(render_template("error.html",
                message="Could not find dataset"))
-    print dataset.created_at
+
     dataset.cleanDate = cleanDate(dataset.updated_at)
     return(render_template('dataset.html', dataset=dataset, dirUp=None, pathDict=None))
 
