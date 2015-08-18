@@ -21,6 +21,8 @@ from makeTorrent import makeTorrent
 from urllib2 import quote,unquote
 from flask.ext.admin.contrib.sqla import ModelView
 from flask.ext.admin import Admin, BaseView, expose
+from flask.ext.admin.form import form
+from flask.ext.admin.form.fields import fields
 from flask.ext.sqlalchemy import SQLAlchemy
 from flask.ext.admin.contrib import sqla
 from flask.ext.admin.contrib.sqla import filters
@@ -30,7 +32,7 @@ from StringIO import StringIO
 import settings
 from requests import post, get
 from json import loads
-
+from logging import getLogger, WARN
 
 
 app = Flask(__name__)
@@ -41,6 +43,11 @@ appMode = settings.APPENV
 db = SQLAlchemy(app)
 datasetKey = settings.DATASETKEY
 announce = settings.ANNOUNCE
+torrentWatchDir = settings.TORRENT_WATCH_DIR
+
+#sqaLog = getLogger('sqlalchemy.engine')
+#sqaLog.setLevel(WARN)
+
 
 class Models(ModelView):
     def is_accessible(self):
@@ -154,9 +161,11 @@ class Torrent(db.Model):
 
 class Sameas(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    librisID = db.Column(db.String(256))
+    librisID = db.Column(db.String(256), unique=True)
     def __unicode__(self):
         return self.librisID
+
+
 
 
 #@login_required
@@ -183,16 +192,11 @@ class DatasetsView(ModelView):
         super(DatasetsView, self).__init__(Datasets, db.session)
 
 class UserView(ModelView):
-    
-    #def is_accessible(self):
-    #    if is_allowed(['admin', 'editor']):
-    #        True
-    #    else:
-    #        return redirect(url_for('login2', next=request.url))
-
     def __init__(self, session):
         super(UserView, self).__init__(Users, db.session)
     form_columns = ('username', 'role')
+
+
 
 class TorrentView(ModelView):
     def __init__(self, session):
@@ -206,8 +210,6 @@ class TorrentView(ModelView):
                 'Authorization': 'Bearer %s' % datasetKey
             }
             try:
-                print infoHash
-                print 'https://datasets.sunet.se/api/dataset/%s/delete' % infoHash
                 r = get(
                     'https://datasets.sunet.se/api/dataset/%s/delete' % infoHash,
                     headers=headers,
@@ -226,7 +228,7 @@ class TorrentView(ModelView):
             mk.multi_file(path.join(datasetRoot, dataset.path))
             torrentData = mk.getBencoded()
             #model.torrentData = mk.getBencoded()
-            print("Created")
+            #print("Created torrent for %s" % dataset.name)
             headers = {
                 'Accept': 'application/json',
                 'Authorization': 'Bearer %s' % datasetKey
@@ -243,6 +245,12 @@ class TorrentView(ModelView):
                 res = r.content
                 model.infoHash = loads(res)['info_hash']
                 model.torrentData = torrentData
+                torrentFile = path.join(
+                    torrentWatchDir,
+                    model.infoHash + '.torrent'
+                )
+                with open(torrentFile, 'w') as tf:
+                    tf.write(torrentData)
             except Exception as e:
                 print("Could not create torrent: %s" % e)
             #print mk.getDict()
