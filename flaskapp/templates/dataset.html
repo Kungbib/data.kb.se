@@ -126,11 +126,7 @@
               <span class="glyphicon glyphicon-{{ v.type }}"></span>
             </td>
             <td>
-              {%- if v.type == 'file' -%}
-              <a href="/{{ v.realPath }}">{{ unquote(p) }}</a>
-              {%- else -%}
               <a href="./{{ p|urlencode }}/">{{ unquote(p) }}</a>
-              {%- endif -%}
             </td>
             <td>
               {{ v.mimetype }}
