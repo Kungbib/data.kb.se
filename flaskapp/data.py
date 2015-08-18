@@ -389,11 +389,9 @@ def log_request():
         app.logger.debug('whatever')
 
 
-@app.route('/<datasets>/<int:year>/<month>/<dataset>/<path:directory>/')
-@app.route('/<datasets>/<int:year>/<month>/<dataset>/')
-def viewDataset(datasets, year, month, dataset, directory=None):
-    if datasets != datasetRoot:
-        return(render_template('error.html', message='Not found'))
+@app.route('/datasets/<int:year>/<month>/<dataset>/<path:directory>/')
+@app.route('/datasets/<int:year>/<month>/<dataset>/')
+def viewDataset(year, month, dataset, directory=None):
     datasetPath = path.join(str(year), str(month), dataset)
     dataset = Datasets.query.filter(Datasets.path == datasetPath).first()
     if directory:
