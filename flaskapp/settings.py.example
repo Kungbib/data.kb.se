@@ -1,7 +1,7 @@
 DATABASE_FILE = './data.db'
 SQLALCHEMY_DATABASE_URI = 'sqlite:///' + DATABASE_FILE
 SQLALCHEMY_ECHO = False
-
+DATASET_ROOT = '/path/to/datasets'
 # Sets up login to mock remote_user
 APPENV = 'dev'
 # Adds the test admin user for mocking login
