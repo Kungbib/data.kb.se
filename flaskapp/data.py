@@ -60,6 +60,7 @@ datasetKey = settings.DATASETKEY
 announce = settings.ANNOUNCE
 torrentWatchDir = settings.TORRENT_WATCH_DIR
 datasetRoot = settings.DATASET_ROOT
+verifySSL = settings.VERIFY_SSL
 
 #sqaLog = getLogger('sqlalchemy.engine')
 #sqaLog.setLevel(WARN)
@@ -252,7 +253,7 @@ class TorrentView(ModelView):
                     'https://datasets.sunet.se/api/dataset',
                     headers=headers,
                     files=tData,
-                    verify=False
+                    verify=verifySSL
                 )
                 r.raise_for_status()
                 res = r.content

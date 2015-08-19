@@ -2,6 +2,8 @@ DATABASE_FILE = './data.db'
 SQLALCHEMY_DATABASE_URI = 'sqlite:///' + DATABASE_FILE
 SQLALCHEMY_ECHO = False
 DATASET_ROOT = '/path/to/datasets'
+USER_LIST = ['user1', 'user2']
+VERIFY_SSL = True
 # Sets up login to mock remote_user
 APPENV = 'dev'
 # Adds the test admin user for mocking login
@@ -9,7 +11,7 @@ if APPENV == 'dev':
     USER_LIST.append('Test Admin')
 
 # List of users to seed as admins
-USER_LIST = ['user1', 'user2']
+
 
 # Torrent info
 # Datset key is used for creating datasets with SUNET
