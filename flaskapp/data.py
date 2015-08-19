@@ -364,34 +364,29 @@ def redirect_url(default='index'):
 
 @app.route('/')
 def index():
-    datasets = Datasets.query.options(db.lazyload('sameas')).all()
     accepts = request.accept_mimetypes
     best = accepts.best_match([MT_RDF_XML, 'text/html'])
     if best == MT_RDF_XML and accepts[best] > accepts['text/html']:
         return index_rdf()
     else:
-        return index_html(datasets)
+        return index_html()
 
 
 @app.route('/index.html')
-def index_html(datasets):
-    return(
-        render_template(
-            'index.html',
+def index_html():
+    datasets = Datasets.query.options(db.lazyload('sameas')).all()
+    return render_template('index.html',
             datasets=datasets,
-            datasetRoot=datasetRoot
-        )
-    )
+            datasetRoot=datasetRoot)
 
 
 @app.route('/index.rdf')
 def index_rdf():
-    datasets = Datasets.query.options(db.lazyload('sameas')).all()
     key = index_rdf.__name__
     data = cache.get(key)
     if data is None:
         data = Graph().parse(
-            data=index_html(datasets),
+            data=index_html(),
             format='rdfa',
             media_type='text/html'
         ).serialize(format='pretty-xml')
