@@ -20,3 +20,8 @@ DATASETKEY = 'YOURAPIKEY'
 ANNOUNCE = 'http://example.com/announce'
 # Watch directory to dump created torrent files into (used with rtorrent for example)
 TORRENT_WATCH_DIR = '/path/to/torrent/dir'
+# Use rtorrent via XMLRPC
+RTORRENT = False
+XMLRPC_URI = 'http://example.com:5000/RPC2'
+# Create torrents at sunet
+SUNET = False
