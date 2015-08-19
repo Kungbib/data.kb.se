@@ -34,10 +34,12 @@
           <td>
             {{ dataset.formats|join(', ') }}
           </td>
-          {% if dataset.provider and dataset.provider.name %}
+          {% if dataset.provider %}
+          {% for p in dataset.provider %}
             <td property="provider dc:publisher" typeof="Person foaf:Person foaf:Agent">
-              <span property="name foaf:name">{{dataset.provider.name}}</span>
+              <span property="name foaf:name">{{p.name}}</span>
             </td>
+          {% endfor %}
           {% else %}
             <td></td>
           {% endif %}
