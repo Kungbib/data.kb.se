@@ -1,14 +1,7 @@
-from datetime import datetime
 from os import path, listdir
 from mimetypes import guess_type
-from time import time
 from urllib2 import quote
 from lxml import etree
-from requests import post
-
-
-with open('./secrets', 'r') as sfile:
-    salt = sfile.read()
 
 
 def cleanDate(timestamp):
@@ -22,13 +15,13 @@ def sizeof_fmt(num):
             return "%3.1f %s" % (num, x)
         num /= 1024.0
 
+
 def uploadSunet(torrentData, apiKey):
     files = {'torrent': torrentData}
     headers = {
     'Accept': 'application/json',
     'Authorization': 'Bearer %s' % apiKey
     }
-
 
 
 def summarizeMets(rawMeta):
