@@ -1,55 +1,30 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-if __name__ != '__main__':
-    from sys import path as syspath
-    from os import path, chdir
-    syspath.append(path.dirname(__file__))
-    chdir(path.dirname(__file__))
 from flask import (
     Flask, request,
     render_template, session,
-    redirect, g, url_for,
-    flash, send_file
+    redirect, url_for,
+    flash, send_file,
+    Response
 )
-from flask.ext.admin import Admin, AdminIndexView
+from flask.ext.admin import Admin
 from os import path
-from hashlib import sha512
-from uuid import uuid4
 from lib.dataDB import index_dir, cleanDate
 from makeTorrent import makeTorrent
-from urllib2 import quote,unquote
 from flask.ext.admin.contrib.sqla import ModelView
-from flask.ext.admin import Admin, BaseView, expose
-from flask.ext.admin.form import form
-from flask.ext.admin.form.fields import fields
 from flask.ext.sqlalchemy import SQLAlchemy
-from flask.ext.admin.contrib import sqla
-from flask.ext.admin.contrib.sqla import filters
-from os import environ
 from datetime import datetime
 from StringIO import StringIO
 import settings
 from requests import post, get
-from json import loads
-from logging import getLogger, WARN
-from urllib2 import quote,unquote
+from urllib2 import quote, unquote
 from werkzeug.contrib.cache import SimpleCache
 from rdflib import Graph
-from lib.dataDB import (
-    cleanDate,
-    index_dir,
-    uploadSunet,
-    summarizeMets,
-)
+from xmlrpclib import ServerProxy
 
 
 MT_RDF_XML = 'application/rdf+xml'
-
-
 cache = SimpleCache()
-
-
-
 app = Flask(__name__)
 admin = Admin(app, base_template='admin/kbmaster.html')
 
@@ -61,9 +36,13 @@ announce = settings.ANNOUNCE
 torrentWatchDir = settings.TORRENT_WATCH_DIR
 datasetRoot = settings.DATASET_ROOT
 verifySSL = settings.VERIFY_SSL
-
-#sqaLog = getLogger('sqlalchemy.engine')
-#sqaLog.setLevel(WARN)
+useRtorrent = settings.RTORRENT
+useSunet = settings.SUNET
+curDir = path.dirname(path.realpath(__file__))
+secretsFile = path.join(curDir, 'secrets')
+with open(secretsFile, 'r') as sfile:
+    app.secret_key = sfile.read()
+    salt = app.secret_key
 
 
 class Models(ModelView):
@@ -72,8 +51,10 @@ class Models(ModelView):
             return True
         else:
             return False
+
     def index(self):
         return self.render('admindex.html')
+
 
 def login_required(f):
     def decorated_function(*args, **kwargs):
@@ -81,6 +62,7 @@ def login_required(f):
             return redirect(url_for('login2', next=request.url))
         return f(*args, **kwargs)
     return decorated_function
+
 
 def is_allowed(roles):
     print('Allowed: %s got %s' % (roles, session['role']))
@@ -90,23 +72,21 @@ def is_allowed(roles):
         return True
 
 
-dataset_format_table = db.Table('dataset_format', db.Model.metadata,
-        db.Column('dataset_id', db.Integer, db.ForeignKey('datasets.datasetID')),
-        db.Column('format_id', db.Integer, db.ForeignKey('format.id')),
-        db.Column('provider_id', db.Integer, db.ForeignKey('provider.providerID')),
-        db.Column('license_id', db.Integer, db.ForeignKey('license.id')),
-        db.Column('sameas_id', db.Integer, db.ForeignKey('sameas.id'))
+dataset_format_table = db.Table(
+    'dataset_format', db.Model.metadata,
+    db.Column('dataset_id', db.Integer, db.ForeignKey('datasets.datasetID')),
+    db.Column('format_id', db.Integer, db.ForeignKey('format.id')),
+    db.Column('provider_id', db.Integer, db.ForeignKey('provider.providerID')),
+    db.Column('license_id', db.Integer, db.ForeignKey('license.id')),
+    db.Column('sameas_id', db.Integer, db.ForeignKey('sameas.id'))
 )
 
-#role_user_table = db.Table('user_format', db.Model.metadata,
-#        db.Column('user_id', db.Integer, db.ForeignKey('users.userID')),
- #       db.Column('role_id', db.Integer, db.ForeignKey('role.id'))
-#)
 
 class Role(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     roleName = db.Column(db.String(80), unique=True)
     users = db.relationship('Users', uselist=False, backref="role_name")
+
     def __unicode__(self):
         return self.roleName
 
@@ -115,15 +95,19 @@ class Users(db.Model):
     userID = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.Unicode(128), unique=True)
     role = db.Column(db.Integer, db.ForeignKey('role.id'))
+
     def __unicode__(self):
         return self.username
+
 
 class License(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.Unicode(64), unique=True)
     url = db.Column(db.Unicode(255))
+
     def __unicode__(self):
         return self.name
+
 
 class Datasets(db.Model):
     def is_accessible(self):
@@ -138,38 +122,50 @@ class Datasets(db.Model):
     license = db.Column(db.String(256))
     path = db.Column(db.String(256), unique=True)
     created_at = db.Column(db.DateTime, default=datetime.now)
-    updated_at = db.Column(db.DateTime, default=datetime.now, onupdate=datetime.now)
+    updated_at = db.Column(
+        db.DateTime,
+        default=datetime.now,
+        onupdate=datetime.now
+    )
     url = db.Column(db.String(256), unique=True)
     sameas = db.relationship('Sameas', secondary=dataset_format_table)
     formats = db.relationship('Format', secondary=dataset_format_table)
     license = db.relationship('License', secondary=dataset_format_table)
     provider = db.relationship('Provider', secondary=dataset_format_table)
     torrent = db.relationship('Torrent', uselist=False, backref="torrent")
+
     def __unicode__(self):
         return self.name
-
-
 
 
 class Provider(db.Model):
     providerID = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.Unicode(80), unique=True)
     email = db.Column(db.Unicode(128))
+
     def __unicode__(self):
         return self.name
+
 
 class Format(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.Unicode(64), unique=True)
+
     def __unicode__(self):
         return self.name
+
 
 class Torrent(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     dataset = db.Column(db.Integer, db.ForeignKey('datasets.datasetID'))
     torrentData = db.Column(db.BLOB)
     infoHash = db.Column(db.Text)
-    updated_at = db.Column(db.DateTime, default=datetime.now, onupdate=datetime.now)
+    updated_at = db.Column(
+        db.DateTime,
+        default=datetime.now,
+        onupdate=datetime.now
+    )
+
     def __unicode__(self):
         return self.dataset
 
@@ -177,34 +173,25 @@ class Torrent(db.Model):
 class Sameas(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     librisID = db.Column(db.String(256), unique=True)
+
     def __unicode__(self):
         return self.librisID
 
 
-
-
-#@login_required
 class DatasetsView(ModelView):
-    #def is_accessible(self):
-    #    if is_allowed(['admin', 'editor']):
-    #        True
-    #    else:
-    #        return redirect(url_for('login2', next=request.url))
-
     inline_model = (Format,)
     column_list = ('type', 'name', 'description', 'license', 'path', 'url')
     column_filter = ('type', 'name', 'description', 'license', 'path', 'url')
-    form_columns = ('type', 'name', 'description', 'license', 'path', 'url', 'provider', 'formats', 'sameas')
-    #form_ajax_refs = {
-    #    'provider': {
-    #        'fields': (Provider.name, Provider.email)
-    #    },
-    #    'formats': {
-    #        'fields': (Format.name,)
-    #    }
-    #}
+    form_columns = (
+        'type', 'name',
+        'description', 'license',
+        'path', 'url', 'provider',
+        'formats', 'sameas'
+    )
+
     def __init__(self, session):
         super(DatasetsView, self).__init__(Datasets, db.session)
+
 
 class UserView(ModelView):
     def __init__(self, session):
@@ -212,12 +199,12 @@ class UserView(ModelView):
     form_columns = ('username', 'role')
 
 
-
 class TorrentView(ModelView):
     def __init__(self, session):
         super(TorrentView, self).__init__(Torrent, db.session)
     column_list = ('torrent', 'updated_at')
     form_columns = ('torrent', )
+
     def on_model_delete(self, model):
             infoHash = model.infoHash
             headers = {
@@ -233,41 +220,53 @@ class TorrentView(ModelView):
                 r.raise_for_status()
             except Exception as e:
                 print("Could not delete torrent %s" % e)
+
     def on_model_change(self, form, model, is_created):
         datasetID = form.data['torrent'].datasetID
-
         if is_created:
-            dataset = Datasets.query.filter(Datasets.datasetID == datasetID).first()
+            dataset = Datasets.query.filter(
+                Datasets.datasetID == datasetID
+            ).first()
             mk = makeTorrent(announce=announce)
             mk.multi_file(path.join(datasetRoot, dataset.path))
             torrentData = mk.getBencoded()
-            #model.torrentData = mk.getBencoded()
-            #print("Created torrent for %s" % dataset.name)
             headers = {
                 'Accept': 'application/json',
                 'Authorization': 'Bearer %s' % datasetKey
             }
             tData = {'torrent': torrentData}
-            try:
-                r = post(
-                    'https://datasets.sunet.se/api/dataset',
-                    headers=headers,
-                    files=tData,
-                    verify=verifySSL
-                )
-                r.raise_for_status()
-                res = r.content
-                model.infoHash = loads(res)['info_hash']
-                model.torrentData = torrentData
-                torrentFile = path.join(
-                    torrentWatchDir,
-                    model.infoHash + '.torrent'
-                )
-                with open(torrentFile, 'w') as tf:
-                    tf.write(torrentData)
-            except Exception as e:
-                print("Could not create torrent: %s" % e)
-            #print mk.getDict()
+            if useSunet:
+                try:
+                    r = post(
+                        'https://datasets.sunet.se/api/dataset',
+                        headers=headers,
+                        files=tData,
+                        verify=verifySSL
+                    )
+                    r.raise_for_status()
+                except Exception as e:
+                    print("Could not upload torrent: %s" % e)
+            model.infoHash = mk.info_hash()
+            model.torrentData = torrentData
+            torrentFile = path.join(
+                torrentWatchDir,
+                model.infoHash + '.torrent'
+            )
+            with open(torrentFile, 'w') as tf:
+                tf.write(torrentData)
+            if useRtorrent:
+                try:
+                    rtorrent = ServerProxy(settings.XMLRPC_URI)
+                    rtorrent.load(torrentFile)
+                    downloadPath = path.dirname(
+                        path.join(
+                            datasetRoot,
+                            dataset.path
+                        )
+                    )
+                    rtorrent.d.set_directory(model.infoHash, downloadPath)
+                except Exception as e:
+                    print("Could not add torrent to rtorrent: %s" % e)
 
         return
 
@@ -278,15 +277,26 @@ db.create_all()
 def buildDB():
     formats = Format.query.all()
     formats = [f.name for f in formats]
-    for f in ['TIFF', 'JPEG', 'DOC', 'PDF', 'JPEG2000', 'MARC-21', 'RDF/XML', 'Turtle', 'XML']:
-        if not f in formats:
+    excpectedFormats = [
+        'TIFF',
+        'JPEG',
+        'DOC',
+        'PDF',
+        'JPEG2000',
+        'MARC-21',
+        'RDF/XML',
+        'Turtle',
+        'XML'
+    ]
+    for f in excpectedFormats:
+        if f not in formats:
             form = Format()
             form.name = f
             db.session.add(form)
     licenses = License.query.all()
     licenses = [l.name for l in licenses]
     licneseTemp = [
-    ('http://creativecommons.org/publicdomain/zero/1.0/','CC0')
+        ('http://creativecommons.org/publicdomain/zero/1.0/', 'CC0')
     ]
     for l in licneseTemp:
         if not l[1] in licenses:
@@ -313,7 +323,7 @@ def buildDB():
     users = Users.query.all()
     users = [u.username for u in users]
     for u in userList:
-        if not u in users:
+        if u not in users:
             user = Users()
             user.username = u
             db.session.add(user)
@@ -321,7 +331,7 @@ def buildDB():
     roles = [r.roleName for r in roles]
     roleList = ['admin', 'editor']
     for r in roleList:
-        if not r in roles:
+        if r not in roles:
             role = Role()
             role.roleName = r
             db.session.add(role)
@@ -330,7 +340,6 @@ def buildDB():
     return
 
 admin.add_view(UserView(db.session))
-#admin.add_view(Models(Users, db.session))
 admin.add_view(Models(Role, db.session))
 admin.add_view(Models(Provider, db.session))
 admin.add_view(Models(License, db.session))
@@ -338,13 +347,6 @@ admin.add_view(Models(Format, db.session))
 admin.add_view(DatasetsView(db.session))
 admin.add_view(TorrentView(db.session))
 admin.add_view(Models(Sameas, db.session))
-
-
-with open('./secrets', 'r') as sfile:
-    app.secret_key = sfile.read()
-
-with open('./secrets', 'r') as sfile:
-    salt = sfile.read()
 
 
 def redirect_url(default='index'):
@@ -363,6 +365,7 @@ def index():
     else:
         return index_html(datasets)
 
+
 @app.route('/index.html')
 def index_html(datasets):
     return(
@@ -373,16 +376,20 @@ def index_html(datasets):
         )
     )
 
+
 @app.route('/index.rdf')
 def index_rdf():
     key = index_rdf.__name__
     data = cache.get(key)
     if data is None:
-        data = Graph().parse(data=index_html(),
-                format='rdfa', media_type='text/html'
-                ).serialize(format='pretty-xml')
+        data = Graph().parse(
+            data=index_html(),
+            format='rdfa',
+            media_type='text/html'
+        ).serialize(format='pretty-xml')
         cache.set(key, data, timeout=60 * 60)
     return Response(data, mimetype=MT_RDF_XML)
+
 
 @app.before_request
 def log_request():
@@ -416,7 +423,6 @@ def viewDataset(year, month, dataset, directory=None):
                 datasetRoot
             )
         except Exception as e:
-            print e
             return(render_template("error.html",
                    message="Could not generate index %s" % e))
     if dataset.url:
@@ -429,22 +435,29 @@ def viewDataset(year, month, dataset, directory=None):
             dataset=dataset,
             pathDict=pathDict,
             dirUp=dirUp,
-            #metadata=metadata,
             quote=quote,
             unquote=unquote,
             datasetID=dataset.datasetID
         )
     )
 
+
 @app.route('/torrent/<torrentID>')
 def getTorrent(torrentID):
     torrentFile = StringIO()
     torrent = Torrent.query.filter(Torrent.id == torrentID).first()
-    dataset = Datasets.query.filter(Datasets.datasetID == torrent.dataset).first()
+    dataset = Datasets.query.filter(
+        Datasets.datasetID == torrent.dataset
+    ).first()
     filename = '%s.torrent' % dataset.name
     torrentFile.write(torrent.torrentData)
     torrentFile.seek(0)
-    return send_file(torrentFile, as_attachment=True, attachment_filename=filename, mimetype='application/x-bittorrent')
+    return send_file(
+        torrentFile,
+        as_attachment=True,
+        attachment_filename=filename,
+        mimetype='application/x-bittorrent'
+    )
 
 
 @app.route('/<datasets>/<datasetName>')
@@ -457,25 +470,14 @@ def viewDatasetURL(datasets, datasetName):
                message="Could not find dataset"))
 
     dataset.cleanDate = cleanDate(dataset.updated_at)
-    return(render_template('dataset.html', dataset=dataset, dirUp=None, pathDict=None))
-
-@app.route('/login', methods=['GET', 'POST'])
-def login():
-    error = None
-    if request.method == 'POST':
-        username = request.form['username']
-        password = request.form['password']
-        pwHashed = sha512(password + salt).hexdigest()
-        cur = get_db().cursor()
-        cur.execute('SELECT * from users where username = ?', (username, ))
-        res = cur.fetchone()
-        if res['password'] == pwHashed:
-            session['logged_in'] = True
-            session['username'] = username
-            return redirect(url_for('index'))
-        else:
-            error = 'Invalid password!'
-    return(render_template('login.html', error=error))
+    return(
+        render_template(
+            'dataset.html',
+            dataset=dataset,
+            dirUp=None,
+            pathDict=None
+        )
+    )
 
 
 @app.route('/login2')
@@ -508,7 +510,9 @@ def logout():
 @app.route('/del/confirm/<int:datasetID>')
 def confirmDel(datasetID):
     if session.get('logged_in'):
-        dataset = Datasets.query.filter(Datasets.datasetID == datasetID).first()
+        dataset = Datasets.query.filter(
+            Datasets.datasetID == datasetID
+        ).first()
         return(render_template(
                'confirm.html', dataset=dataset)
                )
@@ -518,7 +522,9 @@ def confirmDel(datasetID):
 def delDataset(datasetID):
     if session.get('logged_in'):
         try:
-            dataset = Datasets.query.filter(Datasets.datasetID == datasetID).first()
+            dataset = Datasets.query.filter(
+                Datasets.datasetID == datasetID
+            ).first()
             db.session.delete(dataset)
             db.session.commit()
             flash('Deleted!')
@@ -527,7 +533,6 @@ def delDataset(datasetID):
             return(render_template(
                    'error.html', message=e)
                    )
-
 
 
 @app.after_request
