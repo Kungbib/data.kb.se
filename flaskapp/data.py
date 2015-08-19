@@ -386,11 +386,12 @@ def index_html(datasets):
 
 @app.route('/index.rdf')
 def index_rdf():
+    datasets = Datasets.query.options(db.lazyload('sameas')).all()
     key = index_rdf.__name__
     data = cache.get(key)
     if data is None:
         data = Graph().parse(
-            data=index_html(),
+            data=index_html(datasets),
             format='rdfa',
             media_type='text/html'
         ).serialize(format='pretty-xml')
