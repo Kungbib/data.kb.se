@@ -179,6 +179,11 @@ class Sameas(db.Model):
 
 
 class DatasetsView(ModelView):
+    def is_accessible(self):
+        if session.get('username', None) and session.get('is_admin', 'False') == 'True':
+            return True
+        else:
+            return False
     inline_model = (Format,)
     column_list = ('type', 'name', 'description', 'license', 'path', 'url')
     column_filter = ('type', 'name', 'description', 'license', 'path', 'url')
@@ -194,12 +199,22 @@ class DatasetsView(ModelView):
 
 
 class UserView(ModelView):
+    def is_accessible(self):
+        if session.get('username', None) and session.get('is_admin', 'False') == 'True':
+            return True
+        else:
+            return False
     def __init__(self, session):
         super(UserView, self).__init__(Users, db.session)
     form_columns = ('username', 'role')
 
 
 class TorrentView(ModelView):
+    def is_accessible(self):
+        if session.get('username', None) and session.get('is_admin', 'False') == 'True':
+            return True
+        else:
+            return False
     def __init__(self, session):
         super(TorrentView, self).__init__(Torrent, db.session)
     column_list = ('torrent', 'updated_at')
