@@ -7,7 +7,7 @@
       {% if session.get('logged_in') %}
       <div class="pull-right" style="margin-top:1em">
         <a type="button" class="btn btn-danger btn-sm" href="/del/confirm/{{ dataset.datasetID }}">Radera</a>
-        <a type="button" class="btn btn-sm btn-info" href="/admin/datasetsview/edit/?url=%2Fadmin%2Fdatasetsview%2F&id={{ dataset.datasetID }}">Redigera</a>
+        <a type="button" class="btn btn-sm btn-info" href="/admin/datasets/edit/?url=%2Fadmin%2Fdatasetsview%2F&id={{ dataset.datasetID }}">Redigera</a>
       </div>
       {% endif %}
       <h1 property="name">{{ dataset.name }}</h1>
