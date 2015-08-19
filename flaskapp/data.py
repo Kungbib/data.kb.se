@@ -211,15 +211,22 @@ class TorrentView(ModelView):
                 'Accept': 'application/json',
                 'Authorization': 'Bearer %s' % datasetKey
             }
-            try:
-                r = get(
-                    'https://datasets.sunet.se/api/dataset/%s/delete' % infoHash,
-                    headers=headers,
-                    verify=False
-                    )
-                r.raise_for_status()
-            except Exception as e:
-                print("Could not delete torrent %s" % e)
+            if useSunet:
+                try:
+                    r = get(
+                        'https://datasets.sunet.se/api/dataset/%s/delete' % infoHash,
+                        headers=headers,
+                        verify=False
+                        )
+                    r.raise_for_status()
+                except Exception as e:
+                    print("Could not delete torrent %s" % e)
+            if useRtorrent:
+                try:
+                    rtorrent = ServerProxy(settings.XMLRPC_URI)
+                    rtorrent.d.erase(infoHash)
+                except Exception as e:
+                    print("Could not remove torrent: %s" % e)
 
     def on_model_change(self, form, model, is_created):
         datasetID = form.data['torrent'].datasetID
