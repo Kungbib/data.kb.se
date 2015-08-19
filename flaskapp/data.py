@@ -478,10 +478,8 @@ def getTorrent(torrentID):
     )
 
 
-@app.route('/<datasets>/<datasetName>')
-def viewDatasetURL(datasets, datasetName):
-    if datasets != datasetRoot:
-        return(render_template('error.html', message='Not found'))
+@app.route('/datasets/<datasetName>')
+def viewDatasetURL(datasetName):
     dataset = Datasets.query.filter(Datasets.name == datasetName).first()
     if not dataset:
         return(render_template("error.html",
