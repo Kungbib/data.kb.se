@@ -14,7 +14,6 @@ bencode==1.0
 html5lib==0.999999
 isodate==0.5.4
 itsdangerous==0.24
-lxml==3.4.4
 makeTorrent==0.14
 pyparsing==2.0.3
 rdflib==4.2.1
