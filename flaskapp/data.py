@@ -9,7 +9,7 @@ from flask import (
 )
 from flask.ext.admin import Admin
 from os import path
-from lib.dataDB import index_dir, cleanDate
+from lib.dataDB import directory_indexer, cleanDate
 from makeTorrent import makeTorrent
 from flask.ext.admin.contrib.sqla import ModelView
 from flask.ext.sqlalchemy import SQLAlchemy
@@ -43,6 +43,9 @@ secretsFile = path.join(curDir, 'secrets')
 with open(secretsFile, 'r') as sfile:
     app.secret_key = sfile.read()
     salt = app.secret_key
+sumMets = settings.SUMMARIZE_METS
+dirIndex = directory_indexer(getMets=sumMets)
+index_dir = dirIndex.index_dir
 
 
 class Models(ModelView):
@@ -348,6 +351,7 @@ def buildDB():
         if u not in users:
             user = Users()
             user.username = u
+            user.role = 1
             db.session.add(user)
     roles = Role.query.all()
     roles = [r.roleName for r in roles]
@@ -440,6 +444,7 @@ def viewDataset(year, month, dataset, directory=None):
                 dataset,
                 datasetRoot
             )
+            print metadata
         except Exception as e:
             return(render_template("error.html",
                    message="Could not generate index %s" % e))
@@ -454,6 +459,7 @@ def viewDataset(year, month, dataset, directory=None):
             pathDict=pathDict,
             dirUp=dirUp,
             quote=quote,
+            metadata=metadata,
             unquote=unquote,
             datasetID=dataset.datasetID
         )
@@ -498,6 +504,7 @@ def viewDatasetURL(datasetName):
 
 @app.route('/login2')
 def login2():
+    print request.authorization
     redirectTo = request.args.get('next', '/')
     if appMode == 'dev':
         session['username'] = 'testadmin'
@@ -507,10 +514,33 @@ def login2():
         session['role'] = 'editor'
         return redirect(redirectTo)
     if appMode == 'production':
-        if request.headers['schacHomeOrganization'] == 'kb.se':
+        if request.authorization:
+            session['username'] = request.authorization['username']
+            user = Users.query.filter(
+                Users.username == session['username']
+            ).first()
+            if not user:
+                session['logged_in'] = False
+                return("Couldn't authenticate")
+            role = Role.query.filter(
+                Role.id == user.role
+            ).first()
+            session['role'] = role.roleName
+            session['logged_in'] = True
+        elif request.headers['schacHomeOrganization'] == 'kb.se':
             session['username'] = request.headers['eppn']
+            user = Users.query.filter(
+                Users.username == session['username']
+            ).first()
+            if not user:
+                session['logged_in'] = False
+                return("Couldn't authenticate")
             session['logged_in'] = True
             session['real_name'] = request.headers['displayName']
+            role = Role.query.filter(
+                Role.id == user.role
+            ).first()
+            session['role'] = role.roleName
             return redirect(redirectTo)
         else:
             return('Can not authenticate')
