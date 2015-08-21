@@ -527,6 +527,7 @@ def login2():
             ).first()
             session['role'] = role.roleName
             session['logged_in'] = True
+            return redirect(redirectTo)
         elif request.headers['schacHomeOrganization'] == 'kb.se':
             session['username'] = request.headers['eppn']
             user = Users.query.filter(
