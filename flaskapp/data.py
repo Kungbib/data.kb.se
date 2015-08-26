@@ -269,14 +269,18 @@ class TorrentView(ModelView):
                         verify=verifySSL
                     )
                     r.raise_for_status()
-                    print r.json()
                 except Exception as e:
                     print("Could not upload torrent: %s" % e)
                 sunRes = r.json()
-                model.infoHash = sunRes['info_hash']
-                sunTData = get('https://datasets.sunet.se/api/dataset/%s.torrent' % sunRes['info_hash'])
-                model.torrentData =  sunTData.content
+                infoHash = sunRes['info_hash']
+                model.infoHash = infoHash
+                sunTData = get(
+                    'https://datasets.sunet.se/api/dataset/'
+                    '%s.torrent' % sunRes['info_hash']
+                )
+                model.torrentData = sunTData.content
             if not useSunet:
+                infoHash = infoHash
                 model.infoHash = mk.info_hash()
                 model.torrentData = torrentData
             torrentFile = path.join(
@@ -296,6 +300,7 @@ class TorrentView(ModelView):
                         )
                     )
                     rtorrent.d.set_directory(model.infoHash, downloadPath)
+                    rtorrent.d.start(infoHash)
                 except Exception as e:
                     print("Could not add torrent to rtorrent: %s" % e)
 
