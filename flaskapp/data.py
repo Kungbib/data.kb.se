@@ -276,17 +276,23 @@ class TorrentView(ModelView):
                 model.infoHash = infoHash
                 sunTData = get(
                     'https://datasets.sunet.se/api/dataset/'
-                    '%s.torrent' % sunRes['info_hash']
+                    '%s.torrent' % infoHash
                 )
                 model.torrentData = sunTData.content
+                torrentFile = path.join(
+                    torrentWatchDir,
+                    infoHash + '.torrent'
+                )
+                with open(torrentFile, 'w') as tf:
+                    tf.write(model.torrentData)
             if not useSunet:
-                infoHash = infoHash
-                model.infoHash = mk.info_hash()
+                infoHash = mk.info_hash()
+                model.infoHash = infoHash
                 model.torrentData = torrentData
-            torrentFile = path.join(
-                torrentWatchDir,
-                model.infoHash + '.torrent'
-            )
+                torrentFile = path.join(
+                    torrentWatchDir,
+                    model.infoHash + '.torrent'
+                )
             with open(torrentFile, 'w') as tf:
                 tf.write(torrentData)
             if useRtorrent:
