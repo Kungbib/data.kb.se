@@ -473,7 +473,7 @@ def getTorrent(torrentID):
     dataset = Datasets.query.filter(
         Datasets.datasetID == torrent.dataset
     ).first()
-    filename = '%s.torrent' % dataset.name
+    filename = '%s.torrent' % path.basename(dataset.path)
     torrentFile.write(torrent.torrentData)
     torrentFile.seek(0)
     return send_file(
