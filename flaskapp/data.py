@@ -559,6 +559,9 @@ def login2():
                 Role.id == user.role
             ).first()
             session['role'] = role.roleName
+            if role.roleName == 'admin':
+                print("Got admin")
+                session['is_admin'] = 'True'
             return redirect(redirectTo)
         else:
             return('Can not authenticate')
