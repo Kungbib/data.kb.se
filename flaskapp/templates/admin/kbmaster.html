@@ -1,12 +1,14 @@
+{% extends 'admin/base.html' %}
+
 <!DOCTYPE html>
 <html lang="sv">
-  <head>
+  {% block head_tail %}
+{{ super() }}
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Information tillgänglig för vidareutnyttjande - data.kb.se</title>
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" />
     <link rel="stylesheet" href="/static/css/kb.css" />
-    <meta rel="meta" href="/index.rdf" type="application/rdf+xml" />
     <!--[if lt IE 9]>
       <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
       <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
@@ -22,34 +24,48 @@
     margin-left: 0;
 }
 </style>
-  </head>
-  <body vocab="http://schema.org/">
+  {% endblock %}
+  <body>
+  {% block page_body %}
     <div class="kb-masthead">
       <div class="container">
         <div class="logo">
           <a href="/" class="kb-nav-item"><img src="/static/img/kb_logo_white.png" alt="Till startsida" /></a>
         </div>
+
         <div class="pull-right">
           <nav class="kb-nav">
             <a class="kb-nav-item" href="/">Startsida</a>
             <a class="kb-nav-item" href="http://www.kb.se/">www.kb.se</a>
             {% if session.logged_in %}
-
             <a class="kb-nav-item" href="/admin/datasetsview/new/?url=%2Fadmin%2Fdatasetsview%2F"><i class="glyphicon glyphicon-plus-sign"></i> Nytt dataset</a>
-            <a class="kb-nav-item" href="/admin/"><i class="glyphicon glyphicon glyphicon-tasks"></i> Admin</a>
             <a class="kb-nav-item" href="/logout">Logga ut</a>
             <span>{{ session.real_name }}</span>
             {% endif %}
+
           </nav>
         </div>
       </div>
     </div>
     <div class="container" role="main">
+                <div class="col-md-2" role="navigation">
+             <ul class="nav nav-pills">
+{{ layout.menu() }}
+{{ layout.menu_links() }}
+</ul>
+</div>
+<div class="col-md-10">
     {% block content %}
+
     {% endblock %}
+
+     {{ layout.messages() }}
+{% block body %}{% endblock %}
+</div>
       <div class="row">
         <div class="col-md-12">{% include "footer.html" %}</div>
       </div>
     </div>
+    {% endblock %}
   </body>
 </html>

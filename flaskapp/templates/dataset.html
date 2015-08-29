@@ -7,7 +7,7 @@
       {% if session.get('logged_in') %}
       <div class="pull-right" style="margin-top:1em">
         <a type="button" class="btn btn-danger btn-sm" href="/del/confirm/{{ dataset.datasetID }}">Radera</a>
-        <a type="button" class="btn btn-sm btn-info" href="/edit/{{ dataset.datasetID }}">Redigera</a>
+        <a type="button" class="btn btn-sm btn-info" href="/admin/datasets/edit/?url=%2Fadmin%2Fdatasetsview%2F&id={{ dataset.datasetID }}">Redigera</a>
       </div>
       {% endif %}
       <h1 property="name">{{ dataset.name }}</h1>
@@ -16,15 +16,18 @@
   <div class="row">
     <div class="col-md-6">
       <p property="description">{{ dataset.description }}</p>
+
+      {% for provider in dataset.provider %}
       {% if dataset.provider.name != '' %}
       <p>
         Kontaktperson:
         <span property="provider" typeof="Person">
           <a property="email" href="mailto:{{ dataset.provider.email }}">
-            <span property="name">{{ dataset.provider.name }}</span></a>
+            <span property="name">{{ provider.name }}</span></a>
         </span>
       </p>
         {% endif %}
+        {% endfor %}
         {% if dataset.cleanUpdated %}
           <p>Senast ändrat: <span property="dateModified" datatype="Date">{{ dataset.cleanUpdated }}</span></p>
         {% endif %}
@@ -32,17 +35,19 @@
       <div class="col-md-3">
         <dl>
           <dt>Användningsvillkor</dt>
+          {% for lic in dataset.license %}
           <dd>
             <a lang="en" property="publishingPrinciples dc:license" rel="license"
-               href="http://creativecommons.org/publicdomain/zero/1.0/" title="Creative Commons Zero">CC0</a>
+               href="{{ lic.url }}" title="{{ lic.name }}">{{ lic.name }}</a>
           </dd>
+          {% endfor %}
           {% if dataset.url != '' %}
           <dt>Se även</dt>
           <dd><a property="url" href="{{ dataset.url }}">{{ dataset.url }}</a></dd>
           {% endif %}
           <dt>Format</dt>
           <dd>
-            {% for format in dataset.distribution.encodingFormat -%}
+            {% for format in dataset.formats -%}
               <span property="distribution" typeof="DataDownload">
                 <span property="encodingFormat">{{ format }}</span>
                 {%- if not loop.last -%}, {%- endif -%}
@@ -55,7 +60,7 @@
     <div class="col-md-3">
       <label>Relaterade Libris ID:n</label>
       <ul class="list-unstyled">
-        {% for item in dataset.sameAs %}
+        {% for item in dataset.sameas %}
         <li><a href="http://libris.kb.se/resource/bib/{{item}}">{{ item }}</a></li>
         {% endfor %}
       </ul>
@@ -79,7 +84,12 @@
   <div class="panel panel-default">
     <div class="panel-heading clearfix">
       <h3 class="panel-title pull-left">Filer i dataset</h3>
-      <div class=""><button type="button" class="pull-right btn btn-default btn-xs" onclick="alert('Denna funktion är inte implementerad än.')"><i class="glyphicon glyphicon-cloud-download"></i> Ladda ner torrent</button></div>
+      <div>
+        {%- if dataset.torrent == None %}
+        <a class="pull-right btn btn-default btn-xs disabled" href="#"><i class="glyphicon glyphicon-cloud-download"></i> Ladda ner torrent</a></div>
+        {%- else %}
+        <a class="pull-right btn btn-default btn-xs" href="/torrent/{{ dataset.torrent.id }}"><i class="glyphicon glyphicon-cloud-download"></i> Ladda ner torrent</a></div>
+        {%- endif %}
     </div>
     <div class="panel-body">
       <div class="span3">
@@ -100,10 +110,10 @@
             </td>
             <td>
               {%- if dirUp == '' %}
-              <a href="/{{ datasetRoot }}/{{dataset.path}}/">..</a>
+              <a href="/datasets/{{dataset.path}}/">..</a>
               {%- endif %}
               {%- if dirUp != '' %}
-              <a href="/{{ datasetRoot }}/{{ dataset.path }}/{{ dirUp }}/">..</a>
+              <a href="/datasets/{{ dataset.path }}/{{ dirUp }}/">..</a>
               {%- endif -%}
             </td>
             <td></td>
@@ -116,11 +126,7 @@
               <span class="glyphicon glyphicon-{{ v.type }}"></span>
             </td>
             <td>
-              {%- if v.type == 'file' -%}
-              <a href="/{{ v.realPath }}">{{ unquote(p) }}</a>
-              {%- else -%}
               <a href="./{{ p|urlencode }}/">{{ unquote(p) }}</a>
-              {%- endif -%}
             </td>
             <td>
               {{ v.mimetype }}

@@ -1,0 +1,31 @@
+# Required
+DATABASE_FILE = './data.db'
+SQLALCHEMY_DATABASE_URI = 'sqlite:///' + DATABASE_FILE
+SQLALCHEMY_ECHO = False
+DATASET_ROOT = '/path/to/datasets'
+# List of users to seed as admins
+USER_LIST = ['user1', 'user2']
+VERIFY_SSL = True
+# Sets up login to mock remote_user
+APPENV = 'dev'
+# Adds the test admin user for mocking login
+if APPENV == 'dev':
+    USER_LIST.append('Test Admin')
+ANNOUNCE = 'http://example.com/announce'
+# End required
+
+
+
+# Torrent info
+# Datset key is used for creating datasets with SUNET
+DATASETKEY = 'YOURAPIKEY'
+# Announce URL to use for torrents
+
+# Watch directory to dump created torrent files into (used with rtorrent for example)
+TORRENT_WATCH_DIR = '/path/to/torrent/dir'
+# Use rtorrent via XMLRPC
+RTORRENT = False
+XMLRPC_URI = 'http://example.com:5000/RPC2'
+# Create torrents at sunet
+SUNET = False
+SUMMARIZE_METS = False

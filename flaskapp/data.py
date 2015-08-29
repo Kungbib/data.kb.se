@@ -1,66 +1,401 @@
 #!/usr/bin/env python
-
-if __name__ != '__main__':
-    from sys import path as syspath
-    from os import path, chdir
-    syspath.append(path.dirname(__file__))
-    chdir(path.dirname(__file__))
-
-from os import path
-from hashlib import sha512
-from uuid import uuid4
-from urllib2 import quote,unquote
-
-from sqlite3 import connect as sqconnect
+# -*- coding: utf-8 -*-
 from flask import (
-    Flask, request, Response,
+    Flask, request,
     render_template, session,
-    redirect, g, url_for,
-    flash)
+    redirect, url_for,
+    flash, send_file,
+    Response
+)
+from flask.ext.admin import Admin
+from os import path
+from lib.dataDB import directory_indexer, cleanDate
+from makeTorrent import makeTorrent
+from flask.ext.admin.contrib.sqla import ModelView
+from flask.ext.sqlalchemy import SQLAlchemy
+from datetime import datetime
+from StringIO import StringIO
+import settings
+from requests import post, get
+from urllib2 import quote, unquote
 from werkzeug.contrib.cache import SimpleCache
 from rdflib import Graph
-
-from lib.dataDB import (
-    del_dataset,
-    loadDatasetsDB, create_dataset,
-    index_dir, update_dataset, cleanDate)
+from xmlrpclib import ServerProxy
 
 
 MT_RDF_XML = 'application/rdf+xml'
-
-
 cache = SimpleCache()
-
-
 app = Flask(__name__)
-datasetRoot = 'datasets'
-dbFile = ('./data.db')
-with open('./secrets', 'r') as sfile:
-    app.secret_key = sfile.read()
+admin = Admin(app, base_template='admin/kbmaster.html')
 
-with open('./secrets', 'r') as sfile:
-    salt = sfile.read()
+app.config.from_object('settings')
+appMode = settings.APPENV
+db = SQLAlchemy(app)
+datasetKey = settings.DATASETKEY
+announce = settings.ANNOUNCE
+torrentWatchDir = settings.TORRENT_WATCH_DIR
+datasetRoot = settings.DATASET_ROOT
+verifySSL = settings.VERIFY_SSL
+useRtorrent = settings.RTORRENT
+useSunet = settings.SUNET
+curDir = path.dirname(path.realpath(__file__))
+secretsFile = path.join(curDir, 'secrets')
+with open(secretsFile, 'r') as sfile:
+    app.secret_key = sfile.read()
+    salt = app.secret_key
+sumMets = settings.SUMMARIZE_METS
+dirIndex = directory_indexer(getMets=sumMets)
+index_dir = dirIndex.index_dir
+
+
+class Models(ModelView):
+    def is_accessible(self):
+        if session.get('username', None) and session.get('is_admin', 'False') == 'True':
+            return True
+        else:
+            return False
+
+    def index(self):
+        return self.render('admindex.html')
+
+
+def login_required(f):
+    def decorated_function(*args, **kwargs):
+        if session['username'] is None:
+            return redirect(url_for('login2', next=request.url))
+        return f(*args, **kwargs)
+    return decorated_function
+
+
+def is_allowed(roles):
+    print('Allowed: %s got %s' % (roles, session['role']))
+    if session['role'] not in roles:
+        return False
+    if session['role'] in roles:
+        return True
+
+
+dataset_format_table = db.Table(
+    'dataset_format', db.Model.metadata,
+    db.Column('dataset_id', db.Integer, db.ForeignKey('datasets.datasetID')),
+    db.Column('format_id', db.Integer, db.ForeignKey('format.id')),
+    db.Column('provider_id', db.Integer, db.ForeignKey('provider.providerID')),
+    db.Column('license_id', db.Integer, db.ForeignKey('license.id')),
+    db.Column('sameas_id', db.Integer, db.ForeignKey('sameas.id'))
+)
+
+
+class Role(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    roleName = db.Column(db.String(80), unique=True)
+    users = db.relationship('Users', uselist=False, backref="role_name")
+
+    def __unicode__(self):
+        return self.roleName
+
+
+class Users(db.Model):
+    userID = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.Unicode(128), unique=True)
+    role = db.Column(db.Integer, db.ForeignKey('role.id'))
+
+    def __unicode__(self):
+        return self.username
+
+
+class License(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.Unicode(64), unique=True)
+    url = db.Column(db.Unicode(255))
+
+    def __unicode__(self):
+        return self.name
+
+
+class Datasets(db.Model):
+    def is_accessible(self):
+        if session.get('username', None) and session.get('is_admin', 'False') == 'True':
+            return True
+        else:
+            return False
+    datasetID = db.Column(db.Integer, primary_key=True)
+    type = db.Column(db.String(256))
+    name = db.Column(db.String(256), unique=True)
+    description = db.Column(db.Text, unique=True)
+    license = db.Column(db.String(256))
+    path = db.Column(db.String(256), unique=True)
+    created_at = db.Column(db.DateTime, default=datetime.now)
+    updated_at = db.Column(
+        db.DateTime,
+        default=datetime.now,
+        onupdate=datetime.now
+    )
+    url = db.Column(db.String(256), unique=True)
+    sameas = db.relationship('Sameas', secondary=dataset_format_table)
+    formats = db.relationship('Format', secondary=dataset_format_table)
+    license = db.relationship('License', secondary=dataset_format_table)
+    provider = db.relationship('Provider', secondary=dataset_format_table)
+    torrent = db.relationship('Torrent', uselist=False, backref="torrent")
+
+    def __unicode__(self):
+        return self.name
+
+
+class Provider(db.Model):
+    providerID = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.Unicode(80), unique=True)
+    email = db.Column(db.Unicode(128))
+
+    def __unicode__(self):
+        return self.name
+
+
+class Format(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.Unicode(64), unique=True)
+
+    def __unicode__(self):
+        return self.name
+
+
+class Torrent(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    dataset = db.Column(db.Integer, db.ForeignKey('datasets.datasetID'))
+    torrentData = db.Column(db.BLOB)
+    infoHash = db.Column(db.Text)
+    updated_at = db.Column(
+        db.DateTime,
+        default=datetime.now,
+        onupdate=datetime.now
+    )
+
+    def __unicode__(self):
+        return self.dataset
+
+
+class Sameas(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    librisID = db.Column(db.String(256), unique=True)
+
+    def __unicode__(self):
+        return self.librisID
+
+
+class DatasetsView(ModelView):
+    def is_accessible(self):
+        if session.get('username', None) and session.get('is_admin', 'False') == 'True':
+            return True
+        else:
+            return False
+    inline_model = (Format,)
+    column_list = ('type', 'name', 'description', 'license', 'path', 'url')
+    column_filter = ('type', 'name', 'description', 'license', 'path', 'url')
+    form_columns = (
+        'type', 'name',
+        'description', 'license',
+        'path', 'url', 'provider',
+        'formats', 'sameas'
+    )
+
+    def __init__(self, session):
+        super(DatasetsView, self).__init__(Datasets, db.session)
+
+
+class UserView(ModelView):
+    def is_accessible(self):
+        if session.get('username', None) and session.get('is_admin', 'False') == 'True':
+            return True
+        else:
+            return False
+    def __init__(self, session):
+        super(UserView, self).__init__(Users, db.session)
+    form_columns = ('username', 'role')
+
+
+class TorrentView(ModelView):
+    def is_accessible(self):
+        if session.get('username', None) and session.get('is_admin', 'False') == 'True':
+            return True
+        else:
+            return False
+    def __init__(self, session):
+        super(TorrentView, self).__init__(Torrent, db.session)
+    column_list = ('torrent', 'updated_at')
+    form_columns = ('torrent', )
+
+    def on_model_delete(self, model):
+            infoHash = model.infoHash
+            headers = {
+                'Accept': 'application/json',
+                'Authorization': 'Bearer %s' % datasetKey
+            }
+            if useSunet:
+                try:
+                    r = get(
+                        'https://datasets.sunet.se/api/dataset/%s/delete' % infoHash,
+                        headers=headers,
+                        verify=False
+                        )
+                    r.raise_for_status()
+                except Exception as e:
+                    print("Could not delete torrent %s" % e)
+            if useRtorrent:
+                try:
+                    rtorrent = ServerProxy(settings.XMLRPC_URI)
+                    rtorrent.d.erase(infoHash)
+                except Exception as e:
+                    print("Could not remove torrent: %s" % e)
+
+    def on_model_change(self, form, model, is_created):
+        datasetID = form.data['torrent'].datasetID
+        if is_created:
+            dataset = Datasets.query.filter(
+                Datasets.datasetID == datasetID
+            ).first()
+            mk = makeTorrent(announce=announce)
+            mk.multi_file(path.join(datasetRoot, dataset.path))
+            torrentData = mk.getBencoded()
+            headers = {
+                'Accept': 'application/json',
+                'Authorization': 'Bearer %s' % datasetKey
+            }
+            tData = {'torrent': torrentData}
+            if useSunet:
+                try:
+                    r = post(
+                        'https://datasets.sunet.se/api/dataset',
+                        headers=headers,
+                        files=tData,
+                        verify=verifySSL
+                    )
+                    r.raise_for_status()
+                except Exception as e:
+                    print("Could not upload torrent: %s" % e)
+                sunRes = r.json()
+                infoHash = sunRes['info_hash']
+                model.infoHash = infoHash
+                sunTData = get(
+                    'https://datasets.sunet.se/api/dataset/'
+                    '%s.torrent' % infoHash
+                )
+                model.torrentData = sunTData.content
+                torrentFile = path.join(
+                    torrentWatchDir,
+                    infoHash + '.torrent'
+                )
+                with open(torrentFile, 'w') as tf:
+                    tf.write(model.torrentData)
+            if not useSunet:
+                infoHash = mk.info_hash()
+                model.infoHash = infoHash
+                model.torrentData = torrentData
+                torrentFile = path.join(
+                    torrentWatchDir,
+                    model.infoHash + '.torrent'
+                )
+            with open(torrentFile, 'w') as tf:
+                tf.write(torrentData)
+            if useRtorrent:
+                try:
+                    rtorrent = ServerProxy(settings.XMLRPC_URI)
+                    rtorrent.load(torrentFile)
+                    downloadPath = path.dirname(
+                        path.join(
+                            datasetRoot,
+                            dataset.path
+                        )
+                    )
+                    rtorrent.d.set_directory(model.infoHash, downloadPath)
+                    rtorrent.d.start(infoHash)
+                except Exception as e:
+                    print("Could not add torrent to rtorrent: %s" % e)
+
+        return
+
+
+db.create_all()
+
+
+def buildDB():
+    formats = Format.query.all()
+    formats = [f.name for f in formats]
+    excpectedFormats = [
+        'TIFF',
+        'JPEG',
+        'DOC',
+        'PDF',
+        'JPEG2000',
+        'MARC-21',
+        'RDF/XML',
+        'Turtle',
+        'XML'
+    ]
+    for f in excpectedFormats:
+        if f not in formats:
+            form = Format()
+            form.name = f
+            db.session.add(form)
+    licenses = License.query.all()
+    licenses = [l.name for l in licenses]
+    licneseTemp = [
+        ('http://creativecommons.org/publicdomain/zero/1.0/', 'CC0')
+    ]
+    for l in licneseTemp:
+        if not l[1] in licenses:
+            lic = License()
+            lic.name = l[1]
+            lic.url = l[0]
+            db.session.add(lic)
+    providers = Provider.query.all()
+    providers = [p.name.encode('utf8') for p in providers]
+    providerList = [
+        ('Peter Krantz', 'peter.krantz@kb.se'),
+        (u'Maria Kadesjö'.encode('utf8'), 'maria.kadesjo@kb.se'),
+        ('Katinka Ahlbom', 'katinka.ahlbom@kb.se'),
+        ('Greger Bergvall', 'greger.bergvall@kb.se'),
+        ('Torsten Johansson', 'torsten.johansson@kb.se')
+    ]
+    for p in providerList:
+        if not p[0] in providers:
+            prov = Provider()
+            prov.name = p[0].decode('utf8')
+            prov.email = p[1]
+            db.session.add(prov)
+    userList = settings.USER_LIST
+    users = Users.query.all()
+    users = [u.username for u in users]
+    for u in userList:
+        if u not in users:
+            user = Users()
+            user.username = u
+            user.role = 1
+            db.session.add(user)
+    roles = Role.query.all()
+    roles = [r.roleName for r in roles]
+    roleList = ['admin', 'editor']
+    for r in roleList:
+        if r not in roles:
+            role = Role()
+            role.roleName = r
+            db.session.add(role)
+
+    db.session.commit()
+    return
+
+admin.add_view(UserView(db.session))
+admin.add_view(Models(Role, db.session))
+admin.add_view(Models(Provider, db.session))
+admin.add_view(Models(License, db.session))
+admin.add_view(Models(Format, db.session))
+admin.add_view(DatasetsView(db.session))
+admin.add_view(TorrentView(db.session))
+admin.add_view(Models(Sameas, db.session))
 
 
 def redirect_url(default='index'):
     return request.args.get('next') or \
         request.referrer or \
         url_for(default)
-
-
-def dict_factory(cursor, row):
-    d = {}
-    for idx, col in enumerate(cursor.description):
-        d[col[0]] = row[idx]
-    return d
-
-
-def get_db():
-    db = getattr(g, '_database', None)
-    if db is None:
-        db = g._database = sqconnect(dbFile)
-    db.row_factory = dict_factory
-    return db
 
 
 @app.route('/')
@@ -72,29 +407,28 @@ def index():
     else:
         return index_html()
 
+
 @app.route('/index.html')
 def index_html():
-    datasets = []
-    for dataset in loadDatasetsDB():
-        datasets.append(dataset)
-    return(
-        render_template(
-            'index.html',
+    datasets = Datasets.query.options(db.lazyload('sameas')).all()
+    return render_template('index.html',
             datasets=datasets,
-            datasetRoot=datasetRoot
-        )
-    )
+            datasetRoot=datasetRoot)
+
 
 @app.route('/index.rdf')
 def index_rdf():
     key = index_rdf.__name__
     data = cache.get(key)
     if data is None:
-        data = Graph().parse(data=index_html(),
-                format='rdfa', media_type='text/html'
-                ).serialize(format='pretty-xml')
+        data = Graph().parse(
+            data=index_html(),
+            format='rdfa',
+            media_type='text/html'
+        ).serialize(format='pretty-xml')
         cache.set(key, data, timeout=60 * 60)
     return Response(data, mimetype=MT_RDF_XML)
+
 
 @app.before_request
 def log_request():
@@ -102,31 +436,36 @@ def log_request():
         app.logger.debug('whatever')
 
 
-@app.route('/<datasets>/<int:year>/<month>/<dataset>/<path:directory>/')
-@app.route('/<datasets>/<int:year>/<month>/<dataset>/')
-def viewDataset(datasets, year, month, dataset, directory=None):
-    if datasets != datasetRoot:
-        return(render_template('error.html', message='Not found'))
+@app.route('/datasets/<int:year>/<month>/<dataset>/<path:directory>/')
+@app.route('/datasets/<int:year>/<month>/<dataset>/')
+def viewDataset(year, month, dataset, directory=None):
     datasetPath = path.join(str(year), str(month), dataset)
-    dataset = loadDatasetsDB(datasetPath=datasetPath, singleLookup=True)
-    if len(dataset) > 0:
-        dataset = dataset[0]
-    else:
+    dataset = Datasets.query.filter(Datasets.path == datasetPath).first()
+    if directory:
+        wholePath = path.join(datasetRoot, datasetPath, directory)
+        if path.isfile(wholePath):
+            return send_file(
+                wholePath,
+                as_attachment=True,
+                attachment_filename=path.basename(wholePath)
+            )
+    if not dataset:
         return(render_template("error.html",
                message="Could not find dataset"))
-    if dataset.get('created_at'):
-        dataset['cleanCreated'] = cleanDate(dataset['created_at'])
-    if dataset.get('updated_at'):
-        dataset['cleanUpdated'] = cleanDate(dataset['updated_at'])
+    dataset.cleanDate = cleanDate(dataset.updated_at)
     pathDict = {}
-    if dataset['url'] == '':
+    if not dataset.url:
         try:
-            pathDict, dirUp, metadata = index_dir(directory, dataset, datasetRoot)
+            pathDict, dirUp, metadata = index_dir(
+                directory,
+                dataset,
+                datasetRoot
+            )
+            print metadata
         except Exception as e:
-            print e
             return(render_template("error.html",
-                   message="Could not generate index"))
-    if dataset['url'] != '':
+                   message="Could not generate index %s" % e))
+    if dataset.url:
         pathDict = None
         dirUp = None
     return(
@@ -136,58 +475,96 @@ def viewDataset(datasets, year, month, dataset, directory=None):
             dataset=dataset,
             pathDict=pathDict,
             dirUp=dirUp,
-            metadata=metadata,
             quote=quote,
+            metadata=metadata,
             unquote=unquote,
-            datasetID=dataset['datasetID']
+            datasetID=dataset.datasetID
         )
     )
 
 
-@app.route('/<datasets>/<datasetName>')
-def vieDatasetURL(datasets, datasetName):
-    if datasets != datasetRoot:
-        return(render_template('error.html', message='Not found'))
-    dataset = loadDatasetsDB(datasetName=datasetName, singleLookup=True)
-    if len(dataset) > 0:
-        dataset = dataset[0]
-    if dataset.get('created_at'):
-        dataset['cleanCreated'] = cleanDate(dataset['created_at'])
-    if dataset.get('updated_at'):
-        dataset['cleanUpdated'] = cleanDate(dataset['updated_at'])
-    return(render_template('dataset.html', dataset=dataset, dirUp=None, pathDict=None))
+@app.route('/torrent/<torrentID>')
+def getTorrent(torrentID):
+    torrentFile = StringIO()
+    torrent = Torrent.query.filter(Torrent.id == torrentID).first()
+    dataset = Datasets.query.filter(
+        Datasets.datasetID == torrent.dataset
+    ).first()
+    filename = '%s.torrent' % path.basename(dataset.path)
+    torrentFile.write(torrent.torrentData)
+    torrentFile.seek(0)
+    return send_file(
+        torrentFile,
+        as_attachment=True,
+        attachment_filename=filename,
+        mimetype='application/x-bittorrent'
+    )
 
-@app.route('/login', methods=['GET', 'POST'])
-def login():
-    error = None
-    print request.headers
-    print request.remote_user
-    if request.method == 'POST':
-        username = request.form['username']
-        password = request.form['password']
-        pwHashed = sha512(password + salt).hexdigest()
-        cur = get_db().cursor()
-        cur.execute('SELECT * from users where username = ?', (username, ))
-        res = cur.fetchone()
-        if res['password'] == pwHashed:
-            session['logged_in'] = True
-            session['username'] = username
-            return redirect(url_for('index'))
-        else:
-            error = 'Invalid password!'
-    return(render_template('login.html', error=error))
+
+@app.route('/datasets/<datasetName>')
+def viewDatasetURL(datasetName):
+    dataset = Datasets.query.filter(Datasets.name == datasetName).first()
+    if not dataset:
+        return(render_template("error.html",
+               message="Could not find dataset"))
+
+    dataset.cleanDate = cleanDate(dataset.updated_at)
+    return(
+        render_template(
+            'dataset.html',
+            dataset=dataset,
+            dirUp=None,
+            pathDict=None
+        )
+    )
 
 
 @app.route('/login2')
 def login2():
+    print request.authorization
     redirectTo = request.args.get('next', '/')
-    if request.headers['schacHomeOrganization'] == 'kb.se':
-        session['username'] = request.headers['eppn']
+    if appMode == 'dev':
+        session['username'] = 'testadmin'
         session['logged_in'] = True
-        session['real_name'] = request.headers['displayName']
+        session['real_name'] = 'Test Admin'
+        session['is_admin'] = 'True'
+        session['role'] = 'editor'
         return redirect(redirectTo)
-    else:
-        return('Can not authenticate')
+    if appMode == 'production':
+        if request.authorization:
+            session['username'] = request.authorization['username']
+            user = Users.query.filter(
+                Users.username == session['username']
+            ).first()
+            if not user:
+                session['logged_in'] = False
+                return("Couldn't authenticate")
+            role = Role.query.filter(
+                Role.id == user.role
+            ).first()
+            session['role'] = role.roleName
+            session['logged_in'] = True
+            return redirect(redirectTo)
+        elif request.headers['schacHomeOrganization'] == 'kb.se':
+            session['username'] = request.headers['eppn']
+            user = Users.query.filter(
+                Users.username == session['username']
+            ).first()
+            if not user:
+                session['logged_in'] = False
+                return("Couldn't authenticate")
+            session['logged_in'] = True
+            session['real_name'] = request.headers['displayName']
+            role = Role.query.filter(
+                Role.id == user.role
+            ).first()
+            session['role'] = role.roleName
+            if role.roleName == 'admin':
+                print("Got admin")
+                session['is_admin'] = 'True'
+            return redirect(redirectTo)
+        else:
+            return('Can not authenticate')
 
 
 @app.route('/logout')
@@ -197,30 +574,12 @@ def logout():
     return redirect(url_for('index'))
 
 
-@app.route('/new', methods=['GET', 'POST'])
-def addDataset():
-    if request.method == 'GET':
-        if not session.get('logged_in'):
-            return(render_template("error.html",
-                   message="You must be logged in!"))
-        if session.get('logged_in'):
-            return(render_template('newform.html'))
-    if request.method == 'POST':
-        if session.get('logged_in'):
-            create_dataset(request.form)
-            flash('Created!')
-            return redirect(url_for('index'))
-        else:
-            return(render_template("error.html",
-                   message="You must be logged in!"))
-
-
 @app.route('/del/confirm/<int:datasetID>')
 def confirmDel(datasetID):
     if session.get('logged_in'):
-        cur = get_db().cursor()
-        cur.execute('SELECT * FROM datasets where datasetid=?', (datasetID, ))
-        dataset = cur.fetchone()
+        dataset = Datasets.query.filter(
+            Datasets.datasetID == datasetID
+        ).first()
         return(render_template(
                'confirm.html', dataset=dataset)
                )
@@ -230,7 +589,11 @@ def confirmDel(datasetID):
 def delDataset(datasetID):
     if session.get('logged_in'):
         try:
-            del_dataset(datasetID)
+            dataset = Datasets.query.filter(
+                Datasets.datasetID == datasetID
+            ).first()
+            db.session.delete(dataset)
+            db.session.commit()
             flash('Deleted!')
             return redirect(url_for('index'))
         except Exception as e:
@@ -239,45 +602,11 @@ def delDataset(datasetID):
                    )
 
 
-@app.route('/edit/<int:datasetID>', methods=['GET', 'POST'])
-def editDataset(datasetID):
-    if request.method == 'GET':
-        if not session.get('logged_in'):
-            return(render_template("error.html",
-                   message="You must be logged in!"))
-        if session.get('logged_in'):
-            dataset = loadDatasetsDB(datasetID, singleLookup=True, useID=True)
-            dataset = dataset[0]
-            return render_template('editform.html', dataset=dataset)
-    if request.method == 'POST':
-        if session.get('logged_in'):
-            update_dataset(request.form, datasetID)
-            flash('Created!')
-            return redirect(url_for('index'))
-        else:
-            return(render_template("error.html",
-                   message="You must be logged in!"))
-
-
-@app.teardown_appcontext
-def close_connection(exception):
-    db = getattr(g, '_database', None)
-    if db is not None:
-        db.close()
-
-
 @app.after_request
 def add_ua_compat(response):
     response.headers['X-UA-Compatible'] = 'IE=Edge'
     return response
 
 if __name__ == "__main__":
-    import argparse
-
-    ap = argparse.ArgumentParser()
-    ap.add_argument('-p', '--port', type=int)
-    ap.add_argument('-d', '--debug', default=False, action='store_true')
-    args = ap.parse_args()
-
-    app.debug = args.debug
-    app.run(host='0.0.0.0', port=args.port, debug=True)
+    buildDB()
+    app.run(host='0.0.0.0', port=8000, debug=True)

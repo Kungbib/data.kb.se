@@ -1,3 +1,5 @@
 *.pyc
-/data.db
-/secrets
+*.db
+torrents/
+datasets/
+secrets
