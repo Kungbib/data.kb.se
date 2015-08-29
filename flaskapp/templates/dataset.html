@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 {% block content %}
-<div vocab="http://schema.org/" resource="" typeof="Dataset">
+<div class="container" role="main" vocab="http://schema.org/" resource="" typeof="Dataset">
   <link property="catalog" resource="/" />
   <div class="row">
     <div class="col-md-12">
@@ -86,9 +86,9 @@
       <h3 class="panel-title pull-left">Filer i dataset</h3>
       <div>
         {%- if dataset.torrent == None %}
-        <a class="pull-right btn btn-default btn-xs disabled" href="#"><i class="glyphicon glyphicon-cloud-download"></i> Ladda ner torrent</a></div>
+        <a class="pull-right btn btn-default btn-xs disabled" href="#"><i class="fa fa-cloud-download"></i> Ladda ner torrent</a></div>
         {%- else %}
-        <a class="pull-right btn btn-default btn-xs" href="/torrent/{{ dataset.torrent.id }}"><i class="glyphicon glyphicon-cloud-download"></i> Ladda ner torrent</a></div>
+        <a class="pull-right btn btn-default btn-xs" href="/torrent/{{ dataset.torrent.id }}"><i class="fa fa-cloud-download"></i> Ladda ner torrent</a></div>
         {%- endif %}
     </div>
     <div class="panel-body">
@@ -105,9 +105,7 @@
           <tbody>
           {%- if dirUp != None %}
           <tr>
-            <td>
-              <span class="glyphicon glyphicon-chevron-up"></span>
-            </td>
+            <td><i class="fa fa-chevron-up"></i></td>
             <td>
               {%- if dirUp == '' %}
               <a href="/datasets/{{dataset.path}}/">..</a>
@@ -123,7 +121,7 @@
           {% for p, v in pathDict.iteritems()|sort %}
           <tr>
             <td>
-              <span class="glyphicon glyphicon-{{ v.type }}"></span>
+              <i class="fa fa-{{ v.type }}"></i>
             </td>
             <td>
               <a href="./{{ p|urlencode }}/">{{ unquote(p) }}</a>

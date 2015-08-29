@@ -26,7 +26,7 @@ from xmlrpclib import ServerProxy
 MT_RDF_XML = 'application/rdf+xml'
 cache = SimpleCache()
 app = Flask(__name__)
-admin = Admin(app, base_template='admin/kbmaster.html')
+admin = Admin(app, base_template='admin/base_admin.html')
 
 app.config.from_object('settings')
 appMode = settings.APPENV
