@@ -1,26 +1,39 @@
-<footer class="kb-footer" resource="/">
-  <span property="publisher dc:publisher"
-        typeof="Organization foaf:Organization foaf:Agent"
-        resource="http://libris.kb.se/resource/auth/121848">
-    <span property="name foaf:name">Kungl. Biblioteket</span>.
-    <a property="contactPoint" href="http://www.kb.se/kontaktinfo/kontakt/">Kontakta oss</a>
-  </span>
-  <link property="publishingPrinciples dc:license"
-        resource="http://creativecommons.org/publicdomain/zero/1.0/" />
-  <link property="foaf:homepage" resource="/" />
-<!-- Piwik -->
-<script type="text/javascript">
-  var _paq = _paq || [];
-  _paq.push(['trackPageView']);
-  _paq.push(['enableLinkTracking']);
-  (function() {
-    var u="//analytics.kb.se/";
-    _paq.push(['setTrackerUrl', u+'piwik.php']);
-    _paq.push(['setSiteId', 1]);
-    var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
-    g.type='text/javascript'; g.async=true; g.defer=true; g.src=u+'piwik.js'; s.parentNode.insertBefore(g,s);
-  })();
-</script>
-<noscript><p><img src="//analytics.kb.se/piwik.php?idsite=1" style="border:0;" alt="" /></p></noscript>
-<!-- End Piwik Code -->
+<footer class="footer" resource="/">
+  <div class="footer-container bg-happy-muted-denim">
+    <div class="container">
+      <div class="col-md-2 text-center">
+        <img src="//kungbib.github.io/frontend-guide/assets/kb_logo_white.svg" alt="" class="logo-medium" />
+      </div>
+      <div class="col-md-10 text-white">
+        <p>
+        <span property="publisher dc:publisher"
+              typeof="Organization foaf:Organization foaf:Agent"
+              resource="http://libris.kb.se/resource/auth/121848">
+          <strong property="name foaf:name"><a href="http://www.kb.se">Kungl. Biblioteket</a></strong>.
+        </span>
+
+        <link property="publishingPrinciples dc:license"
+              resource="http://creativecommons.org/publicdomain/zero/1.0/" />
+        <link property="foaf:homepage" resource="/" />
+        <br>
+        <span>Support: <a href="mailto:kungl.biblioteket@kb.se">kungl.biblioteket@kb.se</a></span>
+        </p>
+      </div>
+    </div>
+  </div>
 </footer>
+  <!-- Piwik -->
+  <script type="text/javascript">
+var _paq = _paq || [];
+_paq.push(['trackPageView']);
+_paq.push(['enableLinkTracking']);
+(function() {
+  var u="//analytics.kb.se/";
+  _paq.push(['setTrackerUrl', u+'piwik.php']);
+  _paq.push(['setSiteId', 1]);
+  var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+  g.type='text/javascript'; g.async=true; g.defer=true; g.src=u+'piwik.js'; s.parentNode.insertBefore(g,s);
+})();
+  </script>
+  <noscript><img src="//analytics.kb.se/piwik.php?idsite=1" style="border:0;" alt="" /></noscript>
+  <!-- End Piwik Code -->

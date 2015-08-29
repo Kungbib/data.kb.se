@@ -4,13 +4,20 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Information tillgänglig för vidareutnyttjande - data.kb.se</title>
-    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" />
+    <link href="//kungbib.github.io/frontend-guide/css/kb-style.css" rel="stylesheet" />
     <link rel="stylesheet" href="/static/css/kb.css" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
     <meta rel="meta" href="/index.rdf" type="application/rdf+xml" />
     <!--[if lt IE 9]>
       <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
       <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
+    {% block head_opengraph %}
+    <meta property="og:url" content="https://data.kb.se" />
+    <meta property="og:title" content="Information tillgänglig för vidareutnyttjande - data.kb.se" />
+    <meta property="og:description" content="Öppna data från Kungl. Biblioteket" />
+    <meta property="og:image" content="" />
+    {% endblock %}
   <style>
   .dl-left dt{
     text-align: left;
@@ -24,32 +31,27 @@
 </style>
   </head>
   <body vocab="http://schema.org/">
-    <div class="kb-masthead">
+    <nav class="navbar navbar-inverse">
       <div class="container">
-        <div class="logo">
-          <a href="/" class="kb-nav-item"><img src="/static/img/kb_logo_white.png" alt="Till startsida" /></a>
+        <div class="navbar-header">
+          <a class="navbar-brand navbar-logo" href="/"><img src="//kungbib.github.io/frontend-guide/assets/kb_logo_white.svg" alt="Till startsidan"/></a>
+          <a class="navbar-brand" href="/">data.kb.se</a>
         </div>
-        <div class="pull-right">
-          <nav class="kb-nav">
-            <a class="kb-nav-item" href="/">Startsida</a>
-            <a class="kb-nav-item" href="http://www.kb.se/">www.kb.se</a>
+        <div id="navbar" class="navbar-collapse collapse">
             {% if session.logged_in %}
-
-            <a class="kb-nav-item" href="/admin/datasetsview/new/?url=%2Fadmin%2Fdatasetsview%2F"><i class="glyphicon glyphicon-plus-sign"></i> Nytt dataset</a>
-            <a class="kb-nav-item" href="/admin/"><i class="glyphicon glyphicon glyphicon-tasks"></i> Admin</a>
-            <a class="kb-nav-item" href="/logout">Logga ut</a>
-            <span>{{ session.real_name }}</span>
+            <ul class="nav navbar-nav navbar-right">
+            <li><a class="kb-nav-item" href="/admin/datasetsview/new/?url=%2Fadmin%2Fdatasetsview%2F"><i class="fa fa-plus"></i> Nytt dataset</a></li>
+            <li><a class="kb-nav-item" href="/admin/"><i class="fa fa-cog"></i> Admin</a></li>
+            <li><a class="kb-nav-item" href="/logout">Logga ut</a></li>
+            <li><span>{{ session.real_name }}</span></li>
+            </ul>
             {% endif %}
-          </nav>
         </div>
       </div>
-    </div>
-    <div class="container" role="main">
+    </nav>
+
     {% block content %}
     {% endblock %}
-      <div class="row">
-        <div class="col-md-12">{% include "footer.html" %}</div>
-      </div>
-    </div>
+    {% include "footer.html" %}
   </body>
 </html>
