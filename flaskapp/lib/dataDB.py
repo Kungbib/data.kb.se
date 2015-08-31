@@ -1,7 +1,12 @@
 from os import path, listdir
-from mimetypes import guess_type
+from mimetypes import guess_type, add_type
 from urllib2 import quote
 
+
+add_type('text/x-yaml', '.yaml')
+add_type('application/xml', '.metadata')
+add_type('application/xml', '.mets')
+add_type('application/xml', '.mets.metadata')
 
 def cleanDate(timestamp):
     dateFormat = '%Y-%m-%d %H:%M'
