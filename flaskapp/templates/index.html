@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% from 'macros.html' import dataset_uri %}
 {% block content %}
   <div class="container" role="main" resource="/" typeof="DataCatalog dcat:Catalog">
     <h1 property="name dc:title">Öppna data från Kungl. Biblioteket (beta)</h1>
@@ -11,13 +12,6 @@
         <th>Format</th>
         <th>Särskild kontaktperson</th>
       </tr>
-      {% macro dataset_uri(dataset) -%}
-        {%- if dataset.path == None -%}
-          /datasets/{{dataset.name | urlencode}}
-        {%- else -%}
-          /datasets/{{dataset.path}}/
-        {%- endif -%}
-      {%- endmacro %}
       {% for dataset in datasets %}
         <tr property="dataset dcat:dataset" typeof="Dataset dcat:Dataset"
             resource="{{dataset_uri(dataset)}}">
