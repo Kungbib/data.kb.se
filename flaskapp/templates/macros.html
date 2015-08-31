@@ -1,0 +1,28 @@
+{% macro file_icon(mimetype) -%}
+  {%- if mimetype == None -%}
+    fa-file-o
+  {%- elif mimetype == "application/msword" -%}
+    fa-file-word-o
+  {%- elif mimetype.startswith('image') -%}
+    fa-file-image-o
+  {%- elif mimetype == "application/pdf" -%}
+    fa-file-pdf-o
+  {%- elif mimetype == "text/xml" or mimetype == "application/xml" -%}
+    fa-file-code-o
+
+  {%- elif mimetype == "text/json" or mimetype == "application/json" -%}
+    fa-file-code-o
+  {%- elif mimetype == "text/x-yaml" -%}
+    fa-file-text-o
+  {%- else -%}
+    file-o
+  {%- endif -%}
+{%- endmacro -%}
+
+{% macro dataset_uri(dataset) -%}
+  {%- if dataset.path == None -%}
+    /datasets/{{dataset.name | urlencode}}
+  {%- else -%}
+    /datasets/{{dataset.path}}/
+  {%- endif -%}
+{%- endmacro %}
