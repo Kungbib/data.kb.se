@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% block content %}
+{% from 'macros.html' import file_icon %}
 <div class="container" role="main" vocab="http://schema.org/" resource="" typeof="Dataset">
   <link property="catalog" resource="/" />
   <div class="row">
@@ -121,7 +122,11 @@
           {% for p, v in pathDict.iteritems()|sort %}
           <tr>
             <td>
-              <i class="fa fa-{{ v.type }}"></i>
+              {%- if v.type == "folder-open" -%}
+              <i class="fa fa-folder-open-o"></i>
+              {%- else -%}
+              <i class="fa {{ file_icon(v.mimetype) }}"></i>
+              {%- endif -%}
             </td>
             <td>
               <a href="./{{ p|urlencode }}/">{{ unquote(p) }}</a>
