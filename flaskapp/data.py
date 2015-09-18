@@ -7,9 +7,10 @@ from flask import (
     flash, send_file,
     Response
 )
-from flask.ext.admin import Admin
+from flask.ext.admin import Admin, consts
 from os import path
 from lib.dataDB import directory_indexer, cleanDate
+from lib.torrents import announcer, scrape, add_torrent
 from makeTorrent import makeTorrent
 from flask.ext.admin.contrib.sqla import ModelView
 from flask.ext.sqlalchemy import SQLAlchemy
@@ -21,13 +22,14 @@ from urllib2 import quote, unquote
 from werkzeug.contrib.cache import SimpleCache
 from rdflib import Graph
 from xmlrpclib import ServerProxy
-
+from flask.ext.redis import FlaskRedis
 
 MT_RDF_XML = 'application/rdf+xml'
 cache = SimpleCache()
 app = Flask(__name__)
 admin = Admin(app, base_template='admin/base_admin.html')
 
+redis = FlaskRedis(app)
 app.config.from_object('settings')
 appMode = settings.APPENV
 db = SQLAlchemy(app)
@@ -209,6 +211,7 @@ class UserView(ModelView):
             return False
     def __init__(self, session):
         super(UserView, self).__init__(Users, db.session)
+        self.menu_icon_type = consts.ICON_TYPE_GLYPH
     form_columns = ('username', 'role')
 
 
@@ -293,6 +296,11 @@ class TorrentView(ModelView):
                     torrentWatchDir,
                     model.infoHash + '.torrent'
                 )
+                dataset = Datasets.query.filter(
+                    Datasets.datasetID == model.dataset
+                ).first()
+                name = path.basename(dataset.path)
+                add_torrent(name, infoHash, redis)
             with open(torrentFile, 'w') as tf:
                 tf.write(torrentData)
             if useRtorrent:
@@ -601,6 +609,17 @@ def delDataset(datasetID):
                    'error.html', message=e)
                    )
 
+@app.route('/tracker/announce')
+def track():
+    torrents = Torrent.query.all()
+    trackerRes = announcer(request, redis, torrents)
+    return(trackerRes)
+
+@app.route('/tracker/scrape')
+def scrapeit():
+    torrents = Torrent.query.all()
+    scrapes = scrape(request, redis, torrents)
+    return(scrapes)
 
 @app.after_request
 def add_ua_compat(response):
