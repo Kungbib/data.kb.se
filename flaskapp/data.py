@@ -609,11 +609,13 @@ def delDataset(datasetID):
                    'error.html', message=e)
                    )
 
+
 @app.route('/tracker/announce')
 def track():
     torrents = Torrent.query.all()
     trackerRes = announcer(request, redis, torrents)
     return(trackerRes)
+
 
 @app.route('/tracker/scrape')
 def scrapeit():
