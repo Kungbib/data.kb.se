@@ -1,187 +1,95 @@
-# -*- coding: utf-8 -*-
-import os
-import cgi
-import socket
-from binascii import b2a_hex
-from struct import pack
-from datetime import datetime
-from flask import Blueprint, request, abort, send_file
-from flask import current_app as app
-from bencode import bencode
+from flask import current_app
+from requests import get, post
+from xmlrpclib import ServerProxy
+from makeTorrent import makeTorrent
+from os import path
+import models
 
 
-
-
-def announce_interval():
-    return 300
-
-def _get_torrent_key(info_hash):
-    return 'torrent:' + info_hash
-
-def get_info_hash(request, multiple=False):
-    if not multiple:
-        return b2a_hex(cgi.parse_qs(request.query_string)['info_hash'][0])
-    else:
-        hashes = set()
-        for hash in cgi.parse_qs(request.query_string)['info_hash']:
-            hashes.add(b2a_hex(hash))
-        return hashes
-
-def get_torrent_list(redis, info_hash_list=None):
-    if info_hash_list is None:
-        info_hash_list = redis.smembers('torrents')
-    torrents = {}
-    for info_hash in info_hash_list:
-        torrent_key = _get_torrent_key(info_hash)
-        print torrent_key
-        seed_set_key = torrent_key + ':seed'
-        leech_set_key = torrent_key + ':leech'
-        name, downloaded = redis.hmget(torrent_key, 'name', 'downloaded')
-        print "name: %s" % name
-        if not downloaded:
-            downloaded = 0
-        torrents[info_hash] = {
-            'name': name,
-            'downloaded': int(downloaded) or 0,
-            'complete': redis.scard(seed_set_key) or 0,
-            'incomplete': redis.scard(leech_set_key) or 0,
+def delete_torrent(info_hash):
+    if current_app.conf['SUNET']:
+        headers = {
+            'Accept': 'application/json',
+            'Authorization': 'Bearer %s' % current_app.conf['DATASETKEY']
         }
-    return torrents
+        try:
+            r = get(
+                'https://datasets.sunet.se/api/dataset/%s/delete' % info_hash,
+                headers=headers,
+                verify=False
+                )
+            r.raise_for_status()
+        except Exception as e:
+            raise Exception("Could not delete torrent %s" % e)
+    if current_app.conf['RTORRENT']:
+        try:
+            rtorrent = ServerProxy(current_app.conf['XMLRPC_URI'])
+            rtorrent.d.erase(info_hash)
+        except Exception as e:
+            raise Exception("Could not remove torrent: %s" % e)
 
-def babort(message):
-    return bencode({
-        'interval': announce_interval(),
-        'failure reason': message,
-    })
 
-def announcer(request, redis, torrents):
-    need_args = ('info_hash', 'peer_id', 'port', 'uploaded', 'downloaded', 
-                 'left')
-    validHashes = [t.infoHash for t in torrents]
-    print validHashes
-    torrent_key = 'torrent:%s' % info_hash
-    for t in torrents:
-        redis.hset(torrent_key, 'name', "hobo")
-        redis.hset(torrent_key, 'added',
-               datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%SZ"))
-        redis.hset(torrent_key, 'downloaded', 0)
-        print t.infoHash
-    for arg in need_args:
-        if arg not in request.args:
-            return babort('missing argument (%s)' % arg)
-    
-    peer_id = request.args['peer_id']
-    peer_key = 'peer:%s' % peer_id
-    info_hash = get_info_hash(request)
-    print info_hash in validHashes
-    torrent_key = _get_torrent_key(info_hash)
-    seed_set_key = torrent_key + ':seed'
-    leech_set_key = torrent_key + ':leech'
-    redish_info = redis.smembers('torrents', info_hash)
-    print "blarg %s" % redish_info
-    if not info_hash in validHashes:
-        return babort('torrent not allowed')
-
-    if request.args.get('event') == 'stopped':
-        redis.srem(seed_set_key, peer_id)
-        redis.srem(leech_set_key, peer_id)
-        redis.delete(peer_key)
-        return bencode({})
-    elif request.args.get('event') == 'completed':
-        redis.hincrby(torrent_key, 'downloaded', 1)
-
-    ip = request.args.get('ip', request.remote_addr)
+def _add_sunet(torrentObj):
+    headers = {
+        'Accept': 'application/json',
+        'Authorization': 'Bearer %s' % current_app.conf['DATASETKEY']
+    }
+    torrentData = torrentObj.getBencoded()
+    tData = {'torrent': torrentData}
     try:
-        socket.inet_pton(socket.AF_INET6, ip)
-        ip = request.remote_addr
-    except socket.error:
-        pass
-
-    redis.hset(peer_key, 'ip', ip)
-    redis.hset(peer_key, 'port', request.args.get('port', int))
-    redis.hset(peer_key, 'uploaded', request.args['uploaded'])
-    redis.hset(peer_key, 'downloaded', request.args['downloaded'])
-    redis.hset(peer_key, 'left', request.args['left'])
-    redis.expire(peer_key, announce_interval() + 60)
-
-    if request.args.get('left', 1, int) == 0 \
-    or request.args.get('event') == 'completed':
-        redis.sadd(seed_set_key, peer_id)
-        redis.srem(leech_set_key, peer_id)
-    else:
-        redis.sadd(leech_set_key, peer_id)
-        redis.srem(seed_set_key, peer_id)
-
-    peer_count = 0
-    if request.args.get('compact', False, bool):
-        peers = ""
-    else:
-        peers = []
-    for peer_id in redis.sunion(seed_set_key, leech_set_key):
-        peer_key = 'peer:%s' % peer_id
-        ip, port, left = redis.hmget(peer_key, 'ip', 'port', 'left')
-        if (ip and port) is None:
-            redis.srem(seed_set_key, peer_id)
-            redis.srem(leech_set_key, peer_id)
-            continue
-        elif peer_count >= request.args.get('numwant', 50, int):
-            continue
-        elif int(left) == 0 and request.args.get('left', 1, int) == 0:
-            continue
-
-        peer_count += 1
-        if request.args.get('compact', False, bool):
-            try:
-                ip = socket.inet_pton(socket.AF_INET, ip)
-            except socket.error:
-                continue
-            port = pack(">H", int(port))
-            peers += (ip + port)
-        else:
-            peer = {'ip': ip, 'port': int(port)}
-            if 'no_peer_id' not in request.args:
-                peer['peer_id'] = peer_id
-            peers.append(peer)
-
-    return bencode({
-        'interval': announce_interval(),
-        'complete': redis.scard(seed_set_key),
-        'incomplete': redis.scard(leech_set_key),
-        'peers': peers
-    })
-
-def _exist_torrent(info_hash, redis):
-    return redis.sismember('torrents', info_hash)
-
-def add_torrent(name, info_hash, redis, torrent_file_path=None):
-    if _exist_torrent(info_hash, redis):
-        return False
-    
-    redis.sadd('torrents', info_hash)
-    
-    torrent_key = 'torrent:%s' % info_hash
-    redis.hset(torrent_key, 'name', name)
-    redis.hset(torrent_key, 'added',
-               datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%SZ"))
-    redis.hset(torrent_key, 'downloaded', 0)
-    
-    if torrent_file_path:
-        if not os.path.isdir(current_app.instance_path):
-            os.mkdir(current_app.instance_path)
-        new_torrent_file_path = os.path.join(current_app.instance_path,
-                                             info_hash + '.torrent')
-        shutil.copy(torrent_file_path, new_torrent_file_path)
+        r = post(
+            'https://datasets.sunet.se/api/dataset',
+            headers=headers,
+            files=tData,
+            verify=current_app.conf['VERIFY_SSL']
+        )
+        r.raise_for_status()
+        return('%s added to sunet' % torrentObj.info_hash())
+    except Exception as e:
+        raise Exception("Could not upload torrent: %s" % e)
 
 
+def _add_torrent_to_model(model, torrentObj):
+    model.infoHash = torrentObj.info_hash()
+    model.torrentData = torrentObj.getBencoded()
+    return(model)
 
-def scrape(request, redis, torrents):
-    info_hash_list = None
-    validHashes = [t.infoHash for t in torrents]
-    if 'info_hash' in request.args:
-        info_hash_list = get_info_hash(request, multiple=True)
-        print info_hash_list
-        for info_hash in info_hash_list:
-            if not info_hash in validHashes:
-                info_hash_list.remove(info_hash)
-    
-    return bencode({'files': get_torrent_list(redis, info_hash_list)})
+
+def _add_rtorrent(torrentObj, datasetPath):
+    infoHash = torrentObj.info_hash()
+    torrentFile = path.join(
+        current_app.conf['TORRENT_WATCH_DIR'],
+        infoHash + '.torrent'
+    )
+    rtorrent = ServerProxy(current_app.conf['XMLRPC_URI'])
+    rtorrent.load(torrentFile)
+    downloadPath = path.dirname(
+        path.join(
+            current_app.conf['DATASET_ROOT'],
+            datasetPath
+        )
+    )
+    with open(torrentFile, 'w') as tf:
+        tf.write(torrentObj.getBencoded())
+
+    rtorrent.d.set_directory(infoHash, downloadPath)
+    rtorrent.d.start(infoHash)
+    return("Torrent Added")
+
+
+def add_torrent(model, datasetID):
+    datasetRoot = current_app.config['DATASET_ROOT']
+    dataset = models.Datasets.query.filter(
+        models.Datasets.datasetID == datasetID
+    ).first()
+    try:
+        torrentObj = makeTorrent(announce=current_app.config['ANNOUNCE'])
+    except KeyError:
+        raise KeyError("ANNOUNCE is required to create torrents")
+    torrentObj.multi_file(path.join(datasetRoot, dataset.path))
+    model = _add_torrent_to_model(model, torrentObj)
+    if current_app.config.get('SUNET'):
+        _add_sunet(torrentObj)
+    if current_app.config.get('RTORRENT'):
+        _add_rtorrent(torrentObj, dataset.path)
+    return(model)
