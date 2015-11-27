@@ -1,12 +1,14 @@
-from os import path, listdir
+from os import path, listdir, walk
 from mimetypes import guess_type, add_type
 from urllib2 import quote
+from flask import current_app
 
 
 add_type('text/x-yaml', '.yaml')
 add_type('application/xml', '.metadata')
 add_type('application/xml', '.mets')
 add_type('application/xml', '.mets.metadata')
+
 
 def cleanDate(timestamp):
     dateFormat = '%Y-%m-%d %H:%M'
@@ -20,9 +22,18 @@ def sizeof_fmt(num):
         num /= 1024.0
 
 
+def get_size(start_path=None):
+    total_size = 0
+    for dirpath, dirnames, filenames in walk(start_path):
+        for f in filenames:
+            fp = path.join(dirpath, f)
+            total_size += path.getsize(fp)
+    return sizeof_fmt(total_size)
+
+
 class directory_indexer():
-    def __init__(self, getMets=False):
-        self.getMets = getMets
+    def __init__(self):
+        self.getMets = current_app.config['SUMMARIZE_METS']
 
     def summarizeMets(self, rawMeta):
         from lxml import etree
@@ -71,7 +82,8 @@ class directory_indexer():
         }
         return(summary)
 
-    def index_dir(self, directory, dataset, datasetRoot):
+    def index_dir(self, directory, dataset):
+        datasetRoot = current_app.config['DATASET_ROOT']
         dTemp = directory
         pathDict = {}
         if directory is None and dataset.path != '':
