@@ -1,6 +1,7 @@
 Flask==0.10.1
 Flask-Admin==1.2.0
 Flask-AutoIndex==0.5
+Flask-Redis==0.1.0
 Flask-SQLAlchemy==2.0
 Flask-Silk==0.2
 Jinja2==2.8

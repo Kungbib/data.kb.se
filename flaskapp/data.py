@@ -21,6 +21,8 @@ from lib.dbShared import db
 from StringIO import StringIO
 
 MT_RDF_XML = 'application/rdf+xml'
+APP_BASE_URI = 'https://data.kb.se/'
+
 cache = SimpleCache()
 app = Flask(__name__)
 admin = Admin(app, base_template='admin/base_admin.html')
@@ -107,6 +109,7 @@ def index_rdf():
     if data is None:
         data = Graph().parse(
             data=index_html(),
+            publicID=APP_BASE_URI,
             format='rdfa',
             media_type='text/html'
         ).serialize(format='pretty-xml')
