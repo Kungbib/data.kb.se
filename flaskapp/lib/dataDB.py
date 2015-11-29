@@ -33,7 +33,7 @@ def get_size(start_path=None):
 
 class directory_indexer():
     def __init__(self):
-        self.getMets = current_app.config['SUMMARIZE_METS']
+        self.getMets = current_app.config.get('SUMMARIZE_METS', None)
 
     def summarizeMets(self, rawMeta):
         from lxml import etree
