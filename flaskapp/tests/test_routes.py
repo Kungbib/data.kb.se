@@ -10,6 +10,8 @@ class RouteTests(unittest.TestCase):
         data.app.config['TESTING'] = True
         data.app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///:memory:'
         data.app.config['USER_LIST'] = ['Test Admin']
+        data.app.config['APP_ENV'] = 'Test'
+        data.app.config['APPENV'] = 'dev'
         db.init_app(data.app)
         d = TempDirectory()
         d.makedir('2015/05/myDataset')
@@ -67,7 +69,6 @@ class RouteTests(unittest.TestCase):
         self.assertIn('Could not find dataset', res.data)
 
     def test_logon_dev_mode(self):
-        data.app.config['APP_ENV'] = 'Test'
         res = self.app.get('/login2', follow_redirects=True)
         self.assertIn('Test Admin', res.data)
 
