@@ -35,43 +35,35 @@ class directory_indexer():
     def __init__(self):
         self.getMets = current_app.config.get('SUMMARIZE_METS', None)
 
+    def _get_mets_element(self, mets, xpath):
+        namespaces = {
+            'mets': 'http://www.loc.gov/METS/',
+            'mods': 'http://www.loc.gov/mods/v3'
+        }
+        metsElement = mets.findall(
+            xpath,
+            namespaces
+        )
+        if len(metsElement) == 0:
+            return('')
+        else:
+            return(metsElement[0].text)
+
     def summarizeMets(self, rawMeta):
-        from lxml import etree
+        from xml.etree import ElementTree as etree
         mets = etree.XML(rawMeta)
-        mods = mets.xpath(
-            '/mets:mets/mets:dmdSec[@ID="dmdSec001"]//mods:mods',
-            namespaces=mets.nsmap
-        )[0]
-        related = mods.xpath(
-            'mods:relatedItem[@type="host"]',
-            namespaces=mods.nsmap
-        )[0]
-        title = related.xpath(
-            'mods:titleInfo/mods:title',
-            namespaces=mods.nsmap
-        )[0].text
-        issued = related.xpath(
-            'mods:part/mods:date',
-            namespaces=mods.nsmap
-        )[0].text
-        urn = mods.xpath(
-            'mods:identifier[@type="urn"]',
-            namespaces=mods.nsmap
-        )[0].text
-        languageBase = mods.xpath('mods:language', namespaces=mods.nsmap)
-        langList = []
-        for lang in languageBase:
-            langList.append(
-                lang.xpath('mods:languageTerm', namespaces=mods.nsmap)[0].text)
-        langs = ','.join(langList)
-        uri = related.xpath(
-            'mods:identifier[@type="uri"]',
-            namespaces=mods.nsmap
-        )[0].text
-        issn = related.xpath(
-            'mods:identifier[@type="issn"]',
-            namespaces=mods.nsmap
-        )[0].text
+        title = self._get_mets_element(
+            mets,
+            './/mods:relatedItem/mods:titleInfo/mods:title'
+        )
+        issued = self._get_mets_element(
+            mets,
+            './/mods:originInfo/mods:dateIssued'
+        )
+        urn = self._get_mets_element(mets, './/mods:identifier[@type="urn"]')
+        langs = self._get_mets_element(mets, './/mods:languageTerm')
+        uri = self._get_mets_element(mets, './/mods:identifier[@type="uri"]')
+        issn = self._get_mets_element(mets, './/mods:identifier[@type="issn"]')
         summary = {
             'issn': issn,
             'uri': uri,
