@@ -9,9 +9,7 @@ class RouteTests(unittest.TestCase):
     def setUp(self):
         data.app.config['TESTING'] = True
         data.app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///:memory:'
-        data.app.config['USER_LIST'] = ['Test Admin']
-        data.app.config['APP_ENV'] = 'Test'
-        data.app.config['APPENV'] = 'dev'
+        data.app.config['USER_LIST'] = ['Test Admin', 'testman@kb.se']
         db.init_app(data.app)
         d = TempDirectory()
         d.makedir('2015/05/myDataset')
@@ -69,8 +67,27 @@ class RouteTests(unittest.TestCase):
         self.assertIn('Could not find dataset', res.data)
 
     def test_logon_dev_mode(self):
+        data.app.config['APPENV'] = 'dev'
         res = self.app.get('/login2', follow_redirects=True)
         self.assertIn('Test Admin', res.data)
+
+    def test_logon_prod_mode(self):
+        data.app.config['APPENV'] = 'production'
+        headers = {
+            'schacHomeOrganization': 'kb.se',
+            'eppn': 'testman@kb.se', 'displayName': 'Test User'
+        }
+        res = self.app.get('/login2', follow_redirects=True, headers=headers)
+        self.assertIn('Test User', res.data)
+
+    def test_logon_prod_mode_should_not_authenticate(self):
+        data.app.config['APPENV'] = 'production'
+        headers = {
+            'schacHomeOrganization': 'kb.se', 'eppn': 'noman@kb.se',
+            'displayName': 'Nobody Home'
+        }
+        res = self.app.get('/login2', follow_redirects=True, headers=headers)
+        self.assertIn("Couldn't authenticate", res.data)
 
     def tearDown(self):
         self.directory.cleanup()
