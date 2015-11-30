@@ -3,6 +3,7 @@
 {% block content %}
   <div class="container" role="main" resource="/" typeof="DataCatalog dcat:Catalog">
     <h1 property="name dc:title">Öppna data från Kungl. Biblioteket (beta)</h1>
+    <meta property="dcat:themeTaxonomy" resource="http://eurovoc.europa.eu/" />
     <p property="description dc:description">Här hittar du information från <a href="http://www.kb.se/">Kungl. Bibliotekets</a> datakällor. Detta är en betaversion och förteckningen kommer att uppdateras löpande. Materialet här är i första hand till för den som vill göra egna bearbetningar/tjänster. Vi försöker publicera material som rådata i öppna standarder, men det kan förekomma material där vi ännu inte hunnit konvertera till en öppen standard. För mer information kontakta <a href="mailto:peter.krantz@kb.se">Peter Krantz (e-post)</a>. Letar du efter data från andra myndigheter <a href="http://www.oppnadata.se/">besök öppnadata.se</a>.</p>
     <table class="table">
       <tr>
@@ -15,6 +16,7 @@
       {% for dataset in datasets %}
         <tr property="dataset dcat:dataset" typeof="Dataset dcat:Dataset"
             resource="{{dataset_uri(dataset)}}">
+          <meta property="dcat:theme" resource="http://eurovoc.europa.eu/100151" />
           <td property="name dc:title"><a property="url" href="{{dataset_uri(dataset)}}"
               >{{dataset.name}}</a></td>
           <td property="description dc:description">{{dataset.description}}</td>
