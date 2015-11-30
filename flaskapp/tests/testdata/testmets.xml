@@ -1,0 +1,1608 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mets:mets ID="aip.mets.metadata" LABEL="AFTONBLADET 1830-12-06" OBJID="urn:nbn:se:kb:dark-package-instance-38269" PROFILE="http://www.kb.se/namespace/mets/kbse_mets_profile_002.xml" TYPE="AIP" xsi:schemaLocation="http://www.loc.gov/METS/ http://www.kb.se/namespace/mets/kbse_mets_002.xsd http://www.loc.gov/mods/v3 http://www.kb.se/namespace/mods/mods.xsd info:lc/xmlns/premis-v2 http://www.kb.se/namespace/premis/v2/premis.xsd http://www.loc.gov/mix/v20 http://www.kb.se/namespace/mix/mix20.xsd http://www.w3.org/1999/xlink http://www.kb.se/namespace/mets/SWEIP_METS_xlink.xsd" xmlns:mets="http://www.loc.gov/METS/" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:mods="http://www.loc.gov/mods/v3" xmlns:premis="info:lc/xmlns/premis-v2" xmlns:mix="http://www.loc.gov/mix/v20" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+   <mets:metsHdr CREATEDATE="2013-01-26T12:54:22+01:00">
+      <mets:agent ROLE="ARCHIVIST" TYPE="ORGANIZATION">
+         <mets:name>Kungl. biblioteket</mets:name>
+         <mets:note>http://id.kb.se/organisations/SE2021001710</mets:note>
+      </mets:agent>
+      <mets:agent ROLE="CREATOR" TYPE="ORGANIZATION">
+         <mets:name>Kungl. biblioteket</mets:name>
+         <mets:note>http://id.kb.se/organisations/SE2021001710</mets:note>
+      </mets:agent>
+      <mets:altRecordID TYPE="DELIVERYTYPE">AGREEMENT</mets:altRecordID>
+      <mets:altRecordID TYPE="DELIVERYSPECIFICATION">unknown</mets:altRecordID>
+      <mets:altRecordID TYPE="SUBMISSIONAGREEMENT">unknown</mets:altRecordID>
+      <mets:metsDocumentID>aip.mets.metadata</mets:metsDocumentID>
+   </mets:metsHdr>
+   <mets:dmdSec ID="dmdSec001">
+      <mets:mdWrap LABEL="Primary" MDTYPE="MODS">
+         <mets:xmlData>
+            <mods:mods>
+               <mods:typeOfResource>text</mods:typeOfResource>
+               <mods:genre authority="marcgt">issue</mods:genre>
+               <mods:identifier type="local">bib4345612_18301206_0_1</mods:identifier>
+               <mods:identifier type="urn">urn:nbn:se:kb:dark-37623</mods:identifier>
+               <mods:titleInfo>
+                  <mods:title>AFTONBLADET 1830-12-06</mods:title>
+               </mods:titleInfo>
+               <mods:originInfo>
+                  <mods:dateIssued encoding="w3cdtf">1830-12-06</mods:dateIssued>
+                  <mods:edition>0</mods:edition>
+               </mods:originInfo>
+               <mods:language>
+                  <mods:languageTerm authority="iso639-2b" type="code">und</mods:languageTerm>
+               </mods:language>
+               <mods:language>
+                  <mods:languageTerm authority="iso639-2b" type="code">swe</mods:languageTerm>
+               </mods:language>
+               <mods:physicalDescription>
+                  <mods:digitalOrigin>reformatted digital</mods:digitalOrigin>
+                  <mods:note type="script">gothic</mods:note>
+                  <mods:note type="reproduction">Digital reproduktion: Stockholm : Riksarkivet/MKC i samarbete med Kungliga biblioteket, 
+2013
+</mods:note>
+               </mods:physicalDescription>
+               <mods:relatedItem type="host">
+                  <mods:genre authority="marcgt">newspaper</mods:genre>
+                  <mods:titleInfo>
+                     <mods:title>AFTONBLADET</mods:title>
+                  </mods:titleInfo>
+                  <mods:originInfo>
+                     <mods:dateIssued encoding="w3cdtf" point="start">1830</mods:dateIssued>
+                  </mods:originInfo>
+                  <mods:identifier type="uri">http://libris.kb.se/resource/bib/4345612</mods:identifier>
+                  <mods:identifier type="issn">14039656</mods:identifier>
+                  <mods:part>
+                     <mods:detail type="issue">
+                        <mods:number>1</mods:number>
+                     </mods:detail>
+                     <mods:date encoding="w3cdtf">1830-12-06</mods:date>
+                  </mods:part>
+               </mods:relatedItem>
+               <mods:relatedItem type="host">
+                  <mods:genre>project</mods:genre>
+                  <mods:titleInfo>
+                     <mods:title>Digidaily</mods:title>
+                  </mods:titleInfo>
+                  <mods:identifier type="uri">http://libris.kb.se/resource/bib/12101075</mods:identifier>
+               </mods:relatedItem>
+               <mods:relatedItem type="original">
+                  <mods:identifier type="local">S-A</mods:identifier>
+                  <mods:location>
+                     <mods:holdingSimple>
+                        <mods:copyInformation>
+                           <mods:note type="condition">2</mods:note>
+                        </mods:copyInformation>
+                     </mods:holdingSimple>
+                  </mods:location>
+                  <mods:physicalDescription>
+                     <mods:form authority="marcform">print</mods:form>
+                  </mods:physicalDescription>
+               </mods:relatedItem>
+            </mods:mods>
+         </mets:xmlData>
+      </mets:mdWrap>
+   </mets:dmdSec>
+   <mets:dmdSec ID="dmdSec002">
+      <mets:mdWrap LABEL="Local" MDTYPE="MODS">
+         <mets:xmlData>
+            <mods:mods>
+               <mods:name authority="local" type="corporate" valueURI="http://id.kb.se/organisations/SE2021001710">
+                  <mods:namePart>Kungliga biblioteket</mods:namePart>
+                  <mods:role>
+                     <mods:roleTerm authority="marcrelator" type="text">publisher</mods:roleTerm>
+                  </mods:role>
+               </mods:name>
+               <mods:name authority="local" type="corporate" valueURI="http://id.kb.se/organisations/SE2021001074-MKC">
+                  <mods:namePart>Riksarkivet/MKC</mods:namePart>
+                  <mods:role>
+                     <mods:roleTerm authority="local" type="text">supplier</mods:roleTerm>
+                  </mods:role>
+               </mods:name>
+            </mods:mods>
+         </mets:xmlData>
+      </mets:mdWrap>
+   </mets:dmdSec>
+   <mets:dmdSec ID="dmdSec003">
+      <mets:mdRef LABEL="Libris" LOCTYPE="URL" MDTYPE="MARC" xlink:href="http://libris.kb.se/resource/bib/13865603"/>
+   </mets:dmdSec>
+   <mets:amdSec ID="amdSec001">
+      <mets:techMD ID="techMD001">
+         <mets:mdWrap MDTYPE="PREMIS:OBJECT">
+            <mets:xmlData>
+               <premis:object xsi:schemaLocation="info:lc/xmlns/premis-v2 http://www.loc.gov/standards/premis/v2/premis-v2-0.xsd" xsi:type="premis:file">
+                  <premis:objectIdentifier>
+                     <premis:objectIdentifierType>uri</premis:objectIdentifierType>
+                     <premis:objectIdentifierValue>urn:nbn:se:kb:dark-object-instance-2957027</premis:objectIdentifierValue>
+                  </premis:objectIdentifier>
+                  <premis:objectCharacteristics>
+                     <premis:compositionLevel>0</premis:compositionLevel>
+                     <premis:fixity>
+                        <premis:messageDigestAlgorithm>MD5</premis:messageDigestAlgorithm>
+                        <premis:messageDigest>bdcc18f25153b207ca6e86dd2154ec90</premis:messageDigest>
+                        <premis:messageDigestOriginator>supplier</premis:messageDigestOriginator>
+                     </premis:fixity>
+                     <premis:fixity>
+                        <premis:messageDigestAlgorithm>MD5</premis:messageDigestAlgorithm>
+                        <premis:messageDigest>bdcc18f25153b207ca6e86dd2154ec90</premis:messageDigest>
+                        <premis:messageDigestOriginator>se.kb.mimer.reception.processstepfactory.ChecksumCalculator</premis:messageDigestOriginator>
+                     </premis:fixity>
+                     <premis:size>4593444</premis:size>
+                     <premis:format>
+                        <premis:formatDesignation>
+                           <premis:formatName>JPEG2000</premis:formatName>
+                           <premis:formatVersion/>
+                        </premis:formatDesignation>
+                        <premis:formatRegistry>
+                           <premis:formatRegistryName>PRONOM</premis:formatRegistryName>
+                           <premis:formatRegistryKey>x-fmt/392</premis:formatRegistryKey>
+                           <premis:formatRegistryRole>specification</premis:formatRegistryRole>
+                        </premis:formatRegistry>
+                     </premis:format>
+                     <premis:objectCharacteristicsExtension>
+                        <mix:mix>
+                           <mix:BasicDigitalObjectInformation>
+                              <mix:Compression>
+                                 <mix:compressionScheme>JPEG 2000 lossy</mix:compressionScheme>
+                                 <mix:compressionRatio/>
+                              </mix:Compression>
+                           </mix:BasicDigitalObjectInformation>
+                           <mix:BasicImageInformation>
+                              <mix:BasicImageCharacteristics>
+                                 <mix:imageWidth>2696</mix:imageWidth>
+                                 <mix:imageHeight>3405</mix:imageHeight>
+                                 <mix:PhotometricInterpretation>
+                                    <mix:colorSpace>RGB</mix:colorSpace>
+                                    <mix:ColorProfile>
+                                       <mix:IccProfile>
+                                          <mix:iccProfileName>sRGB</mix:iccProfileName>
+                                          <mix:iccProfileVersion>IEC61966-2.1</mix:iccProfileVersion>
+                                       </mix:IccProfile>
+                                    </mix:ColorProfile>
+                                 </mix:PhotometricInterpretation>
+                              </mix:BasicImageCharacteristics>
+                           </mix:BasicImageInformation>
+                           <mix:ImageCaptureMetadata>
+                              <mix:GeneralCaptureInformation>
+                                 <mix:dateTimeCreated>2013-01-17</mix:dateTimeCreated>
+                                 <mix:imageProducer>Kungliga biblioteket - National Library of Sweden</mix:imageProducer>
+                              </mix:GeneralCaptureInformation>
+                              <mix:ScannerCapture>
+                                 <mix:scannerManufacturer>Zeutchel</mix:scannerManufacturer>
+                                 <mix:ScannerModel>
+                                    <mix:scannerModelName>OS14</mix:scannerModelName>
+                                 </mix:ScannerModel>
+                                 <mix:ScanningSystemSoftware>
+                                    <mix:scanningSoftwareName>Omniscan</mix:scanningSoftwareName>
+                                    <mix:scanningSoftwareVersionNo>12</mix:scanningSoftwareVersionNo>
+                                 </mix:ScanningSystemSoftware>
+                              </mix:ScannerCapture>
+                              <mix:orientation>normal*</mix:orientation>
+                           </mix:ImageCaptureMetadata>
+                           <mix:ImageAssessmentMetadata>
+                              <mix:ImageColorEncoding>
+                                 <mix:BitsPerSample>
+                                    <mix:bitsPerSampleValue>8</mix:bitsPerSampleValue>
+                                    <mix:bitsPerSampleValue>8</mix:bitsPerSampleValue>
+                                    <mix:bitsPerSampleValue>8</mix:bitsPerSampleValue>
+                                    <mix:bitsPerSampleUnit>integer</mix:bitsPerSampleUnit>
+                                 </mix:BitsPerSample>
+                                 <mix:samplesPerPixel>3</mix:samplesPerPixel>
+                              </mix:ImageColorEncoding>
+                              <mix:TargetData>
+                                 <mix:targetType>internal</mix:targetType>
+                                 <mix:TargetID>
+                                    <mix:targetManufacturer/>
+                                    <mix:targetName/>
+                                    <mix:targetNo/>
+                                 </mix:TargetID>
+                              </mix:TargetData>
+                           </mix:ImageAssessmentMetadata>
+                        </mix:mix>
+                     </premis:objectCharacteristicsExtension>
+                  </premis:objectCharacteristics>
+               </premis:object>
+            </mets:xmlData>
+         </mets:mdWrap>
+      </mets:techMD>
+      <mets:techMD ID="techMD002">
+         <mets:mdWrap MDTYPE="PREMIS:OBJECT">
+            <mets:xmlData>
+               <premis:object xsi:schemaLocation="info:lc/xmlns/premis-v2 http://www.loc.gov/standards/premis/v2/premis-v2-0.xsd" xsi:type="premis:file">
+                  <premis:objectIdentifier>
+                     <premis:objectIdentifierType>uri</premis:objectIdentifierType>
+                     <premis:objectIdentifierValue>urn:nbn:se:kb:dark-object-instance-2957028</premis:objectIdentifierValue>
+                  </premis:objectIdentifier>
+                  <premis:objectCharacteristics>
+                     <premis:compositionLevel>0</premis:compositionLevel>
+                     <premis:fixity>
+                        <premis:messageDigestAlgorithm>MD5</premis:messageDigestAlgorithm>
+                        <premis:messageDigest>ad7c5f35df72994b76800a51333239a9</premis:messageDigest>
+                        <premis:messageDigestOriginator>supplier</premis:messageDigestOriginator>
+                     </premis:fixity>
+                     <premis:fixity>
+                        <premis:messageDigestAlgorithm>MD5</premis:messageDigestAlgorithm>
+                        <premis:messageDigest>ad7c5f35df72994b76800a51333239a9</premis:messageDigest>
+                        <premis:messageDigestOriginator>se.kb.mimer.reception.processstepfactory.ChecksumCalculator</premis:messageDigestOriginator>
+                     </premis:fixity>
+                     <premis:size>4537293</premis:size>
+                     <premis:format>
+                        <premis:formatDesignation>
+                           <premis:formatName>JPEG2000</premis:formatName>
+                           <premis:formatVersion/>
+                        </premis:formatDesignation>
+                        <premis:formatRegistry>
+                           <premis:formatRegistryName>PRONOM</premis:formatRegistryName>
+                           <premis:formatRegistryKey>x-fmt/392</premis:formatRegistryKey>
+                           <premis:formatRegistryRole>specification</premis:formatRegistryRole>
+                        </premis:formatRegistry>
+                     </premis:format>
+                     <premis:objectCharacteristicsExtension>
+                        <mix:mix>
+                           <mix:BasicDigitalObjectInformation>
+                              <mix:Compression>
+                                 <mix:compressionScheme>JPEG 2000 lossy</mix:compressionScheme>
+                                 <mix:compressionRatio/>
+                              </mix:Compression>
+                           </mix:BasicDigitalObjectInformation>
+                           <mix:BasicImageInformation>
+                              <mix:BasicImageCharacteristics>
+                                 <mix:imageWidth>2656</mix:imageWidth>
+                                 <mix:imageHeight>3414</mix:imageHeight>
+                                 <mix:PhotometricInterpretation>
+                                    <mix:colorSpace>RGB</mix:colorSpace>
+                                    <mix:ColorProfile>
+                                       <mix:IccProfile>
+                                          <mix:iccProfileName>sRGB</mix:iccProfileName>
+                                          <mix:iccProfileVersion>IEC61966-2.1</mix:iccProfileVersion>
+                                       </mix:IccProfile>
+                                    </mix:ColorProfile>
+                                 </mix:PhotometricInterpretation>
+                              </mix:BasicImageCharacteristics>
+                           </mix:BasicImageInformation>
+                           <mix:ImageCaptureMetadata>
+                              <mix:GeneralCaptureInformation>
+                                 <mix:dateTimeCreated>2013-01-17</mix:dateTimeCreated>
+                                 <mix:imageProducer>Kungliga biblioteket - National Library of Sweden</mix:imageProducer>
+                              </mix:GeneralCaptureInformation>
+                              <mix:ScannerCapture>
+                                 <mix:scannerManufacturer>Zeutchel</mix:scannerManufacturer>
+                                 <mix:ScannerModel>
+                                    <mix:scannerModelName>OS14</mix:scannerModelName>
+                                 </mix:ScannerModel>
+                                 <mix:ScanningSystemSoftware>
+                                    <mix:scanningSoftwareName>Omniscan</mix:scanningSoftwareName>
+                                    <mix:scanningSoftwareVersionNo>12</mix:scanningSoftwareVersionNo>
+                                 </mix:ScanningSystemSoftware>
+                              </mix:ScannerCapture>
+                              <mix:orientation>normal*</mix:orientation>
+                           </mix:ImageCaptureMetadata>
+                           <mix:ImageAssessmentMetadata>
+                              <mix:ImageColorEncoding>
+                                 <mix:BitsPerSample>
+                                    <mix:bitsPerSampleValue>8</mix:bitsPerSampleValue>
+                                    <mix:bitsPerSampleValue>8</mix:bitsPerSampleValue>
+                                    <mix:bitsPerSampleValue>8</mix:bitsPerSampleValue>
+                                    <mix:bitsPerSampleUnit>integer</mix:bitsPerSampleUnit>
+                                 </mix:BitsPerSample>
+                                 <mix:samplesPerPixel>3</mix:samplesPerPixel>
+                              </mix:ImageColorEncoding>
+                              <mix:TargetData>
+                                 <mix:targetType>internal</mix:targetType>
+                                 <mix:TargetID>
+                                    <mix:targetManufacturer/>
+                                    <mix:targetName/>
+                                    <mix:targetNo/>
+                                 </mix:TargetID>
+                              </mix:TargetData>
+                           </mix:ImageAssessmentMetadata>
+                        </mix:mix>
+                     </premis:objectCharacteristicsExtension>
+                  </premis:objectCharacteristics>
+               </premis:object>
+            </mets:xmlData>
+         </mets:mdWrap>
+      </mets:techMD>
+      <mets:techMD ID="techMD003">
+         <mets:mdWrap MDTYPE="PREMIS:OBJECT">
+            <mets:xmlData>
+               <premis:object xsi:schemaLocation="info:lc/xmlns/premis-v2 http://www.loc.gov/standards/premis/v2/premis-v2-0.xsd" xsi:type="premis:file">
+                  <premis:objectIdentifier>
+                     <premis:objectIdentifierType>uri</premis:objectIdentifierType>
+                     <premis:objectIdentifierValue>urn:nbn:se:kb:dark-object-instance-2957029</premis:objectIdentifierValue>
+                  </premis:objectIdentifier>
+                  <premis:objectCharacteristics>
+                     <premis:compositionLevel>0</premis:compositionLevel>
+                     <premis:fixity>
+                        <premis:messageDigestAlgorithm>MD5</premis:messageDigestAlgorithm>
+                        <premis:messageDigest>d4e537eb0eeb2134612281c2037dbe78</premis:messageDigest>
+                        <premis:messageDigestOriginator>supplier</premis:messageDigestOriginator>
+                     </premis:fixity>
+                     <premis:fixity>
+                        <premis:messageDigestAlgorithm>MD5</premis:messageDigestAlgorithm>
+                        <premis:messageDigest>d4e537eb0eeb2134612281c2037dbe78</premis:messageDigest>
+                        <premis:messageDigestOriginator>se.kb.mimer.reception.processstepfactory.ChecksumCalculator</premis:messageDigestOriginator>
+                     </premis:fixity>
+                     <premis:size>4547927</premis:size>
+                     <premis:format>
+                        <premis:formatDesignation>
+                           <premis:formatName>JPEG2000</premis:formatName>
+                           <premis:formatVersion/>
+                        </premis:formatDesignation>
+                        <premis:formatRegistry>
+                           <premis:formatRegistryName>PRONOM</premis:formatRegistryName>
+                           <premis:formatRegistryKey>x-fmt/392</premis:formatRegistryKey>
+                           <premis:formatRegistryRole>specification</premis:formatRegistryRole>
+                        </premis:formatRegistry>
+                     </premis:format>
+                     <premis:objectCharacteristicsExtension>
+                        <mix:mix>
+                           <mix:BasicDigitalObjectInformation>
+                              <mix:Compression>
+                                 <mix:compressionScheme>JPEG 2000 lossy</mix:compressionScheme>
+                                 <mix:compressionRatio/>
+                              </mix:Compression>
+                           </mix:BasicDigitalObjectInformation>
+                           <mix:BasicImageInformation>
+                              <mix:BasicImageCharacteristics>
+                                 <mix:imageWidth>2646</mix:imageWidth>
+                                 <mix:imageHeight>3435</mix:imageHeight>
+                                 <mix:PhotometricInterpretation>
+                                    <mix:colorSpace>RGB</mix:colorSpace>
+                                    <mix:ColorProfile>
+                                       <mix:IccProfile>
+                                          <mix:iccProfileName>sRGB</mix:iccProfileName>
+                                          <mix:iccProfileVersion>IEC61966-2.1</mix:iccProfileVersion>
+                                       </mix:IccProfile>
+                                    </mix:ColorProfile>
+                                 </mix:PhotometricInterpretation>
+                              </mix:BasicImageCharacteristics>
+                           </mix:BasicImageInformation>
+                           <mix:ImageCaptureMetadata>
+                              <mix:GeneralCaptureInformation>
+                                 <mix:dateTimeCreated>2013-01-17</mix:dateTimeCreated>
+                                 <mix:imageProducer>Kungliga biblioteket - National Library of Sweden</mix:imageProducer>
+                              </mix:GeneralCaptureInformation>
+                              <mix:ScannerCapture>
+                                 <mix:scannerManufacturer>Zeutchel</mix:scannerManufacturer>
+                                 <mix:ScannerModel>
+                                    <mix:scannerModelName>OS14</mix:scannerModelName>
+                                 </mix:ScannerModel>
+                                 <mix:ScanningSystemSoftware>
+                                    <mix:scanningSoftwareName>Omniscan</mix:scanningSoftwareName>
+                                    <mix:scanningSoftwareVersionNo>12</mix:scanningSoftwareVersionNo>
+                                 </mix:ScanningSystemSoftware>
+                              </mix:ScannerCapture>
+                              <mix:orientation>normal*</mix:orientation>
+                           </mix:ImageCaptureMetadata>
+                           <mix:ImageAssessmentMetadata>
+                              <mix:ImageColorEncoding>
+                                 <mix:BitsPerSample>
+                                    <mix:bitsPerSampleValue>8</mix:bitsPerSampleValue>
+                                    <mix:bitsPerSampleValue>8</mix:bitsPerSampleValue>
+                                    <mix:bitsPerSampleValue>8</mix:bitsPerSampleValue>
+                                    <mix:bitsPerSampleUnit>integer</mix:bitsPerSampleUnit>
+                                 </mix:BitsPerSample>
+                                 <mix:samplesPerPixel>3</mix:samplesPerPixel>
+                              </mix:ImageColorEncoding>
+                              <mix:TargetData>
+                                 <mix:targetType>internal</mix:targetType>
+                                 <mix:TargetID>
+                                    <mix:targetManufacturer/>
+                                    <mix:targetName/>
+                                    <mix:targetNo/>
+                                 </mix:TargetID>
+                              </mix:TargetData>
+                           </mix:ImageAssessmentMetadata>
+                        </mix:mix>
+                     </premis:objectCharacteristicsExtension>
+                  </premis:objectCharacteristics>
+               </premis:object>
+            </mets:xmlData>
+         </mets:mdWrap>
+      </mets:techMD>
+      <mets:techMD ID="techMD004">
+         <mets:mdWrap MDTYPE="PREMIS:OBJECT">
+            <mets:xmlData>
+               <premis:object xsi:schemaLocation="info:lc/xmlns/premis-v2 http://www.loc.gov/standards/premis/v2/premis-v2-0.xsd" xsi:type="premis:file">
+                  <premis:objectIdentifier>
+                     <premis:objectIdentifierType>uri</premis:objectIdentifierType>
+                     <premis:objectIdentifierValue>urn:nbn:se:kb:dark-object-instance-2957030</premis:objectIdentifierValue>
+                  </premis:objectIdentifier>
+                  <premis:objectCharacteristics>
+                     <premis:compositionLevel>0</premis:compositionLevel>
+                     <premis:fixity>
+                        <premis:messageDigestAlgorithm>MD5</premis:messageDigestAlgorithm>
+                        <premis:messageDigest>b77fe339d8b93f9e8dc07d9a679edbe6</premis:messageDigest>
+                        <premis:messageDigestOriginator>supplier</premis:messageDigestOriginator>
+                     </premis:fixity>
+                     <premis:fixity>
+                        <premis:messageDigestAlgorithm>MD5</premis:messageDigestAlgorithm>
+                        <premis:messageDigest>b77fe339d8b93f9e8dc07d9a679edbe6</premis:messageDigest>
+                        <premis:messageDigestOriginator>se.kb.mimer.reception.processstepfactory.ChecksumCalculator</premis:messageDigestOriginator>
+                     </premis:fixity>
+                     <premis:size>4616101</premis:size>
+                     <premis:format>
+                        <premis:formatDesignation>
+                           <premis:formatName>JPEG2000</premis:formatName>
+                           <premis:formatVersion/>
+                        </premis:formatDesignation>
+                        <premis:formatRegistry>
+                           <premis:formatRegistryName>PRONOM</premis:formatRegistryName>
+                           <premis:formatRegistryKey>x-fmt/392</premis:formatRegistryKey>
+                           <premis:formatRegistryRole>specification</premis:formatRegistryRole>
+                        </premis:formatRegistry>
+                     </premis:format>
+                     <premis:objectCharacteristicsExtension>
+                        <mix:mix>
+                           <mix:BasicDigitalObjectInformation>
+                              <mix:Compression>
+                                 <mix:compressionScheme>JPEG 2000 lossy</mix:compressionScheme>
+                                 <mix:compressionRatio/>
+                              </mix:Compression>
+                           </mix:BasicDigitalObjectInformation>
+                           <mix:BasicImageInformation>
+                              <mix:BasicImageCharacteristics>
+                                 <mix:imageWidth>2699</mix:imageWidth>
+                                 <mix:imageHeight>3418</mix:imageHeight>
+                                 <mix:PhotometricInterpretation>
+                                    <mix:colorSpace>RGB</mix:colorSpace>
+                                    <mix:ColorProfile>
+                                       <mix:IccProfile>
+                                          <mix:iccProfileName>sRGB</mix:iccProfileName>
+                                          <mix:iccProfileVersion>IEC61966-2.1</mix:iccProfileVersion>
+                                       </mix:IccProfile>
+                                    </mix:ColorProfile>
+                                 </mix:PhotometricInterpretation>
+                              </mix:BasicImageCharacteristics>
+                           </mix:BasicImageInformation>
+                           <mix:ImageCaptureMetadata>
+                              <mix:GeneralCaptureInformation>
+                                 <mix:dateTimeCreated>2013-01-17</mix:dateTimeCreated>
+                                 <mix:imageProducer>Kungliga biblioteket - National Library of Sweden</mix:imageProducer>
+                              </mix:GeneralCaptureInformation>
+                              <mix:ScannerCapture>
+                                 <mix:scannerManufacturer>Zeutchel</mix:scannerManufacturer>
+                                 <mix:ScannerModel>
+                                    <mix:scannerModelName>OS14</mix:scannerModelName>
+                                 </mix:ScannerModel>
+                                 <mix:ScanningSystemSoftware>
+                                    <mix:scanningSoftwareName>Omniscan</mix:scanningSoftwareName>
+                                    <mix:scanningSoftwareVersionNo>12</mix:scanningSoftwareVersionNo>
+                                 </mix:ScanningSystemSoftware>
+                              </mix:ScannerCapture>
+                              <mix:orientation>normal*</mix:orientation>
+                           </mix:ImageCaptureMetadata>
+                           <mix:ImageAssessmentMetadata>
+                              <mix:ImageColorEncoding>
+                                 <mix:BitsPerSample>
+                                    <mix:bitsPerSampleValue>8</mix:bitsPerSampleValue>
+                                    <mix:bitsPerSampleValue>8</mix:bitsPerSampleValue>
+                                    <mix:bitsPerSampleValue>8</mix:bitsPerSampleValue>
+                                    <mix:bitsPerSampleUnit>integer</mix:bitsPerSampleUnit>
+                                 </mix:BitsPerSample>
+                                 <mix:samplesPerPixel>3</mix:samplesPerPixel>
+                              </mix:ImageColorEncoding>
+                              <mix:TargetData>
+                                 <mix:targetType>internal</mix:targetType>
+                                 <mix:TargetID>
+                                    <mix:targetManufacturer/>
+                                    <mix:targetName/>
+                                    <mix:targetNo/>
+                                 </mix:TargetID>
+                              </mix:TargetData>
+                           </mix:ImageAssessmentMetadata>
+                        </mix:mix>
+                     </premis:objectCharacteristicsExtension>
+                  </premis:objectCharacteristics>
+               </premis:object>
+            </mets:xmlData>
+         </mets:mdWrap>
+      </mets:techMD>
+      <mets:techMD ID="techMD005">
+         <mets:mdWrap MDTYPE="PREMIS:OBJECT">
+            <mets:xmlData>
+               <premis:object xsi:schemaLocation="info:lc/xmlns/premis-v2 http://www.loc.gov/standards/premis/v2/premis-v2-0.xsd" xsi:type="premis:file">
+                  <premis:objectIdentifier>
+                     <premis:objectIdentifierType>uri</premis:objectIdentifierType>
+                     <premis:objectIdentifierValue>urn:nbn:se:kb:dark-object-instance-2957031</premis:objectIdentifierValue>
+                  </premis:objectIdentifier>
+                  <premis:objectCharacteristics>
+                     <premis:compositionLevel>0</premis:compositionLevel>
+                     <premis:fixity>
+                        <premis:messageDigestAlgorithm>MD5</premis:messageDigestAlgorithm>
+                        <premis:messageDigest>95815768ad29a5fa9edb0888d71a5a50</premis:messageDigest>
+                        <premis:messageDigestOriginator>supplier</premis:messageDigestOriginator>
+                     </premis:fixity>
+                     <premis:fixity>
+                        <premis:messageDigestAlgorithm>MD5</premis:messageDigestAlgorithm>
+                        <premis:messageDigest>95815768ad29a5fa9edb0888d71a5a50</premis:messageDigest>
+                        <premis:messageDigestOriginator>se.kb.mimer.reception.processstepfactory.ChecksumCalculator</premis:messageDigestOriginator>
+                     </premis:fixity>
+                     <premis:size>4624535</premis:size>
+                     <premis:format>
+                        <premis:formatDesignation>
+                           <premis:formatName>JPEG2000</premis:formatName>
+                           <premis:formatVersion/>
+                        </premis:formatDesignation>
+                        <premis:formatRegistry>
+                           <premis:formatRegistryName>PRONOM</premis:formatRegistryName>
+                           <premis:formatRegistryKey>x-fmt/392</premis:formatRegistryKey>
+                           <premis:formatRegistryRole>specification</premis:formatRegistryRole>
+                        </premis:formatRegistry>
+                     </premis:format>
+                     <premis:objectCharacteristicsExtension>
+                        <mix:mix>
+                           <mix:BasicDigitalObjectInformation>
+                              <mix:Compression>
+                                 <mix:compressionScheme>JPEG 2000 lossy</mix:compressionScheme>
+                                 <mix:compressionRatio/>
+                              </mix:Compression>
+                           </mix:BasicDigitalObjectInformation>
+                           <mix:BasicImageInformation>
+                              <mix:BasicImageCharacteristics>
+                                 <mix:imageWidth>2689</mix:imageWidth>
+                                 <mix:imageHeight>3437</mix:imageHeight>
+                                 <mix:PhotometricInterpretation>
+                                    <mix:colorSpace>RGB</mix:colorSpace>
+                                    <mix:ColorProfile>
+                                       <mix:IccProfile>
+                                          <mix:iccProfileName>sRGB</mix:iccProfileName>
+                                          <mix:iccProfileVersion>IEC61966-2.1</mix:iccProfileVersion>
+                                       </mix:IccProfile>
+                                    </mix:ColorProfile>
+                                 </mix:PhotometricInterpretation>
+                              </mix:BasicImageCharacteristics>
+                           </mix:BasicImageInformation>
+                           <mix:ImageCaptureMetadata>
+                              <mix:GeneralCaptureInformation>
+                                 <mix:dateTimeCreated>2013-01-17</mix:dateTimeCreated>
+                                 <mix:imageProducer>Kungliga biblioteket - National Library of Sweden</mix:imageProducer>
+                              </mix:GeneralCaptureInformation>
+                              <mix:ScannerCapture>
+                                 <mix:scannerManufacturer>Zeutchel</mix:scannerManufacturer>
+                                 <mix:ScannerModel>
+                                    <mix:scannerModelName>OS14</mix:scannerModelName>
+                                 </mix:ScannerModel>
+                                 <mix:ScanningSystemSoftware>
+                                    <mix:scanningSoftwareName>Omniscan</mix:scanningSoftwareName>
+                                    <mix:scanningSoftwareVersionNo>12</mix:scanningSoftwareVersionNo>
+                                 </mix:ScanningSystemSoftware>
+                              </mix:ScannerCapture>
+                              <mix:orientation>normal*</mix:orientation>
+                           </mix:ImageCaptureMetadata>
+                           <mix:ImageAssessmentMetadata>
+                              <mix:ImageColorEncoding>
+                                 <mix:BitsPerSample>
+                                    <mix:bitsPerSampleValue>8</mix:bitsPerSampleValue>
+                                    <mix:bitsPerSampleValue>8</mix:bitsPerSampleValue>
+                                    <mix:bitsPerSampleValue>8</mix:bitsPerSampleValue>
+                                    <mix:bitsPerSampleUnit>integer</mix:bitsPerSampleUnit>
+                                 </mix:BitsPerSample>
+                                 <mix:samplesPerPixel>3</mix:samplesPerPixel>
+                              </mix:ImageColorEncoding>
+                              <mix:TargetData>
+                                 <mix:targetType>internal</mix:targetType>
+                                 <mix:TargetID>
+                                    <mix:targetManufacturer/>
+                                    <mix:targetName/>
+                                    <mix:targetNo/>
+                                 </mix:TargetID>
+                              </mix:TargetData>
+                           </mix:ImageAssessmentMetadata>
+                        </mix:mix>
+                     </premis:objectCharacteristicsExtension>
+                  </premis:objectCharacteristics>
+               </premis:object>
+            </mets:xmlData>
+         </mets:mdWrap>
+      </mets:techMD>
+      <mets:techMD ID="techMD006">
+         <mets:mdWrap MDTYPE="PREMIS:OBJECT">
+            <mets:xmlData>
+               <premis:object xsi:schemaLocation="info:lc/xmlns/premis-v2 http://www.loc.gov/standards/premis/v2/premis-v2-0.xsd" xsi:type="premis:file">
+                  <premis:objectIdentifier>
+                     <premis:objectIdentifierType>uri</premis:objectIdentifierType>
+                     <premis:objectIdentifierValue>urn:nbn:se:kb:dark-object-instance-2957032</premis:objectIdentifierValue>
+                  </premis:objectIdentifier>
+                  <premis:objectCharacteristics>
+                     <premis:compositionLevel>0</premis:compositionLevel>
+                     <premis:fixity>
+                        <premis:messageDigestAlgorithm>MD5</premis:messageDigestAlgorithm>
+                        <premis:messageDigest>ea1788323770eef0e61e09aa199747b8</premis:messageDigest>
+                        <premis:messageDigestOriginator>supplier</premis:messageDigestOriginator>
+                     </premis:fixity>
+                     <premis:fixity>
+                        <premis:messageDigestAlgorithm>MD5</premis:messageDigestAlgorithm>
+                        <premis:messageDigest>ea1788323770eef0e61e09aa199747b8</premis:messageDigest>
+                        <premis:messageDigestOriginator>se.kb.mimer.reception.processstepfactory.ChecksumCalculator</premis:messageDigestOriginator>
+                     </premis:fixity>
+                     <premis:size>4629130</premis:size>
+                     <premis:format>
+                        <premis:formatDesignation>
+                           <premis:formatName>JPEG2000</premis:formatName>
+                           <premis:formatVersion/>
+                        </premis:formatDesignation>
+                        <premis:formatRegistry>
+                           <premis:formatRegistryName>PRONOM</premis:formatRegistryName>
+                           <premis:formatRegistryKey>x-fmt/392</premis:formatRegistryKey>
+                           <premis:formatRegistryRole>specification</premis:formatRegistryRole>
+                        </premis:formatRegistry>
+                     </premis:format>
+                     <premis:objectCharacteristicsExtension>
+                        <mix:mix>
+                           <mix:BasicDigitalObjectInformation>
+                              <mix:Compression>
+                                 <mix:compressionScheme>JPEG 2000 lossy</mix:compressionScheme>
+                                 <mix:compressionRatio/>
+                              </mix:Compression>
+                           </mix:BasicDigitalObjectInformation>
+                           <mix:BasicImageInformation>
+                              <mix:BasicImageCharacteristics>
+                                 <mix:imageWidth>2709</mix:imageWidth>
+                                 <mix:imageHeight>3415</mix:imageHeight>
+                                 <mix:PhotometricInterpretation>
+                                    <mix:colorSpace>RGB</mix:colorSpace>
+                                    <mix:ColorProfile>
+                                       <mix:IccProfile>
+                                          <mix:iccProfileName>sRGB</mix:iccProfileName>
+                                          <mix:iccProfileVersion>IEC61966-2.1</mix:iccProfileVersion>
+                                       </mix:IccProfile>
+                                    </mix:ColorProfile>
+                                 </mix:PhotometricInterpretation>
+                              </mix:BasicImageCharacteristics>
+                           </mix:BasicImageInformation>
+                           <mix:ImageCaptureMetadata>
+                              <mix:GeneralCaptureInformation>
+                                 <mix:dateTimeCreated>2013-01-17</mix:dateTimeCreated>
+                                 <mix:imageProducer>Kungliga biblioteket - National Library of Sweden</mix:imageProducer>
+                              </mix:GeneralCaptureInformation>
+                              <mix:ScannerCapture>
+                                 <mix:scannerManufacturer>Zeutchel</mix:scannerManufacturer>
+                                 <mix:ScannerModel>
+                                    <mix:scannerModelName>OS14</mix:scannerModelName>
+                                 </mix:ScannerModel>
+                                 <mix:ScanningSystemSoftware>
+                                    <mix:scanningSoftwareName>Omniscan</mix:scanningSoftwareName>
+                                    <mix:scanningSoftwareVersionNo>12</mix:scanningSoftwareVersionNo>
+                                 </mix:ScanningSystemSoftware>
+                              </mix:ScannerCapture>
+                              <mix:orientation>normal*</mix:orientation>
+                           </mix:ImageCaptureMetadata>
+                           <mix:ImageAssessmentMetadata>
+                              <mix:ImageColorEncoding>
+                                 <mix:BitsPerSample>
+                                    <mix:bitsPerSampleValue>8</mix:bitsPerSampleValue>
+                                    <mix:bitsPerSampleValue>8</mix:bitsPerSampleValue>
+                                    <mix:bitsPerSampleValue>8</mix:bitsPerSampleValue>
+                                    <mix:bitsPerSampleUnit>integer</mix:bitsPerSampleUnit>
+                                 </mix:BitsPerSample>
+                                 <mix:samplesPerPixel>3</mix:samplesPerPixel>
+                              </mix:ImageColorEncoding>
+                              <mix:TargetData>
+                                 <mix:targetType>internal</mix:targetType>
+                                 <mix:TargetID>
+                                    <mix:targetManufacturer/>
+                                    <mix:targetName/>
+                                    <mix:targetNo/>
+                                 </mix:TargetID>
+                              </mix:TargetData>
+                           </mix:ImageAssessmentMetadata>
+                        </mix:mix>
+                     </premis:objectCharacteristicsExtension>
+                  </premis:objectCharacteristics>
+               </premis:object>
+            </mets:xmlData>
+         </mets:mdWrap>
+      </mets:techMD>
+      <mets:techMD ID="techMD007">
+         <mets:mdWrap MDTYPE="PREMIS:OBJECT">
+            <mets:xmlData>
+               <premis:object xsi:schemaLocation="info:lc/xmlns/premis-v2 http://www.loc.gov/standards/premis/v2/premis-v2-0.xsd" xsi:type="premis:file">
+                  <premis:objectIdentifier>
+                     <premis:objectIdentifierType>uri</premis:objectIdentifierType>
+                     <premis:objectIdentifierValue>urn:nbn:se:kb:dark-object-instance-2957033</premis:objectIdentifierValue>
+                  </premis:objectIdentifier>
+                  <premis:objectCharacteristics>
+                     <premis:compositionLevel>0</premis:compositionLevel>
+                     <premis:fixity>
+                        <premis:messageDigestAlgorithm>MD5</premis:messageDigestAlgorithm>
+                        <premis:messageDigest>83a3bc93326d816d32399587a67058d4</premis:messageDigest>
+                        <premis:messageDigestOriginator>supplier</premis:messageDigestOriginator>
+                     </premis:fixity>
+                     <premis:fixity>
+                        <premis:messageDigestAlgorithm>MD5</premis:messageDigestAlgorithm>
+                        <premis:messageDigest>83a3bc93326d816d32399587a67058d4</premis:messageDigest>
+                        <premis:messageDigestOriginator>se.kb.mimer.reception.processstepfactory.ChecksumCalculator</premis:messageDigestOriginator>
+                     </premis:fixity>
+                     <premis:size>106362</premis:size>
+                     <premis:format>
+                        <premis:formatDesignation>
+                           <premis:formatName>Extensible Markup Language</premis:formatName>
+                           <premis:formatVersion>1.0</premis:formatVersion>
+                        </premis:formatDesignation>
+                        <premis:formatRegistry>
+                           <premis:formatRegistryName>PRONOM</premis:formatRegistryName>
+                           <premis:formatRegistryKey>fmt/101</premis:formatRegistryKey>
+                           <premis:formatRegistryRole>specification</premis:formatRegistryRole>
+                        </premis:formatRegistry>
+                     </premis:format>
+                  </premis:objectCharacteristics>
+               </premis:object>
+            </mets:xmlData>
+         </mets:mdWrap>
+      </mets:techMD>
+      <mets:techMD ID="techMD008">
+         <mets:mdWrap MDTYPE="PREMIS:OBJECT">
+            <mets:xmlData>
+               <premis:object xsi:schemaLocation="info:lc/xmlns/premis-v2 http://www.loc.gov/standards/premis/v2/premis-v2-0.xsd" xsi:type="premis:file">
+                  <premis:objectIdentifier>
+                     <premis:objectIdentifierType>uri</premis:objectIdentifierType>
+                     <premis:objectIdentifierValue>urn:nbn:se:kb:dark-object-instance-2957034</premis:objectIdentifierValue>
+                  </premis:objectIdentifier>
+                  <premis:objectCharacteristics>
+                     <premis:compositionLevel>0</premis:compositionLevel>
+                     <premis:fixity>
+                        <premis:messageDigestAlgorithm>MD5</premis:messageDigestAlgorithm>
+                        <premis:messageDigest>69138495617907c36bed17daf99426b4</premis:messageDigest>
+                        <premis:messageDigestOriginator>supplier</premis:messageDigestOriginator>
+                     </premis:fixity>
+                     <premis:fixity>
+                        <premis:messageDigestAlgorithm>MD5</premis:messageDigestAlgorithm>
+                        <premis:messageDigest>69138495617907c36bed17daf99426b4</premis:messageDigest>
+                        <premis:messageDigestOriginator>se.kb.mimer.reception.processstepfactory.ChecksumCalculator</premis:messageDigestOriginator>
+                     </premis:fixity>
+                     <premis:size>111006</premis:size>
+                     <premis:format>
+                        <premis:formatDesignation>
+                           <premis:formatName>Extensible Markup Language</premis:formatName>
+                           <premis:formatVersion>1.0</premis:formatVersion>
+                        </premis:formatDesignation>
+                        <premis:formatRegistry>
+                           <premis:formatRegistryName>PRONOM</premis:formatRegistryName>
+                           <premis:formatRegistryKey>fmt/101</premis:formatRegistryKey>
+                           <premis:formatRegistryRole>specification</premis:formatRegistryRole>
+                        </premis:formatRegistry>
+                     </premis:format>
+                  </premis:objectCharacteristics>
+               </premis:object>
+            </mets:xmlData>
+         </mets:mdWrap>
+      </mets:techMD>
+      <mets:techMD ID="techMD009">
+         <mets:mdWrap MDTYPE="PREMIS:OBJECT">
+            <mets:xmlData>
+               <premis:object xsi:schemaLocation="info:lc/xmlns/premis-v2 http://www.loc.gov/standards/premis/v2/premis-v2-0.xsd" xsi:type="premis:file">
+                  <premis:objectIdentifier>
+                     <premis:objectIdentifierType>uri</premis:objectIdentifierType>
+                     <premis:objectIdentifierValue>urn:nbn:se:kb:dark-object-instance-2957035</premis:objectIdentifierValue>
+                  </premis:objectIdentifier>
+                  <premis:objectCharacteristics>
+                     <premis:compositionLevel>0</premis:compositionLevel>
+                     <premis:fixity>
+                        <premis:messageDigestAlgorithm>MD5</premis:messageDigestAlgorithm>
+                        <premis:messageDigest>99f8b25ceec1270f08c481632f1ee25e</premis:messageDigest>
+                        <premis:messageDigestOriginator>supplier</premis:messageDigestOriginator>
+                     </premis:fixity>
+                     <premis:fixity>
+                        <premis:messageDigestAlgorithm>MD5</premis:messageDigestAlgorithm>
+                        <premis:messageDigest>99f8b25ceec1270f08c481632f1ee25e</premis:messageDigest>
+                        <premis:messageDigestOriginator>se.kb.mimer.reception.processstepfactory.ChecksumCalculator</premis:messageDigestOriginator>
+                     </premis:fixity>
+                     <premis:size>184454</premis:size>
+                     <premis:format>
+                        <premis:formatDesignation>
+                           <premis:formatName>Extensible Markup Language</premis:formatName>
+                           <premis:formatVersion>1.0</premis:formatVersion>
+                        </premis:formatDesignation>
+                        <premis:formatRegistry>
+                           <premis:formatRegistryName>PRONOM</premis:formatRegistryName>
+                           <premis:formatRegistryKey>fmt/101</premis:formatRegistryKey>
+                           <premis:formatRegistryRole>specification</premis:formatRegistryRole>
+                        </premis:formatRegistry>
+                     </premis:format>
+                  </premis:objectCharacteristics>
+               </premis:object>
+            </mets:xmlData>
+         </mets:mdWrap>
+      </mets:techMD>
+      <mets:techMD ID="techMD010">
+         <mets:mdWrap MDTYPE="PREMIS:OBJECT">
+            <mets:xmlData>
+               <premis:object xsi:schemaLocation="info:lc/xmlns/premis-v2 http://www.loc.gov/standards/premis/v2/premis-v2-0.xsd" xsi:type="premis:file">
+                  <premis:objectIdentifier>
+                     <premis:objectIdentifierType>uri</premis:objectIdentifierType>
+                     <premis:objectIdentifierValue>urn:nbn:se:kb:dark-object-instance-2957036</premis:objectIdentifierValue>
+                  </premis:objectIdentifier>
+                  <premis:objectCharacteristics>
+                     <premis:compositionLevel>0</premis:compositionLevel>
+                     <premis:fixity>
+                        <premis:messageDigestAlgorithm>MD5</premis:messageDigestAlgorithm>
+                        <premis:messageDigest>37c4a29080db0bce6297ea51eb2915a0</premis:messageDigest>
+                        <premis:messageDigestOriginator>supplier</premis:messageDigestOriginator>
+                     </premis:fixity>
+                     <premis:fixity>
+                        <premis:messageDigestAlgorithm>MD5</premis:messageDigestAlgorithm>
+                        <premis:messageDigest>37c4a29080db0bce6297ea51eb2915a0</premis:messageDigest>
+                        <premis:messageDigestOriginator>se.kb.mimer.reception.processstepfactory.ChecksumCalculator</premis:messageDigestOriginator>
+                     </premis:fixity>
+                     <premis:size>201949</premis:size>
+                     <premis:format>
+                        <premis:formatDesignation>
+                           <premis:formatName>Extensible Markup Language</premis:formatName>
+                           <premis:formatVersion>1.0</premis:formatVersion>
+                        </premis:formatDesignation>
+                        <premis:formatRegistry>
+                           <premis:formatRegistryName>PRONOM</premis:formatRegistryName>
+                           <premis:formatRegistryKey>fmt/101</premis:formatRegistryKey>
+                           <premis:formatRegistryRole>specification</premis:formatRegistryRole>
+                        </premis:formatRegistry>
+                     </premis:format>
+                  </premis:objectCharacteristics>
+               </premis:object>
+            </mets:xmlData>
+         </mets:mdWrap>
+      </mets:techMD>
+      <mets:techMD ID="techMD011">
+         <mets:mdWrap MDTYPE="PREMIS:OBJECT">
+            <mets:xmlData>
+               <premis:object xsi:schemaLocation="info:lc/xmlns/premis-v2 http://www.loc.gov/standards/premis/v2/premis-v2-0.xsd" xsi:type="premis:file">
+                  <premis:objectIdentifier>
+                     <premis:objectIdentifierType>uri</premis:objectIdentifierType>
+                     <premis:objectIdentifierValue>urn:nbn:se:kb:dark-object-instance-2957037</premis:objectIdentifierValue>
+                  </premis:objectIdentifier>
+                  <premis:objectCharacteristics>
+                     <premis:compositionLevel>0</premis:compositionLevel>
+                     <premis:fixity>
+                        <premis:messageDigestAlgorithm>MD5</premis:messageDigestAlgorithm>
+                        <premis:messageDigest>0558f2e8d972bd50022e51ade155071e</premis:messageDigest>
+                        <premis:messageDigestOriginator>supplier</premis:messageDigestOriginator>
+                     </premis:fixity>
+                     <premis:fixity>
+                        <premis:messageDigestAlgorithm>MD5</premis:messageDigestAlgorithm>
+                        <premis:messageDigest>0558f2e8d972bd50022e51ade155071e</premis:messageDigest>
+                        <premis:messageDigestOriginator>se.kb.mimer.reception.processstepfactory.ChecksumCalculator</premis:messageDigestOriginator>
+                     </premis:fixity>
+                     <premis:size>213134</premis:size>
+                     <premis:format>
+                        <premis:formatDesignation>
+                           <premis:formatName>Extensible Markup Language</premis:formatName>
+                           <premis:formatVersion>1.0</premis:formatVersion>
+                        </premis:formatDesignation>
+                        <premis:formatRegistry>
+                           <premis:formatRegistryName>PRONOM</premis:formatRegistryName>
+                           <premis:formatRegistryKey>fmt/101</premis:formatRegistryKey>
+                           <premis:formatRegistryRole>specification</premis:formatRegistryRole>
+                        </premis:formatRegistry>
+                     </premis:format>
+                  </premis:objectCharacteristics>
+               </premis:object>
+            </mets:xmlData>
+         </mets:mdWrap>
+      </mets:techMD>
+      <mets:techMD ID="techMD012">
+         <mets:mdWrap MDTYPE="PREMIS:OBJECT">
+            <mets:xmlData>
+               <premis:object xsi:schemaLocation="info:lc/xmlns/premis-v2 http://www.loc.gov/standards/premis/v2/premis-v2-0.xsd" xsi:type="premis:file">
+                  <premis:objectIdentifier>
+                     <premis:objectIdentifierType>uri</premis:objectIdentifierType>
+                     <premis:objectIdentifierValue>urn:nbn:se:kb:dark-object-instance-2957038</premis:objectIdentifierValue>
+                  </premis:objectIdentifier>
+                  <premis:objectCharacteristics>
+                     <premis:compositionLevel>0</premis:compositionLevel>
+                     <premis:fixity>
+                        <premis:messageDigestAlgorithm>MD5</premis:messageDigestAlgorithm>
+                        <premis:messageDigest>dcb47b6e6c4f8e8a28addb8f63fafd3a</premis:messageDigest>
+                        <premis:messageDigestOriginator>supplier</premis:messageDigestOriginator>
+                     </premis:fixity>
+                     <premis:fixity>
+                        <premis:messageDigestAlgorithm>MD5</premis:messageDigestAlgorithm>
+                        <premis:messageDigest>dcb47b6e6c4f8e8a28addb8f63fafd3a</premis:messageDigest>
+                        <premis:messageDigestOriginator>se.kb.mimer.reception.processstepfactory.ChecksumCalculator</premis:messageDigestOriginator>
+                     </premis:fixity>
+                     <premis:size>207016</premis:size>
+                     <premis:format>
+                        <premis:formatDesignation>
+                           <premis:formatName>Extensible Markup Language</premis:formatName>
+                           <premis:formatVersion>1.0</premis:formatVersion>
+                        </premis:formatDesignation>
+                        <premis:formatRegistry>
+                           <premis:formatRegistryName>PRONOM</premis:formatRegistryName>
+                           <premis:formatRegistryKey>fmt/101</premis:formatRegistryKey>
+                           <premis:formatRegistryRole>specification</premis:formatRegistryRole>
+                        </premis:formatRegistry>
+                     </premis:format>
+                  </premis:objectCharacteristics>
+               </premis:object>
+            </mets:xmlData>
+         </mets:mdWrap>
+      </mets:techMD>
+      <mets:techMD ID="techMD013">
+         <mets:mdWrap MDTYPE="PREMIS:OBJECT">
+            <mets:xmlData>
+               <premis:object xsi:schemaLocation="info:lc/xmlns/premis-v2 http://www.loc.gov/standards/premis/v2/premis-v2-0.xsd" xsi:type="premis:representation">
+                  <premis:objectIdentifier>
+                     <premis:objectIdentifierType>local</premis:objectIdentifierType>
+                     <premis:objectIdentifierValue>urn:nbn:se:kb:dark-package-instance-38269</premis:objectIdentifierValue>
+                  </premis:objectIdentifier>
+                  <premis:linkingIntellectualEntityIdentifier>
+                     <premis:linkingIntellectualEntityIdentifierType>uri</premis:linkingIntellectualEntityIdentifierType>
+                     <premis:linkingIntellectualEntityIdentifierValue>urn:nbn:se:kb:dark-37623</premis:linkingIntellectualEntityIdentifierValue>
+                  </premis:linkingIntellectualEntityIdentifier>
+               </premis:object>
+            </mets:xmlData>
+         </mets:mdWrap>
+      </mets:techMD>
+      <mets:techMD ID="techMD014">
+         <mets:mdWrap MDTYPE="PREMIS:OBJECT">
+            <mets:xmlData>
+               <premis:object xsi:schemaLocation="info:lc/xmlns/premis-v2 http://www.loc.gov/standards/premis/v2/premis-v2-0.xsd" xsi:type="premis:file">
+                  <premis:objectIdentifier>
+                     <premis:objectIdentifierType>uri</premis:objectIdentifierType>
+                     <premis:objectIdentifierValue>urn:nbn:se:kb:dark-object-instance-2957039</premis:objectIdentifierValue>
+                  </premis:objectIdentifier>
+                  <premis:objectCharacteristics>
+                     <premis:compositionLevel>0</premis:compositionLevel>
+                     <premis:fixity>
+                        <premis:messageDigestAlgorithm>MD5</premis:messageDigestAlgorithm>
+                        <premis:messageDigest>09515454b7ba248316c6dac52abcdfaf</premis:messageDigest>
+                        <premis:messageDigestOriginator>se.kb.mimer.reception.processstepfactory.ChecksumCalculator</premis:messageDigestOriginator>
+                     </premis:fixity>
+                     <premis:size>52164</premis:size>
+                     <premis:format>
+                        <premis:formatDesignation>
+                           <premis:formatName>Extensible Markup Language</premis:formatName>
+                           <premis:formatVersion>1.0</premis:formatVersion>
+                        </premis:formatDesignation>
+                        <premis:formatRegistry>
+                           <premis:formatRegistryName>PRONOM</premis:formatRegistryName>
+                           <premis:formatRegistryKey>fmt/101</premis:formatRegistryKey>
+                           <premis:formatRegistryRole>specification</premis:formatRegistryRole>
+                        </premis:formatRegistry>
+                     </premis:format>
+                  </premis:objectCharacteristics>
+                  <premis:originalName>bib4345612_18301206_0_1.mets.metadata</premis:originalName>
+               </premis:object>
+            </mets:xmlData>
+         </mets:mdWrap>
+      </mets:techMD>
+      <mets:digiprovMD ID="digiprovMD001">
+         <mets:mdWrap MDTYPE="PREMIS:EVENT">
+            <mets:xmlData>
+               <premis:event>
+                  <premis:eventIdentifier>
+                     <premis:eventIdentifierType>UUID</premis:eventIdentifierType>
+                     <premis:eventIdentifierValue>4d207917-2c2c-49e7-99b7-bd7d92084209</premis:eventIdentifierValue>
+                  </premis:eventIdentifier>
+                  <premis:eventType>validation</premis:eventType>
+                  <premis:eventDateTime>2013-01-26T12:54:26</premis:eventDateTime>
+                  <premis:eventDetail>All files in SIP</premis:eventDetail>
+                  <premis:eventOutcomeInformation>
+                     <premis:eventOutcome>failure</premis:eventOutcome>
+                  </premis:eventOutcomeInformation>
+                  <premis:linkingAgentIdentifier>
+                     <premis:linkingAgentIdentifierType>MimerImplementation</premis:linkingAgentIdentifierType>
+                     <premis:linkingAgentIdentifierValue>se.kb.mimer.reception.processstepfactory.ValidateMissingFiles:1.1.1</premis:linkingAgentIdentifierValue>
+                     <premis:linkingAgentRole>ExecutingProgram</premis:linkingAgentRole>
+                  </premis:linkingAgentIdentifier>
+                  <premis:linkingObjectIdentifier>
+                     <premis:linkingObjectIdentifierType>urn</premis:linkingObjectIdentifierType>
+                     <premis:linkingObjectIdentifierValue>urn:nbn:se:kb:dark-package-instance-38269</premis:linkingObjectIdentifierValue>
+                  </premis:linkingObjectIdentifier>
+               </premis:event>
+               <premis:event>
+                  <premis:eventIdentifier>
+                     <premis:eventIdentifierType>UUID</premis:eventIdentifierType>
+                     <premis:eventIdentifierValue>8cf30c94-9a06-4fce-b304-9e55624ecd48</premis:eventIdentifierValue>
+                  </premis:eventIdentifier>
+                  <premis:eventType>validation</premis:eventType>
+                  <premis:eventDateTime>2013-01-26T12:54:26</premis:eventDateTime>
+                  <premis:eventDetail>Detect checksum from supplier</premis:eventDetail>
+                  <premis:eventOutcomeInformation>
+                     <premis:eventOutcome>success</premis:eventOutcome>
+                  </premis:eventOutcomeInformation>
+                  <premis:linkingAgentIdentifier>
+                     <premis:linkingAgentIdentifierType>MimerImplementation</premis:linkingAgentIdentifierType>
+                     <premis:linkingAgentIdentifierValue>se.kb.mimer.reception.processstepfactory.DetectSupplierChecksums:1.1.1</premis:linkingAgentIdentifierValue>
+                     <premis:linkingAgentRole>ExecutingProgram</premis:linkingAgentRole>
+                  </premis:linkingAgentIdentifier>
+                  <premis:linkingObjectIdentifier>
+                     <premis:linkingObjectIdentifierType>urn</premis:linkingObjectIdentifierType>
+                     <premis:linkingObjectIdentifierValue>urn:nbn:se:kb:dark-object-instance-2957027</premis:linkingObjectIdentifierValue>
+                  </premis:linkingObjectIdentifier>
+               </premis:event>
+               <premis:event>
+                  <premis:eventIdentifier>
+                     <premis:eventIdentifierType>UUID</premis:eventIdentifierType>
+                     <premis:eventIdentifierValue>9902c858-9035-4488-89d2-44e4d5b79766</premis:eventIdentifierValue>
+                  </premis:eventIdentifier>
+                  <premis:eventType>validation</premis:eventType>
+                  <premis:eventDateTime>2013-01-26T12:54:26</premis:eventDateTime>
+                  <premis:eventDetail>Detect checksum from supplier</premis:eventDetail>
+                  <premis:eventOutcomeInformation>
+                     <premis:eventOutcome>success</premis:eventOutcome>
+                  </premis:eventOutcomeInformation>
+                  <premis:linkingAgentIdentifier>
+                     <premis:linkingAgentIdentifierType>MimerImplementation</premis:linkingAgentIdentifierType>
+                     <premis:linkingAgentIdentifierValue>se.kb.mimer.reception.processstepfactory.DetectSupplierChecksums:1.1.1</premis:linkingAgentIdentifierValue>
+                     <premis:linkingAgentRole>ExecutingProgram</premis:linkingAgentRole>
+                  </premis:linkingAgentIdentifier>
+                  <premis:linkingObjectIdentifier>
+                     <premis:linkingObjectIdentifierType>urn</premis:linkingObjectIdentifierType>
+                     <premis:linkingObjectIdentifierValue>urn:nbn:se:kb:dark-object-instance-2957028</premis:linkingObjectIdentifierValue>
+                  </premis:linkingObjectIdentifier>
+               </premis:event>
+               <premis:event>
+                  <premis:eventIdentifier>
+                     <premis:eventIdentifierType>UUID</premis:eventIdentifierType>
+                     <premis:eventIdentifierValue>c36ee167-b04a-49c6-a2df-3523b54a4a7c</premis:eventIdentifierValue>
+                  </premis:eventIdentifier>
+                  <premis:eventType>validation</premis:eventType>
+                  <premis:eventDateTime>2013-01-26T12:54:26</premis:eventDateTime>
+                  <premis:eventDetail>Detect checksum from supplier</premis:eventDetail>
+                  <premis:eventOutcomeInformation>
+                     <premis:eventOutcome>success</premis:eventOutcome>
+                  </premis:eventOutcomeInformation>
+                  <premis:linkingAgentIdentifier>
+                     <premis:linkingAgentIdentifierType>MimerImplementation</premis:linkingAgentIdentifierType>
+                     <premis:linkingAgentIdentifierValue>se.kb.mimer.reception.processstepfactory.DetectSupplierChecksums:1.1.1</premis:linkingAgentIdentifierValue>
+                     <premis:linkingAgentRole>ExecutingProgram</premis:linkingAgentRole>
+                  </premis:linkingAgentIdentifier>
+                  <premis:linkingObjectIdentifier>
+                     <premis:linkingObjectIdentifierType>urn</premis:linkingObjectIdentifierType>
+                     <premis:linkingObjectIdentifierValue>urn:nbn:se:kb:dark-object-instance-2957029</premis:linkingObjectIdentifierValue>
+                  </premis:linkingObjectIdentifier>
+               </premis:event>
+               <premis:event>
+                  <premis:eventIdentifier>
+                     <premis:eventIdentifierType>UUID</premis:eventIdentifierType>
+                     <premis:eventIdentifierValue>246b1091-c556-4eaa-b8c9-073d029de80d</premis:eventIdentifierValue>
+                  </premis:eventIdentifier>
+                  <premis:eventType>validation</premis:eventType>
+                  <premis:eventDateTime>2013-01-26T12:54:26</premis:eventDateTime>
+                  <premis:eventDetail>Detect checksum from supplier</premis:eventDetail>
+                  <premis:eventOutcomeInformation>
+                     <premis:eventOutcome>success</premis:eventOutcome>
+                  </premis:eventOutcomeInformation>
+                  <premis:linkingAgentIdentifier>
+                     <premis:linkingAgentIdentifierType>MimerImplementation</premis:linkingAgentIdentifierType>
+                     <premis:linkingAgentIdentifierValue>se.kb.mimer.reception.processstepfactory.DetectSupplierChecksums:1.1.1</premis:linkingAgentIdentifierValue>
+                     <premis:linkingAgentRole>ExecutingProgram</premis:linkingAgentRole>
+                  </premis:linkingAgentIdentifier>
+                  <premis:linkingObjectIdentifier>
+                     <premis:linkingObjectIdentifierType>urn</premis:linkingObjectIdentifierType>
+                     <premis:linkingObjectIdentifierValue>urn:nbn:se:kb:dark-object-instance-2957030</premis:linkingObjectIdentifierValue>
+                  </premis:linkingObjectIdentifier>
+               </premis:event>
+               <premis:event>
+                  <premis:eventIdentifier>
+                     <premis:eventIdentifierType>UUID</premis:eventIdentifierType>
+                     <premis:eventIdentifierValue>a7571884-37a7-42d5-bd7d-d04ac1f11989</premis:eventIdentifierValue>
+                  </premis:eventIdentifier>
+                  <premis:eventType>validation</premis:eventType>
+                  <premis:eventDateTime>2013-01-26T12:54:26</premis:eventDateTime>
+                  <premis:eventDetail>Detect checksum from supplier</premis:eventDetail>
+                  <premis:eventOutcomeInformation>
+                     <premis:eventOutcome>success</premis:eventOutcome>
+                  </premis:eventOutcomeInformation>
+                  <premis:linkingAgentIdentifier>
+                     <premis:linkingAgentIdentifierType>MimerImplementation</premis:linkingAgentIdentifierType>
+                     <premis:linkingAgentIdentifierValue>se.kb.mimer.reception.processstepfactory.DetectSupplierChecksums:1.1.1</premis:linkingAgentIdentifierValue>
+                     <premis:linkingAgentRole>ExecutingProgram</premis:linkingAgentRole>
+                  </premis:linkingAgentIdentifier>
+                  <premis:linkingObjectIdentifier>
+                     <premis:linkingObjectIdentifierType>urn</premis:linkingObjectIdentifierType>
+                     <premis:linkingObjectIdentifierValue>urn:nbn:se:kb:dark-object-instance-2957031</premis:linkingObjectIdentifierValue>
+                  </premis:linkingObjectIdentifier>
+               </premis:event>
+               <premis:event>
+                  <premis:eventIdentifier>
+                     <premis:eventIdentifierType>UUID</premis:eventIdentifierType>
+                     <premis:eventIdentifierValue>e84f52e9-46e6-403e-ad6a-6c3a37ffbc23</premis:eventIdentifierValue>
+                  </premis:eventIdentifier>
+                  <premis:eventType>validation</premis:eventType>
+                  <premis:eventDateTime>2013-01-26T12:54:26</premis:eventDateTime>
+                  <premis:eventDetail>Detect checksum from supplier</premis:eventDetail>
+                  <premis:eventOutcomeInformation>
+                     <premis:eventOutcome>success</premis:eventOutcome>
+                  </premis:eventOutcomeInformation>
+                  <premis:linkingAgentIdentifier>
+                     <premis:linkingAgentIdentifierType>MimerImplementation</premis:linkingAgentIdentifierType>
+                     <premis:linkingAgentIdentifierValue>se.kb.mimer.reception.processstepfactory.DetectSupplierChecksums:1.1.1</premis:linkingAgentIdentifierValue>
+                     <premis:linkingAgentRole>ExecutingProgram</premis:linkingAgentRole>
+                  </premis:linkingAgentIdentifier>
+                  <premis:linkingObjectIdentifier>
+                     <premis:linkingObjectIdentifierType>urn</premis:linkingObjectIdentifierType>
+                     <premis:linkingObjectIdentifierValue>urn:nbn:se:kb:dark-object-instance-2957032</premis:linkingObjectIdentifierValue>
+                  </premis:linkingObjectIdentifier>
+               </premis:event>
+               <premis:event>
+                  <premis:eventIdentifier>
+                     <premis:eventIdentifierType>UUID</premis:eventIdentifierType>
+                     <premis:eventIdentifierValue>94672e3c-7865-47cb-a053-a55c3260e3a3</premis:eventIdentifierValue>
+                  </premis:eventIdentifier>
+                  <premis:eventType>validation</premis:eventType>
+                  <premis:eventDateTime>2013-01-26T12:54:26</premis:eventDateTime>
+                  <premis:eventDetail>Detect checksum from supplier</premis:eventDetail>
+                  <premis:eventOutcomeInformation>
+                     <premis:eventOutcome>success</premis:eventOutcome>
+                  </premis:eventOutcomeInformation>
+                  <premis:linkingAgentIdentifier>
+                     <premis:linkingAgentIdentifierType>MimerImplementation</premis:linkingAgentIdentifierType>
+                     <premis:linkingAgentIdentifierValue>se.kb.mimer.reception.processstepfactory.DetectSupplierChecksums:1.1.1</premis:linkingAgentIdentifierValue>
+                     <premis:linkingAgentRole>ExecutingProgram</premis:linkingAgentRole>
+                  </premis:linkingAgentIdentifier>
+                  <premis:linkingObjectIdentifier>
+                     <premis:linkingObjectIdentifierType>urn</premis:linkingObjectIdentifierType>
+                     <premis:linkingObjectIdentifierValue>urn:nbn:se:kb:dark-object-instance-2957033</premis:linkingObjectIdentifierValue>
+                  </premis:linkingObjectIdentifier>
+               </premis:event>
+               <premis:event>
+                  <premis:eventIdentifier>
+                     <premis:eventIdentifierType>UUID</premis:eventIdentifierType>
+                     <premis:eventIdentifierValue>6ead1925-2755-461f-9f30-17a8f41a8f7d</premis:eventIdentifierValue>
+                  </premis:eventIdentifier>
+                  <premis:eventType>validation</premis:eventType>
+                  <premis:eventDateTime>2013-01-26T12:54:26</premis:eventDateTime>
+                  <premis:eventDetail>Detect checksum from supplier</premis:eventDetail>
+                  <premis:eventOutcomeInformation>
+                     <premis:eventOutcome>success</premis:eventOutcome>
+                  </premis:eventOutcomeInformation>
+                  <premis:linkingAgentIdentifier>
+                     <premis:linkingAgentIdentifierType>MimerImplementation</premis:linkingAgentIdentifierType>
+                     <premis:linkingAgentIdentifierValue>se.kb.mimer.reception.processstepfactory.DetectSupplierChecksums:1.1.1</premis:linkingAgentIdentifierValue>
+                     <premis:linkingAgentRole>ExecutingProgram</premis:linkingAgentRole>
+                  </premis:linkingAgentIdentifier>
+                  <premis:linkingObjectIdentifier>
+                     <premis:linkingObjectIdentifierType>urn</premis:linkingObjectIdentifierType>
+                     <premis:linkingObjectIdentifierValue>urn:nbn:se:kb:dark-object-instance-2957034</premis:linkingObjectIdentifierValue>
+                  </premis:linkingObjectIdentifier>
+               </premis:event>
+               <premis:event>
+                  <premis:eventIdentifier>
+                     <premis:eventIdentifierType>UUID</premis:eventIdentifierType>
+                     <premis:eventIdentifierValue>5fafd01f-e598-4e58-acd8-93b5cd989f17</premis:eventIdentifierValue>
+                  </premis:eventIdentifier>
+                  <premis:eventType>validation</premis:eventType>
+                  <premis:eventDateTime>2013-01-26T12:54:26</premis:eventDateTime>
+                  <premis:eventDetail>Detect checksum from supplier</premis:eventDetail>
+                  <premis:eventOutcomeInformation>
+                     <premis:eventOutcome>success</premis:eventOutcome>
+                  </premis:eventOutcomeInformation>
+                  <premis:linkingAgentIdentifier>
+                     <premis:linkingAgentIdentifierType>MimerImplementation</premis:linkingAgentIdentifierType>
+                     <premis:linkingAgentIdentifierValue>se.kb.mimer.reception.processstepfactory.DetectSupplierChecksums:1.1.1</premis:linkingAgentIdentifierValue>
+                     <premis:linkingAgentRole>ExecutingProgram</premis:linkingAgentRole>
+                  </premis:linkingAgentIdentifier>
+                  <premis:linkingObjectIdentifier>
+                     <premis:linkingObjectIdentifierType>urn</premis:linkingObjectIdentifierType>
+                     <premis:linkingObjectIdentifierValue>urn:nbn:se:kb:dark-object-instance-2957035</premis:linkingObjectIdentifierValue>
+                  </premis:linkingObjectIdentifier>
+               </premis:event>
+               <premis:event>
+                  <premis:eventIdentifier>
+                     <premis:eventIdentifierType>UUID</premis:eventIdentifierType>
+                     <premis:eventIdentifierValue>5ae416a6-f8e2-4ff7-a8c7-021de0b8515f</premis:eventIdentifierValue>
+                  </premis:eventIdentifier>
+                  <premis:eventType>validation</premis:eventType>
+                  <premis:eventDateTime>2013-01-26T12:54:26</premis:eventDateTime>
+                  <premis:eventDetail>Detect checksum from supplier</premis:eventDetail>
+                  <premis:eventOutcomeInformation>
+                     <premis:eventOutcome>success</premis:eventOutcome>
+                  </premis:eventOutcomeInformation>
+                  <premis:linkingAgentIdentifier>
+                     <premis:linkingAgentIdentifierType>MimerImplementation</premis:linkingAgentIdentifierType>
+                     <premis:linkingAgentIdentifierValue>se.kb.mimer.reception.processstepfactory.DetectSupplierChecksums:1.1.1</premis:linkingAgentIdentifierValue>
+                     <premis:linkingAgentRole>ExecutingProgram</premis:linkingAgentRole>
+                  </premis:linkingAgentIdentifier>
+                  <premis:linkingObjectIdentifier>
+                     <premis:linkingObjectIdentifierType>urn</premis:linkingObjectIdentifierType>
+                     <premis:linkingObjectIdentifierValue>urn:nbn:se:kb:dark-object-instance-2957036</premis:linkingObjectIdentifierValue>
+                  </premis:linkingObjectIdentifier>
+               </premis:event>
+               <premis:event>
+                  <premis:eventIdentifier>
+                     <premis:eventIdentifierType>UUID</premis:eventIdentifierType>
+                     <premis:eventIdentifierValue>68d36ed2-939a-47b9-b065-14ff740e95d5</premis:eventIdentifierValue>
+                  </premis:eventIdentifier>
+                  <premis:eventType>validation</premis:eventType>
+                  <premis:eventDateTime>2013-01-26T12:54:26</premis:eventDateTime>
+                  <premis:eventDetail>Detect checksum from supplier</premis:eventDetail>
+                  <premis:eventOutcomeInformation>
+                     <premis:eventOutcome>success</premis:eventOutcome>
+                  </premis:eventOutcomeInformation>
+                  <premis:linkingAgentIdentifier>
+                     <premis:linkingAgentIdentifierType>MimerImplementation</premis:linkingAgentIdentifierType>
+                     <premis:linkingAgentIdentifierValue>se.kb.mimer.reception.processstepfactory.DetectSupplierChecksums:1.1.1</premis:linkingAgentIdentifierValue>
+                     <premis:linkingAgentRole>ExecutingProgram</premis:linkingAgentRole>
+                  </premis:linkingAgentIdentifier>
+                  <premis:linkingObjectIdentifier>
+                     <premis:linkingObjectIdentifierType>urn</premis:linkingObjectIdentifierType>
+                     <premis:linkingObjectIdentifierValue>urn:nbn:se:kb:dark-object-instance-2957037</premis:linkingObjectIdentifierValue>
+                  </premis:linkingObjectIdentifier>
+               </premis:event>
+               <premis:event>
+                  <premis:eventIdentifier>
+                     <premis:eventIdentifierType>UUID</premis:eventIdentifierType>
+                     <premis:eventIdentifierValue>6789b0b6-f5b8-453d-b46b-df1f922f826d</premis:eventIdentifierValue>
+                  </premis:eventIdentifier>
+                  <premis:eventType>validation</premis:eventType>
+                  <premis:eventDateTime>2013-01-26T12:54:26</premis:eventDateTime>
+                  <premis:eventDetail>Detect checksum from supplier</premis:eventDetail>
+                  <premis:eventOutcomeInformation>
+                     <premis:eventOutcome>success</premis:eventOutcome>
+                  </premis:eventOutcomeInformation>
+                  <premis:linkingAgentIdentifier>
+                     <premis:linkingAgentIdentifierType>MimerImplementation</premis:linkingAgentIdentifierType>
+                     <premis:linkingAgentIdentifierValue>se.kb.mimer.reception.processstepfactory.DetectSupplierChecksums:1.1.1</premis:linkingAgentIdentifierValue>
+                     <premis:linkingAgentRole>ExecutingProgram</premis:linkingAgentRole>
+                  </premis:linkingAgentIdentifier>
+                  <premis:linkingObjectIdentifier>
+                     <premis:linkingObjectIdentifierType>urn</premis:linkingObjectIdentifierType>
+                     <premis:linkingObjectIdentifierValue>urn:nbn:se:kb:dark-object-instance-2957038</premis:linkingObjectIdentifierValue>
+                  </premis:linkingObjectIdentifier>
+               </premis:event>
+               <premis:event>
+                  <premis:eventIdentifier>
+                     <premis:eventIdentifierType>UUID</premis:eventIdentifierType>
+                     <premis:eventIdentifierValue>6bb6970e-e25e-418a-ab07-336afbb0b944</premis:eventIdentifierValue>
+                  </premis:eventIdentifier>
+                  <premis:eventType>fixity check</premis:eventType>
+                  <premis:eventDateTime>2013-01-26T12:54:26</premis:eventDateTime>
+                  <premis:eventDetail>Checksum validation</premis:eventDetail>
+                  <premis:eventOutcomeInformation>
+                     <premis:eventOutcome>success</premis:eventOutcome>
+                  </premis:eventOutcomeInformation>
+                  <premis:linkingAgentIdentifier>
+                     <premis:linkingAgentIdentifierType>MimerImplementation</premis:linkingAgentIdentifierType>
+                     <premis:linkingAgentIdentifierValue>se.kb.mimer.reception.processstepfactory.ValidateChecksums:1.1.1</premis:linkingAgentIdentifierValue>
+                     <premis:linkingAgentRole>ExecutingProgram</premis:linkingAgentRole>
+                  </premis:linkingAgentIdentifier>
+                  <premis:linkingObjectIdentifier>
+                     <premis:linkingObjectIdentifierType>urn</premis:linkingObjectIdentifierType>
+                     <premis:linkingObjectIdentifierValue>urn:nbn:se:kb:dark-object-instance-2957027</premis:linkingObjectIdentifierValue>
+                  </premis:linkingObjectIdentifier>
+               </premis:event>
+               <premis:event>
+                  <premis:eventIdentifier>
+                     <premis:eventIdentifierType>UUID</premis:eventIdentifierType>
+                     <premis:eventIdentifierValue>63c4d650-b68a-43fc-94b8-7966740f49a6</premis:eventIdentifierValue>
+                  </premis:eventIdentifier>
+                  <premis:eventType>fixity check</premis:eventType>
+                  <premis:eventDateTime>2013-01-26T12:54:27</premis:eventDateTime>
+                  <premis:eventDetail>Checksum validation</premis:eventDetail>
+                  <premis:eventOutcomeInformation>
+                     <premis:eventOutcome>success</premis:eventOutcome>
+                  </premis:eventOutcomeInformation>
+                  <premis:linkingAgentIdentifier>
+                     <premis:linkingAgentIdentifierType>MimerImplementation</premis:linkingAgentIdentifierType>
+                     <premis:linkingAgentIdentifierValue>se.kb.mimer.reception.processstepfactory.ValidateChecksums:1.1.1</premis:linkingAgentIdentifierValue>
+                     <premis:linkingAgentRole>ExecutingProgram</premis:linkingAgentRole>
+                  </premis:linkingAgentIdentifier>
+                  <premis:linkingObjectIdentifier>
+                     <premis:linkingObjectIdentifierType>urn</premis:linkingObjectIdentifierType>
+                     <premis:linkingObjectIdentifierValue>urn:nbn:se:kb:dark-object-instance-2957028</premis:linkingObjectIdentifierValue>
+                  </premis:linkingObjectIdentifier>
+               </premis:event>
+               <premis:event>
+                  <premis:eventIdentifier>
+                     <premis:eventIdentifierType>UUID</premis:eventIdentifierType>
+                     <premis:eventIdentifierValue>e67aec23-19dd-4dad-8f8b-a6d7253573b1</premis:eventIdentifierValue>
+                  </premis:eventIdentifier>
+                  <premis:eventType>fixity check</premis:eventType>
+                  <premis:eventDateTime>2013-01-26T12:54:27</premis:eventDateTime>
+                  <premis:eventDetail>Checksum validation</premis:eventDetail>
+                  <premis:eventOutcomeInformation>
+                     <premis:eventOutcome>success</premis:eventOutcome>
+                  </premis:eventOutcomeInformation>
+                  <premis:linkingAgentIdentifier>
+                     <premis:linkingAgentIdentifierType>MimerImplementation</premis:linkingAgentIdentifierType>
+                     <premis:linkingAgentIdentifierValue>se.kb.mimer.reception.processstepfactory.ValidateChecksums:1.1.1</premis:linkingAgentIdentifierValue>
+                     <premis:linkingAgentRole>ExecutingProgram</premis:linkingAgentRole>
+                  </premis:linkingAgentIdentifier>
+                  <premis:linkingObjectIdentifier>
+                     <premis:linkingObjectIdentifierType>urn</premis:linkingObjectIdentifierType>
+                     <premis:linkingObjectIdentifierValue>urn:nbn:se:kb:dark-object-instance-2957029</premis:linkingObjectIdentifierValue>
+                  </premis:linkingObjectIdentifier>
+               </premis:event>
+               <premis:event>
+                  <premis:eventIdentifier>
+                     <premis:eventIdentifierType>UUID</premis:eventIdentifierType>
+                     <premis:eventIdentifierValue>2ee4ad87-763d-44de-9b29-137c13e9909a</premis:eventIdentifierValue>
+                  </premis:eventIdentifier>
+                  <premis:eventType>fixity check</premis:eventType>
+                  <premis:eventDateTime>2013-01-26T12:54:27</premis:eventDateTime>
+                  <premis:eventDetail>Checksum validation</premis:eventDetail>
+                  <premis:eventOutcomeInformation>
+                     <premis:eventOutcome>success</premis:eventOutcome>
+                  </premis:eventOutcomeInformation>
+                  <premis:linkingAgentIdentifier>
+                     <premis:linkingAgentIdentifierType>MimerImplementation</premis:linkingAgentIdentifierType>
+                     <premis:linkingAgentIdentifierValue>se.kb.mimer.reception.processstepfactory.ValidateChecksums:1.1.1</premis:linkingAgentIdentifierValue>
+                     <premis:linkingAgentRole>ExecutingProgram</premis:linkingAgentRole>
+                  </premis:linkingAgentIdentifier>
+                  <premis:linkingObjectIdentifier>
+                     <premis:linkingObjectIdentifierType>urn</premis:linkingObjectIdentifierType>
+                     <premis:linkingObjectIdentifierValue>urn:nbn:se:kb:dark-object-instance-2957030</premis:linkingObjectIdentifierValue>
+                  </premis:linkingObjectIdentifier>
+               </premis:event>
+               <premis:event>
+                  <premis:eventIdentifier>
+                     <premis:eventIdentifierType>UUID</premis:eventIdentifierType>
+                     <premis:eventIdentifierValue>73563397-8586-4380-826f-5edc82662d0a</premis:eventIdentifierValue>
+                  </premis:eventIdentifier>
+                  <premis:eventType>fixity check</premis:eventType>
+                  <premis:eventDateTime>2013-01-26T12:54:27</premis:eventDateTime>
+                  <premis:eventDetail>Checksum validation</premis:eventDetail>
+                  <premis:eventOutcomeInformation>
+                     <premis:eventOutcome>success</premis:eventOutcome>
+                  </premis:eventOutcomeInformation>
+                  <premis:linkingAgentIdentifier>
+                     <premis:linkingAgentIdentifierType>MimerImplementation</premis:linkingAgentIdentifierType>
+                     <premis:linkingAgentIdentifierValue>se.kb.mimer.reception.processstepfactory.ValidateChecksums:1.1.1</premis:linkingAgentIdentifierValue>
+                     <premis:linkingAgentRole>ExecutingProgram</premis:linkingAgentRole>
+                  </premis:linkingAgentIdentifier>
+                  <premis:linkingObjectIdentifier>
+                     <premis:linkingObjectIdentifierType>urn</premis:linkingObjectIdentifierType>
+                     <premis:linkingObjectIdentifierValue>urn:nbn:se:kb:dark-object-instance-2957031</premis:linkingObjectIdentifierValue>
+                  </premis:linkingObjectIdentifier>
+               </premis:event>
+               <premis:event>
+                  <premis:eventIdentifier>
+                     <premis:eventIdentifierType>UUID</premis:eventIdentifierType>
+                     <premis:eventIdentifierValue>d78996bd-3c77-4e22-9fd7-4e569a89fcab</premis:eventIdentifierValue>
+                  </premis:eventIdentifier>
+                  <premis:eventType>fixity check</premis:eventType>
+                  <premis:eventDateTime>2013-01-26T12:54:27</premis:eventDateTime>
+                  <premis:eventDetail>Checksum validation</premis:eventDetail>
+                  <premis:eventOutcomeInformation>
+                     <premis:eventOutcome>success</premis:eventOutcome>
+                  </premis:eventOutcomeInformation>
+                  <premis:linkingAgentIdentifier>
+                     <premis:linkingAgentIdentifierType>MimerImplementation</premis:linkingAgentIdentifierType>
+                     <premis:linkingAgentIdentifierValue>se.kb.mimer.reception.processstepfactory.ValidateChecksums:1.1.1</premis:linkingAgentIdentifierValue>
+                     <premis:linkingAgentRole>ExecutingProgram</premis:linkingAgentRole>
+                  </premis:linkingAgentIdentifier>
+                  <premis:linkingObjectIdentifier>
+                     <premis:linkingObjectIdentifierType>urn</premis:linkingObjectIdentifierType>
+                     <premis:linkingObjectIdentifierValue>urn:nbn:se:kb:dark-object-instance-2957032</premis:linkingObjectIdentifierValue>
+                  </premis:linkingObjectIdentifier>
+               </premis:event>
+               <premis:event>
+                  <premis:eventIdentifier>
+                     <premis:eventIdentifierType>UUID</premis:eventIdentifierType>
+                     <premis:eventIdentifierValue>25385bb4-ef88-4f2b-9077-703d601a406b</premis:eventIdentifierValue>
+                  </premis:eventIdentifier>
+                  <premis:eventType>fixity check</premis:eventType>
+                  <premis:eventDateTime>2013-01-26T12:54:27</premis:eventDateTime>
+                  <premis:eventDetail>Checksum validation</premis:eventDetail>
+                  <premis:eventOutcomeInformation>
+                     <premis:eventOutcome>success</premis:eventOutcome>
+                  </premis:eventOutcomeInformation>
+                  <premis:linkingAgentIdentifier>
+                     <premis:linkingAgentIdentifierType>MimerImplementation</premis:linkingAgentIdentifierType>
+                     <premis:linkingAgentIdentifierValue>se.kb.mimer.reception.processstepfactory.ValidateChecksums:1.1.1</premis:linkingAgentIdentifierValue>
+                     <premis:linkingAgentRole>ExecutingProgram</premis:linkingAgentRole>
+                  </premis:linkingAgentIdentifier>
+                  <premis:linkingObjectIdentifier>
+                     <premis:linkingObjectIdentifierType>urn</premis:linkingObjectIdentifierType>
+                     <premis:linkingObjectIdentifierValue>urn:nbn:se:kb:dark-object-instance-2957033</premis:linkingObjectIdentifierValue>
+                  </premis:linkingObjectIdentifier>
+               </premis:event>
+               <premis:event>
+                  <premis:eventIdentifier>
+                     <premis:eventIdentifierType>UUID</premis:eventIdentifierType>
+                     <premis:eventIdentifierValue>23483429-a423-4dd5-ab6e-e7bf04b90115</premis:eventIdentifierValue>
+                  </premis:eventIdentifier>
+                  <premis:eventType>fixity check</premis:eventType>
+                  <premis:eventDateTime>2013-01-26T12:54:27</premis:eventDateTime>
+                  <premis:eventDetail>Checksum validation</premis:eventDetail>
+                  <premis:eventOutcomeInformation>
+                     <premis:eventOutcome>success</premis:eventOutcome>
+                  </premis:eventOutcomeInformation>
+                  <premis:linkingAgentIdentifier>
+                     <premis:linkingAgentIdentifierType>MimerImplementation</premis:linkingAgentIdentifierType>
+                     <premis:linkingAgentIdentifierValue>se.kb.mimer.reception.processstepfactory.ValidateChecksums:1.1.1</premis:linkingAgentIdentifierValue>
+                     <premis:linkingAgentRole>ExecutingProgram</premis:linkingAgentRole>
+                  </premis:linkingAgentIdentifier>
+                  <premis:linkingObjectIdentifier>
+                     <premis:linkingObjectIdentifierType>urn</premis:linkingObjectIdentifierType>
+                     <premis:linkingObjectIdentifierValue>urn:nbn:se:kb:dark-object-instance-2957034</premis:linkingObjectIdentifierValue>
+                  </premis:linkingObjectIdentifier>
+               </premis:event>
+               <premis:event>
+                  <premis:eventIdentifier>
+                     <premis:eventIdentifierType>UUID</premis:eventIdentifierType>
+                     <premis:eventIdentifierValue>beb540ae-842e-4971-9867-2fc49867674e</premis:eventIdentifierValue>
+                  </premis:eventIdentifier>
+                  <premis:eventType>fixity check</premis:eventType>
+                  <premis:eventDateTime>2013-01-26T12:54:27</premis:eventDateTime>
+                  <premis:eventDetail>Checksum validation</premis:eventDetail>
+                  <premis:eventOutcomeInformation>
+                     <premis:eventOutcome>success</premis:eventOutcome>
+                  </premis:eventOutcomeInformation>
+                  <premis:linkingAgentIdentifier>
+                     <premis:linkingAgentIdentifierType>MimerImplementation</premis:linkingAgentIdentifierType>
+                     <premis:linkingAgentIdentifierValue>se.kb.mimer.reception.processstepfactory.ValidateChecksums:1.1.1</premis:linkingAgentIdentifierValue>
+                     <premis:linkingAgentRole>ExecutingProgram</premis:linkingAgentRole>
+                  </premis:linkingAgentIdentifier>
+                  <premis:linkingObjectIdentifier>
+                     <premis:linkingObjectIdentifierType>urn</premis:linkingObjectIdentifierType>
+                     <premis:linkingObjectIdentifierValue>urn:nbn:se:kb:dark-object-instance-2957035</premis:linkingObjectIdentifierValue>
+                  </premis:linkingObjectIdentifier>
+               </premis:event>
+               <premis:event>
+                  <premis:eventIdentifier>
+                     <premis:eventIdentifierType>UUID</premis:eventIdentifierType>
+                     <premis:eventIdentifierValue>8d23cf1e-6410-4d32-ac97-c869be907ccc</premis:eventIdentifierValue>
+                  </premis:eventIdentifier>
+                  <premis:eventType>fixity check</premis:eventType>
+                  <premis:eventDateTime>2013-01-26T12:54:27</premis:eventDateTime>
+                  <premis:eventDetail>Checksum validation</premis:eventDetail>
+                  <premis:eventOutcomeInformation>
+                     <premis:eventOutcome>success</premis:eventOutcome>
+                  </premis:eventOutcomeInformation>
+                  <premis:linkingAgentIdentifier>
+                     <premis:linkingAgentIdentifierType>MimerImplementation</premis:linkingAgentIdentifierType>
+                     <premis:linkingAgentIdentifierValue>se.kb.mimer.reception.processstepfactory.ValidateChecksums:1.1.1</premis:linkingAgentIdentifierValue>
+                     <premis:linkingAgentRole>ExecutingProgram</premis:linkingAgentRole>
+                  </premis:linkingAgentIdentifier>
+                  <premis:linkingObjectIdentifier>
+                     <premis:linkingObjectIdentifierType>urn</premis:linkingObjectIdentifierType>
+                     <premis:linkingObjectIdentifierValue>urn:nbn:se:kb:dark-object-instance-2957036</premis:linkingObjectIdentifierValue>
+                  </premis:linkingObjectIdentifier>
+               </premis:event>
+               <premis:event>
+                  <premis:eventIdentifier>
+                     <premis:eventIdentifierType>UUID</premis:eventIdentifierType>
+                     <premis:eventIdentifierValue>8d5f0c77-2ae3-4a9b-8657-b1318c03ea7f</premis:eventIdentifierValue>
+                  </premis:eventIdentifier>
+                  <premis:eventType>fixity check</premis:eventType>
+                  <premis:eventDateTime>2013-01-26T12:54:27</premis:eventDateTime>
+                  <premis:eventDetail>Checksum validation</premis:eventDetail>
+                  <premis:eventOutcomeInformation>
+                     <premis:eventOutcome>success</premis:eventOutcome>
+                  </premis:eventOutcomeInformation>
+                  <premis:linkingAgentIdentifier>
+                     <premis:linkingAgentIdentifierType>MimerImplementation</premis:linkingAgentIdentifierType>
+                     <premis:linkingAgentIdentifierValue>se.kb.mimer.reception.processstepfactory.ValidateChecksums:1.1.1</premis:linkingAgentIdentifierValue>
+                     <premis:linkingAgentRole>ExecutingProgram</premis:linkingAgentRole>
+                  </premis:linkingAgentIdentifier>
+                  <premis:linkingObjectIdentifier>
+                     <premis:linkingObjectIdentifierType>urn</premis:linkingObjectIdentifierType>
+                     <premis:linkingObjectIdentifierValue>urn:nbn:se:kb:dark-object-instance-2957037</premis:linkingObjectIdentifierValue>
+                  </premis:linkingObjectIdentifier>
+               </premis:event>
+               <premis:event>
+                  <premis:eventIdentifier>
+                     <premis:eventIdentifierType>UUID</premis:eventIdentifierType>
+                     <premis:eventIdentifierValue>69194dd7-4790-4f2e-bb1f-c172e2173de6</premis:eventIdentifierValue>
+                  </premis:eventIdentifier>
+                  <premis:eventType>fixity check</premis:eventType>
+                  <premis:eventDateTime>2013-01-26T12:54:27</premis:eventDateTime>
+                  <premis:eventDetail>Checksum validation</premis:eventDetail>
+                  <premis:eventOutcomeInformation>
+                     <premis:eventOutcome>success</premis:eventOutcome>
+                  </premis:eventOutcomeInformation>
+                  <premis:linkingAgentIdentifier>
+                     <premis:linkingAgentIdentifierType>MimerImplementation</premis:linkingAgentIdentifierType>
+                     <premis:linkingAgentIdentifierValue>se.kb.mimer.reception.processstepfactory.ValidateChecksums:1.1.1</premis:linkingAgentIdentifierValue>
+                     <premis:linkingAgentRole>ExecutingProgram</premis:linkingAgentRole>
+                  </premis:linkingAgentIdentifier>
+                  <premis:linkingObjectIdentifier>
+                     <premis:linkingObjectIdentifierType>urn</premis:linkingObjectIdentifierType>
+                     <premis:linkingObjectIdentifierValue>urn:nbn:se:kb:dark-object-instance-2957038</premis:linkingObjectIdentifierValue>
+                  </premis:linkingObjectIdentifier>
+               </premis:event>
+            </mets:xmlData>
+         </mets:mdWrap>
+      </mets:digiprovMD>
+      <mets:digiprovMD ID="digiprovMD002">
+         <mets:mdWrap MDTYPE="PREMIS:AGENT">
+            <mets:xmlData>
+               <premis:agent>
+                  <premis:agentIdentifier>
+                     <premis:agentIdentifierType>MimerImplementation</premis:agentIdentifierType>
+                     <premis:agentIdentifierValue>se.kb.mimer.reception.processstepfactory.ValidateMissingFiles:1.0</premis:agentIdentifierValue>
+                  </premis:agentIdentifier>
+                  <premis:agentType>software</premis:agentType>
+               </premis:agent>
+               <premis:agent>
+                  <premis:agentIdentifier>
+                     <premis:agentIdentifierType>MimerImplementation</premis:agentIdentifierType>
+                     <premis:agentIdentifierValue>se.kb.mimer.reception.processstepfactory.ValidateChecksums:1.0</premis:agentIdentifierValue>
+                  </premis:agentIdentifier>
+                  <premis:agentType>software</premis:agentType>
+               </premis:agent>
+               <premis:agent>
+                  <premis:agentIdentifier>
+                     <premis:agentIdentifierType>MimerImplementation</premis:agentIdentifierType>
+                     <premis:agentIdentifierValue>se.kb.mimer.reception.processstepfactory.DetectSupplierChecksums:1.0</premis:agentIdentifierValue>
+                  </premis:agentIdentifier>
+                  <premis:agentType>software</premis:agentType>
+               </premis:agent>
+            </mets:xmlData>
+         </mets:mdWrap>
+      </mets:digiprovMD>
+   </mets:amdSec>
+   <mets:fileSec ID="fileSec001">
+      <mets:fileGrp ID="fileGrp001" USE="image/master">
+         <mets:file ADMID="techMD001" CHECKSUM="bdcc18f25153b207ca6e86dd2154ec90" CHECKSUMTYPE="MD5" CREATED="2009-11-10T00:00:00" ID="file1" MIMETYPE="image/jpeg" OWNERID="urn:nbn:se:kb:dark-object-instance-2957027" SIZE="4593444" USE="image/master">
+            <mets:FLocat LOCTYPE="URL" xlink:href="file:bib4345612_18301206_0_1_0001.jp2" xlink:type="simple"/>
+         </mets:file>
+         <mets:file ADMID="techMD002" CHECKSUM="ad7c5f35df72994b76800a51333239a9" CHECKSUMTYPE="MD5" CREATED="2009-11-10T00:00:00" ID="file2" MIMETYPE="image/jpeg" OWNERID="urn:nbn:se:kb:dark-object-instance-2957028" SIZE="4537293" USE="image/master">
+            <mets:FLocat LOCTYPE="URL" xlink:href="file:bib4345612_18301206_0_1_0002.jp2" xlink:type="simple"/>
+         </mets:file>
+         <mets:file ADMID="techMD003" CHECKSUM="d4e537eb0eeb2134612281c2037dbe78" CHECKSUMTYPE="MD5" CREATED="2009-11-10T00:00:00" ID="file3" MIMETYPE="image/jpeg" OWNERID="urn:nbn:se:kb:dark-object-instance-2957029" SIZE="4547927" USE="image/master">
+            <mets:FLocat LOCTYPE="URL" xlink:href="file:bib4345612_18301206_0_1_0003.jp2" xlink:type="simple"/>
+         </mets:file>
+         <mets:file ADMID="techMD004" CHECKSUM="b77fe339d8b93f9e8dc07d9a679edbe6" CHECKSUMTYPE="MD5" CREATED="2009-11-10T00:00:00" ID="file4" MIMETYPE="image/jpeg" OWNERID="urn:nbn:se:kb:dark-object-instance-2957030" SIZE="4616101" USE="image/master">
+            <mets:FLocat LOCTYPE="URL" xlink:href="file:bib4345612_18301206_0_1_0004.jp2" xlink:type="simple"/>
+         </mets:file>
+         <mets:file ADMID="techMD005" CHECKSUM="95815768ad29a5fa9edb0888d71a5a50" CHECKSUMTYPE="MD5" CREATED="2009-11-10T00:00:00" ID="file5" MIMETYPE="image/jpeg" OWNERID="urn:nbn:se:kb:dark-object-instance-2957031" SIZE="4624535" USE="image/master">
+            <mets:FLocat LOCTYPE="URL" xlink:href="file:bib4345612_18301206_0_1_0005.jp2" xlink:type="simple"/>
+         </mets:file>
+         <mets:file ADMID="techMD006" CHECKSUM="ea1788323770eef0e61e09aa199747b8" CHECKSUMTYPE="MD5" CREATED="2009-11-10T00:00:00" ID="file6" MIMETYPE="image/jpeg" OWNERID="urn:nbn:se:kb:dark-object-instance-2957032" SIZE="4629130" USE="image/master">
+            <mets:FLocat LOCTYPE="URL" xlink:href="file:bib4345612_18301206_0_1_0006.jp2" xlink:type="simple"/>
+         </mets:file>
+      </mets:fileGrp>
+      <mets:fileGrp ID="fileGrp002" USE="text/alto">
+         <mets:file ADMID="techMD007" CHECKSUM="83a3bc93326d816d32399587a67058d4" CHECKSUMTYPE="MD5" CREATED="2009-11-10T00:00:00" ID="file7" MIMETYPE="text/xml" OWNERID="urn:nbn:se:kb:dark-object-instance-2957033" SIZE="106362" USE="text/alto">
+            <mets:FLocat LOCTYPE="URL" xlink:href="file:bib4345612_18301206_0_1_0001_alto.xml" xlink:type="simple"/>
+         </mets:file>
+         <mets:file ADMID="techMD008" CHECKSUM="69138495617907c36bed17daf99426b4" CHECKSUMTYPE="MD5" CREATED="2009-11-10T00:00:00" ID="file8" MIMETYPE="text/xml" OWNERID="urn:nbn:se:kb:dark-object-instance-2957034" SIZE="111006" USE="text/alto">
+            <mets:FLocat LOCTYPE="URL" xlink:href="file:bib4345612_18301206_0_1_0002_alto.xml" xlink:type="simple"/>
+         </mets:file>
+         <mets:file ADMID="techMD009" CHECKSUM="99f8b25ceec1270f08c481632f1ee25e" CHECKSUMTYPE="MD5" CREATED="2009-11-10T00:00:00" ID="file9" MIMETYPE="text/xml" OWNERID="urn:nbn:se:kb:dark-object-instance-2957035" SIZE="184454" USE="text/alto">
+            <mets:FLocat LOCTYPE="URL" xlink:href="file:bib4345612_18301206_0_1_0003_alto.xml" xlink:type="simple"/>
+         </mets:file>
+         <mets:file ADMID="techMD010" CHECKSUM="37c4a29080db0bce6297ea51eb2915a0" CHECKSUMTYPE="MD5" CREATED="2009-11-10T00:00:00" ID="file10" MIMETYPE="text/xml" OWNERID="urn:nbn:se:kb:dark-object-instance-2957036" SIZE="201949" USE="text/alto">
+            <mets:FLocat LOCTYPE="URL" xlink:href="file:bib4345612_18301206_0_1_0004_alto.xml" xlink:type="simple"/>
+         </mets:file>
+         <mets:file ADMID="techMD011" CHECKSUM="0558f2e8d972bd50022e51ade155071e" CHECKSUMTYPE="MD5" CREATED="2009-11-10T00:00:00" ID="file11" MIMETYPE="text/xml" OWNERID="urn:nbn:se:kb:dark-object-instance-2957037" SIZE="213134" USE="text/alto">
+            <mets:FLocat LOCTYPE="URL" xlink:href="file:bib4345612_18301206_0_1_0005_alto.xml" xlink:type="simple"/>
+         </mets:file>
+         <mets:file ADMID="techMD012" CHECKSUM="dcb47b6e6c4f8e8a28addb8f63fafd3a" CHECKSUMTYPE="MD5" CREATED="2009-11-10T00:00:00" ID="file12" MIMETYPE="text/xml" OWNERID="urn:nbn:se:kb:dark-object-instance-2957038" SIZE="207016" USE="text/alto">
+            <mets:FLocat LOCTYPE="URL" xlink:href="file:bib4345612_18301206_0_1_0006_alto.xml" xlink:type="simple"/>
+         </mets:file>
+      </mets:fileGrp>
+      <mets:fileGrp ID="fileGrp003" USE="text/metadata">
+         <mets:file ADMID="techMD014" CHECKSUM="09515454b7ba248316c6dac52abcdfaf" CHECKSUMTYPE="MD5" CREATED="2013-01-26T12:54:15+01:00" ID="file13" MIMETYPE="text/xml" OWNERID="urn:nbn:se:kb:dark-object-instance-2957039" SIZE="52164" USE="text/metadata">
+            <mets:FLocat LOCTYPE="URL" xlink:href="file:bib4345612_18301206_0_1.mets.metadata" xlink:type="simple"/>
+         </mets:file>
+      </mets:fileGrp>
+   </mets:fileSec>
+   <mets:structMap ID="structMap001" TYPE="physical">
+      <mets:div ID="div001" TYPE="files">
+         <mets:div ADMID="techMD013" DMDID="dmdSec001" ID="div002" TYPE="issue">
+            <mets:div ID="div003" ORDER="1" TYPE="page">
+               <mets:fptr FILEID="file1"/>
+               <mets:fptr FILEID="file7"/>
+            </mets:div>
+            <mets:div ID="div004" ORDER="2" TYPE="page">
+               <mets:fptr FILEID="file2"/>
+               <mets:fptr FILEID="file8"/>
+            </mets:div>
+            <mets:div ID="div005" ORDER="3" TYPE="page">
+               <mets:fptr FILEID="file3"/>
+               <mets:fptr FILEID="file9"/>
+            </mets:div>
+            <mets:div ID="div006" ORDER="4" TYPE="page">
+               <mets:fptr FILEID="file4"/>
+               <mets:fptr FILEID="file10"/>
+            </mets:div>
+            <mets:div ID="div007" ORDER="5" TYPE="page">
+               <mets:fptr FILEID="file5"/>
+               <mets:fptr FILEID="file11"/>
+            </mets:div>
+            <mets:div ID="div008" ORDER="6" TYPE="page">
+               <mets:fptr FILEID="file6"/>
+               <mets:fptr FILEID="file12"/>
+            </mets:div>
+         </mets:div>
+         <mets:div ID="div009" TYPE="origmetadata">
+            <mets:fptr FILEID="file13"/>
+         </mets:div>
+      </mets:div>
+   </mets:structMap>
+</mets:mets>
