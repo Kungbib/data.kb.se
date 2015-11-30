@@ -46,10 +46,10 @@
         <div id="navbar" class="navbar-collapse collapse">
             {% if session.logged_in %}
             <ul class="nav navbar-nav navbar-right">
-            <li><a class="kb-nav-item" href="/admin/datasetsview/new/?url=%2Fadmin%2Fdatasetsview%2F"><i class="fa fa-plus"></i> Nytt dataset</a></li>
+            <li><a class="kb-nav-item" href="{{url_for('datasets.create_view')}}"><i class="fa fa-plus"></i> Nytt dataset</a></li>
             <li><a class="kb-nav-item" href="/admin/"><i class="fa fa-cog"></i> Admin</a></li>
             <li><a class="kb-nav-item" href="/logout">Logga ut</a></li>
-            <li class="kb-nav-item"><a class="kb-nav-item" href="#">{{ session.real_name }}</a></li>
+            <li class="kb-nav-item"><a class="kb-nav-item" href="#">{{ session.real_name|trim }}</a></li>
             </ul>
             {% endif %}
         </div>
