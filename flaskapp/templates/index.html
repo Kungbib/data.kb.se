@@ -16,10 +16,11 @@
       {% for dataset in datasets %}
         <tr property="dataset dcat:dataset" typeof="Dataset dcat:Dataset"
             resource="{{dataset_uri(dataset)}}">
-          <meta property="dcat:theme" resource="http://eurovoc.europa.eu/100151" />
           <td property="name dc:title"><a property="url" href="{{dataset_uri(dataset)}}"
               >{{dataset.name}}</a></td>
-          <td property="description dc:description">{{dataset.description}}</td>
+          <td property="description dc:description">{{dataset.description}}
+          <meta property="dcat:theme" resource="http://eurovoc.europa.eu/100151"/>
+          </td>          
           <td>
            {% for license in dataset.license %}
             <a property="publishingPrinciples dc:license" rel="license"
