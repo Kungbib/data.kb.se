@@ -7,10 +7,10 @@ import models
 
 
 def delete_torrent(info_hash):
-    if current_app.conf['SUNET']:
+    if current_app.config['SUNET']:
         headers = {
             'Accept': 'application/json',
-            'Authorization': 'Bearer %s' % current_app.conf['DATASETKEY']
+            'Authorization': 'Bearer %s' % current_app.config['DATASETKEY']
         }
         try:
             r = get(
@@ -21,9 +21,9 @@ def delete_torrent(info_hash):
             r.raise_for_status()
         except Exception as e:
             raise Exception("Could not delete torrent %s" % e)
-    if current_app.conf['RTORRENT']:
+    if current_app.config['RTORRENT']:
         try:
-            rtorrent = ServerProxy(current_app.conf['XMLRPC_URI'])
+            rtorrent = ServerProxy(current_app.config['XMLRPC_URI'])
             rtorrent.d.erase(info_hash)
         except Exception as e:
             raise Exception("Could not remove torrent: %s" % e)
@@ -32,7 +32,7 @@ def delete_torrent(info_hash):
 def _add_sunet(torrentObj):
     headers = {
         'Accept': 'application/json',
-        'Authorization': 'Bearer %s' % current_app.conf['DATASETKEY']
+        'Authorization': 'Bearer %s' % current_app.config['DATASETKEY']
     }
     torrentData = torrentObj.getBencoded()
     tData = {'torrent': torrentData}
@@ -41,7 +41,7 @@ def _add_sunet(torrentObj):
             'https://datasets.sunet.se/api/dataset',
             headers=headers,
             files=tData,
-            verify=current_app.conf['VERIFY_SSL']
+            verify=current_app.config['VERIFY_SSL']
         )
         r.raise_for_status()
         return('%s added to sunet' % torrentObj.info_hash())
@@ -58,14 +58,14 @@ def _add_torrent_to_model(model, torrentObj):
 def _add_rtorrent(torrentObj, datasetPath):
     infoHash = torrentObj.info_hash()
     torrentFile = path.join(
-        current_app.conf['TORRENT_WATCH_DIR'],
+        current_app.config['TORRENT_WATCH_DIR'],
         infoHash + '.torrent'
     )
-    rtorrent = ServerProxy(current_app.conf['XMLRPC_URI'])
+    rtorrent = ServerProxy(current_app.config['XMLRPC_URI'])
     rtorrent.load(torrentFile)
     downloadPath = path.dirname(
         path.join(
-            current_app.conf['DATASET_ROOT'],
+            current_app.config['DATASET_ROOT'],
             datasetPath
         )
     )
