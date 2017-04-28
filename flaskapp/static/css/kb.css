@@ -20,3 +20,7 @@ h1 {
 .intro {
   margin-bottom: 2em;
 }
+
+ .form-horizontal .control-group .control-label {
+    text-align:left;
+}
