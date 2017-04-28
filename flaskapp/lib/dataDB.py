@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from os import path, listdir, walk
 from mimetypes import guess_type, add_type
 from urllib2 import quote

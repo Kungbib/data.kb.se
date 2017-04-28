@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from flask.ext.admin.contrib.sqla import ModelView
 from flask import session
 import models
