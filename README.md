@@ -5,6 +5,8 @@ data.kb.se
 
 A basic webservice for displaying and providing large datasets.
 
+![Application sample screens.](https://raw.githubusercontent.com/Kungbib/data.kb.se/develop/www/img/data-kb-se-screens.png)
+
 # Installation
 
 In the `flaskapp` folder, run the command:
