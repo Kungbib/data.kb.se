@@ -128,7 +128,7 @@ def log_request():
 def viewDataset(year, month, dataset, directory=None):
     datasetRoot = app.config['DATASET_ROOT']
     datasetPath = path.join(str(year), str(month), dataset)
-    datasetSize = get_size(start_path=path.join(datasetRoot, datasetPath))
+    #datasetSize = get_size(start_path=path.join(datasetRoot, datasetPath))
     dataset = models.Datasets.query.filter(
         models.Datasets.path == datasetPath
     ).first()
@@ -142,7 +142,7 @@ def viewDataset(year, month, dataset, directory=None):
             )
     if not dataset:
         return(render_template("error.html",
-               message="Could not find dataset"))
+               message="Could not find dataset2"))
     dataset.cleanDate = cleanDate(dataset.updated_at)
     pathDict = {}
     if not dataset.url:
@@ -157,6 +157,14 @@ def viewDataset(year, month, dataset, directory=None):
     if dataset.url:
         pathDict = None
         dirUp = None
+
+    # shuld use @memoize instead
+    key=path.join(datasetRoot, datasetPath)
+    datasetSize = cache.get(key)
+    if datasetSize is None:
+        datasetSize = get_size(start_path=path.join(datasetRoot, datasetPath))
+        cache.set(key, datasetSize, 60*60)
+
     return(
         render_template(
             'dataset.html',
