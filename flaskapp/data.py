@@ -128,7 +128,6 @@ def log_request():
 def viewDataset(year, month, dataset, directory=None):
     datasetRoot = app.config['DATASET_ROOT']
     datasetPath = path.join(str(year), str(month), dataset)
-    #datasetSize = get_size(start_path=path.join(datasetRoot, datasetPath))
     dataset = models.Datasets.query.filter(
         models.Datasets.path == datasetPath
     ).first()
