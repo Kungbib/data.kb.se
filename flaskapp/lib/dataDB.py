@@ -104,8 +104,8 @@ class directory_indexer():
                     pathDict[f]['name'] = f
                     pathDict[f]['realPath'] = path.join(
                         datasetRoot,
-                        quote(directory),
-                        quote(f)
+                        directory,
+                        f
                     )
                     pathDict[f]['type'] = 'file'
                     pathDict[f]['size'] = sizeof_fmt(path.getsize(fullPath))
