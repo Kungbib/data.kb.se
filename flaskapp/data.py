@@ -134,11 +134,7 @@ def viewDataset(year, month, dataset, directory=None):
     if directory:
         wholePath = path.join(datasetRoot, datasetPath, directory)
         if path.isfile(wholePath):
-            return send_file(
-                wholePath,
-                as_attachment=True,
-                attachment_filename=path.basename(wholePath)
-            )
+            return send_file(wholePath.encode('utf-8'))
     if not dataset:
         return(render_template("error.html",
                message="Could not find dataset2"))
