@@ -139,6 +139,7 @@ def viewDataset(year, month, dataset, directory=None, filename=None):
             return send_file(wholePath.encode('utf-8'))
 	elif path.isdirectory(wholePath.encode('utf-8')):
             directory += '/' + filename
+
     if not dataset:
         return(render_template("error.html",
                message="Could not find dataset"))
