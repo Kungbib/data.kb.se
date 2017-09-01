@@ -4,7 +4,7 @@ from flask import (
     Flask, request,
     render_template, session,
     redirect, url_for,
-    flash, send_file,
+    flash, send_file, send_from_directory,
     Response
 )
 from flask.ext.admin import Admin
@@ -123,25 +123,26 @@ def log_request():
         app.logger.debug('whatever')
 
 
+@app.route('/datasets/<int:year>/<month>/<dataset>/<path:directory>/<filename>')
 @app.route('/datasets/<int:year>/<month>/<dataset>/<path:directory>/')
 @app.route('/datasets/<int:year>/<month>/<dataset>/')
-def viewDataset(year, month, dataset, directory=None):
+def viewDataset(year, month, dataset, directory=None, filename=None):
     datasetRoot = app.config['DATASET_ROOT']
     datasetPath = path.join(str(year), str(month), dataset)
     dataset = models.Datasets.query.filter(
         models.Datasets.path == datasetPath
     ).first()
-    if directory:
-        wholePath = path.join(datasetRoot, datasetPath, directory)
+
+    if directory and filename:
+        wholePath = path.join(datasetRoot, datasetPath, directory, filename)
         if path.isfile(wholePath):
-            return send_file(
-                wholePath,
-                as_attachment=True,
-                attachment_filename=path.basename(wholePath)
-            )
+            return send_file(wholePath.encode('utf-8'))
+	elif path.isdirectory(wholePath.encode('utf-8')):
+            directory += '/' + filename
     if not dataset:
         return(render_template("error.html",
-               message="Could not find dataset2"))
+               message="Could not find dataset"))
+
     dataset.cleanDate = cleanDate(dataset.updated_at)
     pathDict = {}
     if not dataset.url:
@@ -153,11 +154,12 @@ def viewDataset(year, month, dataset, directory=None):
         except Exception as e:
             return(render_template("error.html",
                    message="Could not generate index %s" % e))
+
     if dataset.url:
         pathDict = None
         dirUp = None
 
-    # shuld use @memoize instead
+    # should use @memoize instead
     key=path.join(datasetRoot, datasetPath)
     datasetSize = cache.get(key)
     if datasetSize is None:
