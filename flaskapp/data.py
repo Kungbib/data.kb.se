@@ -8,6 +8,7 @@ from flask import (
     Response
 )
 from flask.ext.admin import Admin
+from urllib import quote
 from os import path
 from lib.dataDB import directory_indexer, cleanDate, get_size
 from flask.ext.admin.contrib.sqla import ModelView
@@ -127,6 +128,7 @@ def log_request():
 @app.route('/datasets/<int:year>/<month>/<dataset>/<path:directory>/')
 @app.route('/datasets/<int:year>/<month>/<dataset>/')
 def viewDataset(year, month, dataset, directory=None, filename=None):
+    datasetName = dataset
     datasetRoot = app.config['DATASET_ROOT']
     datasetPath = path.join(str(year), str(month), dataset)
     dataset = models.Datasets.query.filter(
@@ -135,10 +137,12 @@ def viewDataset(year, month, dataset, directory=None, filename=None):
 
     if directory and filename:
         wholePath = path.join(datasetRoot, datasetPath, directory, filename)
-        if path.isfile(wholePath):
+        if path.isfile(wholePath.encode('utf-8')):
             return send_file(wholePath.encode('utf-8'))
-	elif path.isdirectory(wholePath.encode('utf-8')):
+	elif path.isdir(wholePath.encode('utf-8')):
             directory += '/' + filename
+            print('directory is %s' % directory)
+            return redirect('/datasets/%d/%s/%s/%s/' % (year, month, datasetName, quote(directory)))
 
     if not dataset:
         return(render_template("error.html",
