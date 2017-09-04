@@ -10,6 +10,7 @@ from flask import (
 from flask.ext.admin import Admin
 from urllib import quote
 from os import path
+from os.path import isfile,isdir,dirname,abspath,basename,join
 from lib.dataDB import directory_indexer, cleanDate, get_size
 from flask.ext.admin.contrib.sqla import ModelView
 from urllib2 import quote, unquote
@@ -124,10 +125,10 @@ def log_request():
         app.logger.debug('whatever')
 
 
-@app.route('/datasets/<int:year>/<month>/<dataset>/<path:directory>/<filename>')
-@app.route('/datasets/<int:year>/<month>/<dataset>/<path:directory>/')
+@app.route('/datasets/<int:year>/<month>/<dataset>/<path:dpath>')
 @app.route('/datasets/<int:year>/<month>/<dataset>/')
-def viewDataset(year, month, dataset, directory=None, filename=None):
+def viewDataset(year, month, dataset, dpath=None):
+    #print(year, month, dataset, dpath)
     datasetName = dataset
     datasetRoot = app.config['DATASET_ROOT']
     datasetPath = path.join(str(year), str(month), dataset)
@@ -135,14 +136,13 @@ def viewDataset(year, month, dataset, directory=None, filename=None):
         models.Datasets.path == datasetPath
     ).first()
 
-    if directory and filename:
-        wholePath = path.join(datasetRoot, datasetPath, directory, filename)
-        if path.isfile(wholePath.encode('utf-8')):
-            return send_file(wholePath.encode('utf-8'))
-	elif path.isdir(wholePath.encode('utf-8')):
-            directory += '/' + filename
-            print('directory is %s' % directory)
-            return redirect('/datasets/%d/%s/%s/%s/' % (year, month, datasetName, quote(directory)))
+    if dpath:
+        wholePath = abspath(join(datasetRoot, datasetPath, dpath or '')).encode('utf-8')
+        if isfile(wholePath):
+            return send_from_directory(dirname(wholePath), basename(wholePath))
+	elif isdir(wholePath) and dpath[-1] != '/':
+            print('redirecting to /datasets/%d/%s/%s/%s/' % (year, month, datasetName, quote(dpath)))
+            return redirect('/datasets/%d/%s/%s/%s/' % (year, month, datasetName, quote(dpath)))
 
     if not dataset:
         return(render_template("error.html",
@@ -153,7 +153,7 @@ def viewDataset(year, month, dataset, directory=None, filename=None):
     if not dataset.url:
         try:
             pathDict, dirUp, metadata = index_dir(
-                directory,
+                dpath,
                 dataset
             )
         except Exception as e:
