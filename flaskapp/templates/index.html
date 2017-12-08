@@ -16,7 +16,7 @@
       {% for dataset in datasets %}
         <tr property="dataset dcat:dataset" typeof="Dataset dcat:Dataset"
             resource="{{dataset_uri(dataset)}}">
-          <td property="name dc:title"><a property="url" href="{{dataset_uri(dataset)}}"
+          <td property="name dc:title"><a property="url dct:identifier" href="{{dataset_uri(dataset)}}"
               >{{dataset.name}}</a></td>
           <td property="description dc:description">{{dataset.description}}
           <meta property="dcat:theme" resource="http://publications.europa.eu/resource/authority/data-theme/TECH"/>
