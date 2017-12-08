@@ -19,7 +19,8 @@
           <td property="name dc:title"><a property="url" href="{{dataset_uri(dataset)}}"
               >{{dataset.name}}</a></td>
           <td property="description dc:description">{{dataset.description}}
-          <meta property="dcat:theme" resource="http://eurovoc.europa.eu/100151"/>
+          <meta property="dcat:theme" resource="http://publications.europa.eu/resource/authority/data-theme/TECH"/>
+          <meta property="dcat:theme" resource="http://publications.europa.eu/resource/authority/data-theme/EDUC"/>
           </td>
           <td>
            {% for license in dataset.license %}
