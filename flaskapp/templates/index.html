@@ -1,49 +1,79 @@
 {% extends "base.html" %}
 {% from 'macros.html' import dataset_uri %}
 {% block content %}
-  <div class="container" role="main" resource="/" typeof="DataCatalog dcat:Catalog">
-    <h1 property="name dc:title">Öppna data från Kungliga biblioteket</h1>
-    <meta property="dcat:themeTaxonomy" resource="http://eurovoc.europa.eu/" />
-    <meta property="dct:language" resource="http://publications.europa.eu/mdr/authority/language/SWE" />
-    <p property="description dc:description">Här hittar du information från <a href="http://www.kb.se/">Kungliga bibliotekets</a> datakällor. Detta är en betaversion och förteckningen kommer att uppdateras löpande. Materialet här är i första hand till för den som vill göra egna bearbetningar/tjänster. Vi försöker publicera material som rådata i öppna standarder, men det kan förekomma material där vi ännu inte hunnit konvertera till en öppen standard. För mer information kontakta <a href="mailto:peter.krantz@kb.se">Peter Krantz (e-post)</a>. Letar du efter data från andra myndigheter <a href="http://www.oppnadata.se/">besök öppnadata.se</a>.</p>
-    <table class="table">
-      <tr>
-        <th>Namn</th>
-        <th>Beskrivning</th>
-        <th>Villkor</th>
-        <th>Format</th>
-        <th>Särskild kontaktperson</th>
-      </tr>
-      {% for dataset in datasets %}
-        <tr property="dataset dcat:dataset" typeof="Dataset dcat:Dataset"
-            resource="{{dataset_uri(dataset)}}">
-          <td property="name dc:title"><a property="url dct:identifier" href="{{dataset_uri(dataset)}}"
-              >{{dataset.name}}</a></td>
-          <td property="description dc:description">{{dataset.description}}
-          <meta property="dcat:theme" resource="http://publications.europa.eu/resource/authority/data-theme/TECH"/>
-          <meta property="dcat:theme" resource="http://publications.europa.eu/resource/authority/data-theme/EDUC"/>
-          </td>
-          <td>
-           {% for license in dataset.license %}
-            <a property="publishingPrinciples dc:license" rel="license"
-               href="{{ license.url }}">
-              <abbr lang="en" title="{{ license.name }}">{{license}}</abbr></a>
-            {% endfor %}
-          </td>
-          <td>
-            {{ dataset.formats|join(', ') }}
-          </td>
-          {% if dataset.provider %}
-          {% for p in dataset.provider %}
-            <td property="provider dc:publisher" typeof="Person foaf:Person foaf:Agent">
-              <span property="name foaf:name">{{p.name}}</span>
-            </td>
-          {% endfor %}
-          {% else %}
-            <td></td>
-          {% endif %}
-        </tr>
-      {% endfor %}
-    </table>
-  </div>
+		<div class="container" role="main" resource="/" typeof="DataCatalog dcat:Catalog">
+			<h1 property="name dct:title">Öppna data från Kungliga biblioteket</h1>
+			<meta property="dct:language" resource="http://publications.europa.eu/mdr/authority/language/SWE" />
+			<meta property="dct:license" resource="http://creativecommons.org/publicdomain/zero/1.0/" />
+			<meta property="foaf:homepage" content="https://data.kb.se/" />
+			<div property="dct:publisher" class="sr-only" typeof="foaf:Agent">
+				<meta property="foaf:name" content="Kungliga biblioteket" />
+				<meta property="foaf:homepage" content="http://www.kb.se/" />
+				<meta property="foaf:mbox" resource="mailto:kungl.biblioteket@kb.se" />
+				<meta property="dct:type" resource="http://purl.org/adms/publishertype/NationalAuthority" />
+				<meta property="rdf:type" resource="http://xmlns.com/foaf/0.1/Agent" />
+			</div>
+
+			<p property="description dct:description">Här hittar du information från <a href="http://www.kb.se/">Kungliga bibliotekets</a> datakällor. Detta är en betaversion och förteckningen kommer att uppdateras löpande. Materialet här är i första hand till för den som vill göra egna bearbetningar/tjänster. Vi försöker publicera material som rådata i öppna standarder, men det kan förekomma material där vi ännu inte hunnit konvertera till en öppen standard. För mer information kontakta <a href="mailto:peter.krantz@kb.se">Peter Krantz (e-post)</a>. Letar du efter data från andra myndigheter <a href="http://www.oppnadata.se/">besök öppnadata.se</a>.</p>
+			<table class="table">
+				<tr>
+					<th>Namn</th>
+					<th>Beskrivning</th>
+					<th>Villkor</th>
+					<th>Format</th>
+					<th>Särskild kontaktperson</th>
+				</tr>
+				{% for dataset in datasets %}
+						<tr property="dataset dcat:dataset" typeof="Dataset dcat:Dataset"
+							resource="{{dataset_uri(dataset)}}">
+							<meta property="dcat:theme" resource="http://publications.europa.eu/resource/authority/data-theme/TECH"/>
+							<meta property="dcat:theme" resource="http://publications.europa.eu/resource/authority/data-theme/EDUC"/>
+							<meta property="dcat:keyword" content="kulturarv" />
+							<meta property="dcat:keyword" content="bibliotek" />
+							<meta property="dcat:keyword" content="forskning" />
+							<meta property="dcat:keyword" content="historia" />
+
+							<td property="name dct:title"><a property="url dct:identifier foaf:page" href="{{dataset_uri(dataset)}}"
+									>{{dataset.name}}</a></td>
+
+							<td>
+								<div property="description dct:description">{{dataset.description}}</div>
+								<div property="dct:publisher" class="sr-only" typeof="foaf:Agent">
+									<meta property="foaf:name" content="Kungliga biblioteket" />
+									<meta property="foaf:homepage" content="http://www.kb.se/" />
+									<meta property="foaf:mbox" resource="mailto:kungl.biblioteket@kb.se" />
+									<meta property="dct:type" resource="http://purl.org/adms/publishertype/NationalAuthority" />
+									<meta property="rdf:type" resource="http://xmlns.com/foaf/0.1/Agent" />
+								</div>
+								<div class="sr-only" property="dcat:distribution" typeof="dcat:Distribution">
+									<meta property="dcat:accessURL" content="{{dataset_uri(dataset)}}" /> 
+								</div>
+							</td>
+
+							<td>
+								{% for license in dataset.license %}
+										<a property="publishingPrinciples dct:license" rel="license"
+											href="{{ license.url }}">
+											<abbr lang="en" title="{{ license.name }}">{{license}}</abbr></a>
+								{% endfor %}
+							</td>
+
+							<td>
+								{{ dataset.formats|join(', ') }}
+							</td>
+
+							<td>
+								{% if dataset.provider %}
+										{% for p in dataset.provider %}
+												<div property="dcat:contactPoint" typeof="vcard:Individual">
+													<span property="vcard:fn foaf:name">{{p.name}}</span>
+													{% if p.email %}<meta property="vcard:hasEmail" resource="mailto:{{p.email}}" />{% endif %}
+												</div>
+										{% endfor %}
+								{% endif %}
+							</td>
+						</tr>
+				{% endfor %}
+			</table>
+		</div>
 {% endblock %}
