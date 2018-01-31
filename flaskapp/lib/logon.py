@@ -12,7 +12,8 @@ def _dev_mode():
 
 
 def _handle_swamid():
-    session['username'] = request.headers['eppn']
+    print('BLA', session, request.headers)
+    session['username'] = request.headers['Eppn']
     user = models.Users.query.filter(
         models.Users.username == session['username']
     ).first()
@@ -27,7 +28,8 @@ def _handle_swamid():
     session['role'] = role.roleName
     if role.roleName == 'admin':
         session['is_admin'] = 'True'
-    return redirect(request.args.get('next', '/'))
+    return redirect('https://data.kb.se/')
+    #return redirect(request.args.get('next', '/'))
 
 
 def _prod_mode():
